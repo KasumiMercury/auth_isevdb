@@ -3717,6 +3717,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -3735,7 +3739,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: this.$inertia.form({
-        password: ''
+        password: ""
       })
     };
   },
@@ -3743,7 +3747,7 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       var _this = this;
 
-      this.form.post(this.route('password.confirm'), {
+      this.form.post(this.route("password.confirm"), {
         onFinish: function onFinish() {
           return _this.form.reset();
         }
@@ -3801,7 +3805,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -3823,13 +3826,13 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: this.$inertia.form({
-        email: ''
+        email: ""
       })
     };
   },
   methods: {
     submit: function submit() {
-      this.form.post(this.route('password.email'));
+      this.form.post(this.route("password.email"));
     }
   }
 });
@@ -7088,7 +7091,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.bg-gray-100[data-v-bab80230] {\n    background-color: #f7fafc;\n    background-color: rgba(247, 250, 252, var(--tw-bg-opacity));\n}\n.border-gray-200[data-v-bab80230] {\n    border-color: #edf2f7;\n    border-color: rgba(237, 242, 247, var(--tw-border-opacity));\n}\n.text-gray-400[data-v-bab80230] {\n    color: #cbd5e0;\n    color: rgba(203, 213, 224, var(--tw-text-opacity));\n}\n.text-gray-500[data-v-bab80230] {\n    color: #a0aec0;\n    color: rgba(160, 174, 192, var(--tw-text-opacity));\n}\n.text-gray-600[data-v-bab80230] {\n    color: #718096;\n    color: rgba(113, 128, 150, var(--tw-text-opacity));\n}\n.text-gray-700[data-v-bab80230] {\n    color: #4a5568;\n    color: rgba(74, 85, 104, var(--tw-text-opacity));\n}\n.text-gray-900[data-v-bab80230] {\n    color: #1a202c;\n    color: rgba(26, 32, 44, var(--tw-text-opacity));\n}\n@media (prefers-color-scheme: dark) {\n.dark\\:bg-gray-800[data-v-bab80230] {\n        background-color: #2d3748;\n        background-color: rgba(45, 55, 72, var(--tw-bg-opacity));\n}\n.dark\\:bg-gray-900[data-v-bab80230] {\n        background-color: #1a202c;\n        background-color: rgba(26, 32, 44, var(--tw-bg-opacity));\n}\n.dark\\:border-gray-700[data-v-bab80230] {\n        border-color: #4a5568;\n        border-color: rgba(74, 85, 104, var(--tw-border-opacity));\n}\n.dark\\:text-white[data-v-bab80230] {\n        color: #fff;\n        color: rgba(255, 255, 255, var(--tw-text-opacity));\n}\n.dark\\:text-gray-400[data-v-bab80230] {\n        color: #cbd5e0;\n        color: rgba(203, 213, 224, var(--tw-text-opacity));\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.bg-gray-100[data-v-bab80230] {\r\n    background-color: #f7fafc;\r\n    background-color: rgba(247, 250, 252, var(--tw-bg-opacity));\n}\n.border-gray-200[data-v-bab80230] {\r\n    border-color: #edf2f7;\r\n    border-color: rgba(237, 242, 247, var(--tw-border-opacity));\n}\n.text-gray-400[data-v-bab80230] {\r\n    color: #cbd5e0;\r\n    color: rgba(203, 213, 224, var(--tw-text-opacity));\n}\n.text-gray-500[data-v-bab80230] {\r\n    color: #a0aec0;\r\n    color: rgba(160, 174, 192, var(--tw-text-opacity));\n}\n.text-gray-600[data-v-bab80230] {\r\n    color: #718096;\r\n    color: rgba(113, 128, 150, var(--tw-text-opacity));\n}\n.text-gray-700[data-v-bab80230] {\r\n    color: #4a5568;\r\n    color: rgba(74, 85, 104, var(--tw-text-opacity));\n}\n.text-gray-900[data-v-bab80230] {\r\n    color: #1a202c;\r\n    color: rgba(26, 32, 44, var(--tw-text-opacity));\n}\n@media (prefers-color-scheme: dark) {\n.dark\\:bg-gray-800[data-v-bab80230] {\r\n        background-color: #2d3748;\r\n        background-color: rgba(45, 55, 72, var(--tw-bg-opacity));\n}\n.dark\\:bg-gray-900[data-v-bab80230] {\r\n        background-color: #1a202c;\r\n        background-color: rgba(26, 32, 44, var(--tw-bg-opacity));\n}\n.dark\\:border-gray-700[data-v-bab80230] {\r\n        border-color: #4a5568;\r\n        border-color: rgba(74, 85, 104, var(--tw-border-opacity));\n}\n.dark\\:text-white[data-v-bab80230] {\r\n        color: #fff;\r\n        color: rgba(255, 255, 255, var(--tw-text-opacity));\n}\n.dark\\:text-gray-400[data-v-bab80230] {\r\n        color: #cbd5e0;\r\n        color: rgba(203, 213, 224, var(--tw-text-opacity));\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -33546,7 +33549,7 @@ var render = function () {
       _vm._v(" "),
       _c("div", { staticClass: "mb-4 text-sm text-gray-600" }, [
         _vm._v(
-          "\n        This is a secure area of the application. Please confirm your password before continuing.\n    "
+          "This is a secure area of the application. Please confirm your password before continuing."
         ),
       ]),
       _vm._v(" "),
@@ -33602,7 +33605,7 @@ var render = function () {
                   class: { "opacity-25": _vm.form.processing },
                   attrs: { disabled: _vm.form.processing },
                 },
-                [_vm._v("\n                Confirm\n            ")]
+                [_vm._v(" Confirm ")]
               ),
             ],
             1
@@ -33653,7 +33656,7 @@ var render = function () {
       _vm._v(" "),
       _c("div", { staticClass: "mb-4 text-sm text-gray-600" }, [
         _vm._v(
-          "\n        Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.\n    "
+          "\n        Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to\n        choose a new one.\n    "
         ),
       ]),
       _vm._v(" "),
@@ -33713,11 +33716,7 @@ var render = function () {
                   class: { "opacity-25": _vm.form.processing },
                   attrs: { disabled: _vm.form.processing },
                 },
-                [
-                  _vm._v(
-                    "\n                Email Password Reset Link\n            "
-                  ),
-                ]
+                [_vm._v(" Email Password Reset Link ")]
               ),
             ],
             1
