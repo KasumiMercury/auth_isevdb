@@ -13,7 +13,6 @@ module.exports = {
     rules: {
         "vue/prop-name-casing": "off",
         indent: ["error", 4],
-        "linebreak-style": ["error", "windows"],
         quotes: ["error", "double"],
         semi: ["error", "never"],
     },
