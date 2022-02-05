@@ -33897,7 +33897,7 @@ var render = function () {
                 "v-btn",
                 {
                   staticClass: "mx-3",
-                  attrs: { href: _vm.route("data-tables") },
+                  attrs: { href: _vm.route("sns_login.redirect", "google") },
                 },
                 [_vm._v("サンプル")]
               ),

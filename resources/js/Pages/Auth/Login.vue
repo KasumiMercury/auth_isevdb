@@ -34,7 +34,7 @@
                 </inertia-link>
 
                 <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> ログイン </jet-button>
-                <v-btn class="mx-3" :href="route('data-tables')">サンプル</v-btn>
+                <v-btn class="mx-3" :href="route('sns_login.redirect', 'google')">サンプル</v-btn>
             </div>
         </form>
     </jet-authentication-card>
