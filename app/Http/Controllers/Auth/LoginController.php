@@ -22,8 +22,8 @@ class LoginController extends Controller {
         // 登録済ならログイン。未登録ならアカウント登録してログイン
         if(!is_null($sns_email)) {
             $user = User::firstOrCreate(   // Userモデルに、レコードがあれば取得、なければ保存
-                [ 'email' => $sns_email ],
-                [ 'email' => $sns_email, 'name' => $sns_name, 'password' => Hash::make(Str::random())
+                [ 'name' => $sns_name ],
+                [ 'name' => $sns_name, 'password' => Hash::make(Str::random())
             ]);
             auth()->login($user);
             session()->flash('oauth_login', $provider.'でログインしました。');
