@@ -7,6 +7,14 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 class LoginController extends Controller {
+    // カスタムログイン処理（ログイン後元の画面に遷移）
+    public function index()
+    {
+        if (!session()->has('url.intended')) {
+            session(['url.intended' => url()->previous()]);
+        }
+        return redirect('login');
+    }
     // メディア側へのリダイレクト
     public function redirectToProvider(Request $request) {
         $provider = $request->provider;

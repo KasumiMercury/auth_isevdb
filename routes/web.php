@@ -29,6 +29,8 @@ Route::prefix('login/{provider}')->where(['provider'=> 'google'])->group(functio
     Route::get('/callback',[App\Http\Controllers\Auth\LoginController::class, 'handleProviderCallback'])->name('sns_login.callback');
  });
 
+Route::get("/my-login", [LoginController::class, "index"])->name("myLogin");
+
 Route::get('/data-tables', [\App\Http\Controllers\AnyController::class, 'responseDataTables'])->name('data-tables');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

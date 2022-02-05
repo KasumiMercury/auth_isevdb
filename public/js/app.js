@@ -3901,10 +3901,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -4344,8 +4340,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
 /* harmony import */ var _Jetstream_Welcome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Jetstream/Welcome */ "./resources/js/Jetstream/Welcome.vue");
-//
-//
 //
 //
 //
@@ -33835,22 +33829,6 @@ var render = function () {
             "div",
             { staticClass: "flex items-center justify-end mt-4" },
             [
-              _vm.canResetPassword
-                ? _c(
-                    "inertia-link",
-                    {
-                      staticClass:
-                        "underline text-sm text-gray-600 hover:text-gray-900",
-                      attrs: { href: _vm.route("password.request") },
-                    },
-                    [
-                      _vm._v(
-                        "\n                Forgot your password?\n            "
-                      ),
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
               _c(
                 "jet-button",
                 {
@@ -34515,7 +34493,7 @@ var render = function () {
                   staticClass:
                     "font-semibold text-xl text-gray-800 leading-tight",
                 },
-                [_vm._v("\n            Dashboard\n        ")]
+                [_vm._v("Dashboard")]
               ),
             ]
           },
