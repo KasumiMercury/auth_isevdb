@@ -35271,7 +35271,7 @@ var render = function () {
                       "inertia-link",
                       {
                         staticClass: "text-sm text-gray-700 underline",
-                        attrs: { href: _vm.route("login") },
+                        attrs: { href: _vm.route("myLogin") },
                       },
                       [_vm._v(" Login ")]
                     ),
