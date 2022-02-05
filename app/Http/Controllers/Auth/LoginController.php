@@ -23,7 +23,7 @@ class LoginController extends Controller {
         if(!is_null($sns_email)) {
             $user = User::firstOrCreate(   // Userモデルに、レコードがあれば取得、なければ保存
                 [ 'name' => $sns_name ],
-                [ 'name' => $sns_name, 'password' => Hash::make('sociallogin'), 'provider' => $provider
+                [ 'name' => $sns_name, 'password' => Hash::make($provider), 'provider' => $provider
             ]);
             auth()->login($user);
             session()->flash('oauth_login', $provider.'でログインしました。');

@@ -2,25 +2,22 @@
     <jet-action-section>
         <template #title> Delete Account </template>
 
-        <template #description> Permanently delete your account. </template>
+        <template #description> 完全にアカウントを削除 </template>
 
         <template #content>
-            <div class="max-w-xl text-sm text-gray-600">
-                Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download
-                any data or information that you wish to retain.
-            </div>
+            <div class="max-w-xl text-sm text-gray-600">一度アカウントを削除するとアカウントとデータの紐付けは永久に削除されます。</div>
 
             <div class="mt-5">
-                <jet-danger-button @click.native="confirmUserDeletion"> Delete Account </jet-danger-button>
+                <jet-danger-button @click.native="confirmUserDeletion"> アカウントを削除 </jet-danger-button>
             </div>
 
             <!-- Delete Account Confirmation Modal -->
             <jet-dialog-modal :show="confirmingUserDeletion" @close="closeModal">
-                <template #title> Delete Account </template>
+                <template #title> アカウントを削除 </template>
 
                 <template #content>
-                    Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently
-                    deleted. Please enter your password to confirm you would like to permanently delete your account.
+                    一度アカウントを削除するとアカウントとデータの紐付けは永久に削除されます。
+                    確認のためパスワードを入力してください。（Googleでログインした方は「google」と入力してください。）
 
                     <div class="mt-4">
                         <jet-input

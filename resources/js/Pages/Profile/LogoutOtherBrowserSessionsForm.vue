@@ -2,12 +2,11 @@
     <jet-action-section>
         <template #title> Browser Sessions </template>
 
-        <template #description> Manage and logout your active sessions on other browsers and devices. </template>
+        <template #description> 他のすべての端末からログアウトする </template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600">
-                If necessary, you may logout of all of your other browser sessions across all of your devices. Some of your recent sessions are listed
-                below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.
+                他のすべての端末からログアウトします。<br />最近のセッションは下記の通りです。※下記は一部表示されていない可能性があります。
             </div>
 
             <!-- Other Browser Sessions -->
@@ -62,17 +61,17 @@
             </div>
 
             <div class="flex items-center mt-5">
-                <jet-button @click.native="confirmLogout"> Logout Other Browser Sessions </jet-button>
+                <jet-button @click.native="confirmLogout"> 他のブラウザからログアウト </jet-button>
 
-                <jet-action-message :on="form.recentlySuccessful" class="ml-3"> Done. </jet-action-message>
+                <jet-action-message :on="form.recentlySuccessful" class="ml-3"> 完了 </jet-action-message>
             </div>
 
             <!-- Logout Other Devices Confirmation Modal -->
             <jet-dialog-modal :show="confirmingLogout" @close="closeModal">
-                <template #title> Logout Other Browser Sessions </template>
+                <template #title> 他のブラウザからログアウト </template>
 
                 <template #content>
-                    Please enter your password to confirm you would like to logout of your other browser sessions across all of your devices.
+                    パスワードを入力してください。（Googleでログインした方は「google」と入力してください。）
 
                     <div class="mt-4">
                         <jet-input
@@ -89,7 +88,7 @@
                 </template>
 
                 <template #footer>
-                    <jet-secondary-button @click.native="closeModal"> Nevermind </jet-secondary-button>
+                    <jet-secondary-button @click.native="closeModal"> 戻る </jet-secondary-button>
 
                     <jet-button
                         class="ml-2"
@@ -97,7 +96,7 @@
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
-                        Logout Other Browser Sessions
+                        他のブラウザからログアウト
                     </jet-button>
                 </template>
             </jet-dialog-modal>

@@ -4530,9 +4530,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -4608,7 +4605,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
 /* harmony import */ var _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Jetstream/InputError */ "./resources/js/Jetstream/InputError.vue");
 /* harmony import */ var _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Jetstream/SecondaryButton */ "./resources/js/Jetstream/SecondaryButton.vue");
-//
 //
 //
 //
@@ -34676,7 +34672,7 @@ var render = function () {
       {
         key: "description",
         fn: function () {
-          return [_vm._v(" Permanently delete your account. ")]
+          return [_vm._v(" 完全にアカウントを削除 ")]
         },
         proxy: true,
       },
@@ -34686,7 +34682,7 @@ var render = function () {
           return [
             _c("div", { staticClass: "max-w-xl text-sm text-gray-600" }, [
               _vm._v(
-                "\n            Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download\n            any data or information that you wish to retain.\n        "
+                "一度アカウントを削除するとアカウントとデータの紐付けは永久に削除されます。"
               ),
             ]),
             _vm._v(" "),
@@ -34703,7 +34699,7 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v(" Delete Account ")]
+                  [_vm._v(" アカウントを削除 ")]
                 ),
               ],
               1
@@ -34716,7 +34712,7 @@ var render = function () {
                 {
                   key: "title",
                   fn: function () {
-                    return [_vm._v(" Delete Account ")]
+                    return [_vm._v(" アカウントを削除 ")]
                   },
                   proxy: true,
                 },
@@ -34725,7 +34721,7 @@ var render = function () {
                   fn: function () {
                     return [
                       _vm._v(
-                        "\n                Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently\n                deleted. Please enter your password to confirm you would like to permanently delete your account.\n\n                "
+                        "\n                一度アカウントを削除するとアカウントとデータの紐付けは永久に削除されます。\n                確認のためパスワードを入力してください。（Googleでログインした方は「google」と入力してください。）\n\n                "
                       ),
                       _c(
                         "div",
@@ -34857,11 +34853,7 @@ var render = function () {
       {
         key: "description",
         fn: function () {
-          return [
-            _vm._v(
-              " Manage and logout your active sessions on other browsers and devices. "
-            ),
-          ]
+          return [_vm._v(" 他のすべての端末からログアウトする ")]
         },
         proxy: true,
       },
@@ -34870,8 +34862,10 @@ var render = function () {
         fn: function () {
           return [
             _c("div", { staticClass: "max-w-xl text-sm text-gray-600" }, [
+              _vm._v("\n            他のすべての端末からログアウトします。"),
+              _c("br"),
               _vm._v(
-                "\n            If necessary, you may logout of all of your other browser sessions across all of your devices. Some of your recent sessions are listed\n            below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.\n        "
+                "最近のセッションは下記の通りです。※下記は一部表示されていない可能性があります。\n        "
               ),
             ]),
             _vm._v(" "),
@@ -35004,7 +34998,7 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v(" Logout Other Browser Sessions ")]
+                  [_vm._v(" 他のブラウザからログアウト ")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -35013,7 +35007,7 @@ var render = function () {
                     staticClass: "ml-3",
                     attrs: { on: _vm.form.recentlySuccessful },
                   },
-                  [_vm._v(" Done. ")]
+                  [_vm._v(" 完了 ")]
                 ),
               ],
               1
@@ -35026,7 +35020,7 @@ var render = function () {
                 {
                   key: "title",
                   fn: function () {
-                    return [_vm._v(" Logout Other Browser Sessions ")]
+                    return [_vm._v(" 他のブラウザからログアウト ")]
                   },
                   proxy: true,
                 },
@@ -35035,7 +35029,7 @@ var render = function () {
                   fn: function () {
                     return [
                       _vm._v(
-                        "\n                Please enter your password to confirm you would like to logout of your other browser sessions across all of your devices.\n\n                "
+                        "\n                パスワードを入力してください。（Googleでログインした方は「google」と入力してください。）\n\n                "
                       ),
                       _c(
                         "div",
@@ -35101,7 +35095,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v(" Nevermind ")]
+                        [_vm._v(" 戻る ")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -35121,7 +35115,7 @@ var render = function () {
                         },
                         [
                           _vm._v(
-                            "\n                    Logout Other Browser Sessions\n                "
+                            "\n                    他のブラウザからログアウト\n                "
                           ),
                         ]
                       ),
@@ -35175,7 +35169,7 @@ var render = function () {
                   staticClass:
                     "font-semibold text-xl text-gray-800 leading-tight",
                 },
-                [_vm._v("Profile")]
+                [_vm._v("プロフィール")]
               ),
             ]
           },
