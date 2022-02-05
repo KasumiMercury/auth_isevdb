@@ -3929,7 +3929,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       form: this.$inertia.form({
-        email: "",
+        name: "",
         password: "",
         remember: false
       })
@@ -3969,9 +3969,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Jetstream_AuthenticationCardLogo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Jetstream/AuthenticationCardLogo */ "./resources/js/Jetstream/AuthenticationCardLogo.vue");
 /* harmony import */ var _Jetstream_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Jetstream/Button */ "./resources/js/Jetstream/Button.vue");
 /* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
-/* harmony import */ var _Jetstream_Checkbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Jetstream/Checkbox */ "./resources/js/Jetstream/Checkbox.vue");
-/* harmony import */ var _Jetstream_Label__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Jetstream/Label */ "./resources/js/Jetstream/Label.vue");
-/* harmony import */ var _Jetstream_ValidationErrors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Jetstream/ValidationErrors */ "./resources/js/Jetstream/ValidationErrors.vue");
+/* harmony import */ var _Jetstream_Label__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Jetstream/Label */ "./resources/js/Jetstream/Label.vue");
+/* harmony import */ var _Jetstream_ValidationErrors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Jetstream/ValidationErrors */ "./resources/js/Jetstream/ValidationErrors.vue");
 //
 //
 //
@@ -4012,31 +4011,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 
 
@@ -4049,9 +4023,8 @@ __webpack_require__.r(__webpack_exports__);
     JetAuthenticationCardLogo: _Jetstream_AuthenticationCardLogo__WEBPACK_IMPORTED_MODULE_1__["default"],
     JetButton: _Jetstream_Button__WEBPACK_IMPORTED_MODULE_2__["default"],
     JetInput: _Jetstream_Input__WEBPACK_IMPORTED_MODULE_3__["default"],
-    JetCheckbox: _Jetstream_Checkbox__WEBPACK_IMPORTED_MODULE_4__["default"],
-    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_5__["default"],
-    JetValidationErrors: _Jetstream_ValidationErrors__WEBPACK_IMPORTED_MODULE_6__["default"]
+    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_4__["default"],
+    JetValidationErrors: _Jetstream_ValidationErrors__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   data: function data() {
     return {
@@ -4059,8 +4032,7 @@ __webpack_require__.r(__webpack_exports__);
         name: "",
         email: "",
         password: "",
-        password_confirmation: "",
-        terms: false
+        password_confirmation: ""
       })
     };
   },
@@ -33789,22 +33761,22 @@ var render = function () {
           _c(
             "div",
             [
-              _c("jet-label", { attrs: { for: "email", value: "Email" } }),
+              _c("jet-label", { attrs: { for: "name", value: "name" } }),
               _vm._v(" "),
               _c("jet-input", {
                 staticClass: "mt-1 block w-full",
                 attrs: {
-                  id: "email",
-                  type: "email",
+                  id: "name",
+                  type: "text",
                   required: "",
                   autofocus: "",
                 },
                 model: {
-                  value: _vm.form.email,
+                  value: _vm.form.name,
                   callback: function ($$v) {
-                    _vm.$set(_vm.form, "email", $$v)
+                    _vm.$set(_vm.form, "name", $$v)
                   },
-                  expression: "form.email",
+                  expression: "form.name",
                 },
               }),
             ],
@@ -33991,27 +33963,6 @@ var render = function () {
             "div",
             { staticClass: "mt-4" },
             [
-              _c("jet-label", { attrs: { for: "email", value: "Email" } }),
-              _vm._v(" "),
-              _c("jet-input", {
-                staticClass: "mt-1 block w-full",
-                attrs: { id: "email", type: "email", required: "" },
-                model: {
-                  value: _vm.form.email,
-                  callback: function ($$v) {
-                    _vm.$set(_vm.form, "email", $$v)
-                  },
-                  expression: "form.email",
-                },
-              }),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "mt-4" },
-            [
               _c("jet-label", {
                 attrs: { for: "password", value: "Password" },
               }),
@@ -34066,68 +34017,6 @@ var render = function () {
             ],
             1
           ),
-          _vm._v(" "),
-          _vm.$page.props.jetstream.hasTermsAndPrivacyPolicyFeature
-            ? _c(
-                "div",
-                { staticClass: "mt-4" },
-                [
-                  _c("jet-label", { attrs: { for: "terms" } }, [
-                    _c(
-                      "div",
-                      { staticClass: "flex items-center" },
-                      [
-                        _c("jet-checkbox", {
-                          attrs: { name: "terms", id: "terms" },
-                          model: {
-                            value: _vm.form.terms,
-                            callback: function ($$v) {
-                              _vm.$set(_vm.form, "terms", $$v)
-                            },
-                            expression: "form.terms",
-                          },
-                        }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "ml-2" }, [
-                          _vm._v(
-                            "\n                        I agree to the\n                        "
-                          ),
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "underline text-sm text-gray-600 hover:text-gray-900",
-                              attrs: {
-                                target: "_blank",
-                                href: _vm.route("terms.show"),
-                              },
-                            },
-                            [_vm._v("Terms of Service")]
-                          ),
-                          _vm._v(
-                            "\n                        and\n                        "
-                          ),
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "underline text-sm text-gray-600 hover:text-gray-900",
-                              attrs: {
-                                target: "_blank",
-                                href: _vm.route("policy.show"),
-                              },
-                            },
-                            [_vm._v("Privacy Policy")]
-                          ),
-                        ]),
-                      ],
-                      1
-                    ),
-                  ]),
-                ],
-                1
-              )
-            : _vm._e(),
           _vm._v(" "),
           _c(
             "div",
