@@ -16,6 +16,11 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+    return Inertia::render('WelcomeDefault');
+})->name('TopPage'); 
+
+
+Route::get('/check', function () {
     return Inertia::render('WelcomeDefault', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -24,15 +29,51 @@ Route::get('/', function () {
     ]);
 });
 
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->name('dashboard'); 
+
 Route::prefix('login/{provider}')->where(['provider'=> 'google'])->group(function(){
     Route::get('/',[App\Http\Controllers\Auth\LoginController::class, 'redirectToProvider'])->name('sns_login.redirect');
     Route::get('/callback',[App\Http\Controllers\Auth\LoginController::class, 'handleProviderCallback'])->name('sns_login.callback');
  });
 
-Route::get("/my-login", [LoginController::class, "index"])->name("myLogin");
+Route::get("/my-login", [App\Http\Controllers\Auth\LoginController::class, "index"])->name("myLogin");
 
 Route::get('/data-tables', [\App\Http\Controllers\AnyController::class, 'responseDataTables'])->name('data-tables');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+
+Route::get('/add', function () {
     return Inertia::render('Dashboard');
-})->name('dashboard');
+})->name('data.add'); 
+
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/i/bookmark', function () {
+    return Inertia::render('Dashboard');
+})->name('user.book'); 
+
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/i/added', function () {
+    return Inertia::render('Dashboard');
+})->name('user.added'); 
+
+
+Route::get('/player/{id}', function () {
+    return Inertia::render('Dashboard');
+})->name('share.player'); 
+
+
+Route::get('/{member}/latest', function () {
+    return Inertia::render('Dashboard');
+})->name('member.latest');
+
+Route::get('/{member}/{cate}', function () {
+    return Inertia::render('Dashboard');
+})->name('member.cate'); 
+
+/**
+*Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+*    return Inertia::render('Dashboard');
+*})->name('dashboard'); 
+*/
