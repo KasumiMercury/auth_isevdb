@@ -9,8 +9,9 @@
         <meta name="description" content="個人Vtuberグループいせぶい非公式データベース">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
+        <title>非公式いせぶいDB</title>
+        <meta name="description" content="個人Vtuberグループいせぶい非公式データベース">
+        
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">

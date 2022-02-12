@@ -35,7 +35,10 @@ class LoginController extends Controller {
             ]);
             auth()->login($user);
             session()->flash('oauth_login', $provider.'でログインしました。');
-            return redirect('/');
+            if (!session()->has('url.intended')) {
+                session(['url.intended' => url()->previous()]);
+            }
+            return redirect('login');
         }
         return '情報が取得できませんでした。';
     }

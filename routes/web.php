@@ -31,7 +31,7 @@ Route::get('/check', function () {
 
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('PlayerList');
 })->name('dashboard'); 
 
 Route::prefix('login/{provider}')->where(['provider'=> 'google'])->group(function(){
@@ -45,7 +45,7 @@ Route::get('/data-tables', [\App\Http\Controllers\AnyController::class, 'respons
 
 
 Route::get('/add', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('DataAdd');
 })->name('data.add'); 
 
 
@@ -58,19 +58,13 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/i/added', function () {
     return Inertia::render('Dashboard');
 })->name('user.added'); 
 
+Route::get('/{member}',[App\Http\Controllers\PlayerController::class, 'memberTop'])->name('member.top');
 
-Route::get('/player/{id}', function () {
-    return Inertia::render('Dashboard');
-})->name('share.player'); 
+Route::get('/{member}/latest',[App\Http\Controllers\PlayerController::class, 'latest'])->name('member.latest');
 
+Route::get('/{member}/player/{id}',[App\Http\Controllers\PlayerController::class, 'player'])->name('share.player'); 
 
-Route::get('/{member}/latest', function () {
-    return Inertia::render('Dashboard');
-})->name('member.latest');
-
-Route::get('/{member}/{cate}', function () {
-    return Inertia::render('Dashboard');
-})->name('member.cate'); 
+Route::get('/{member}/{cate}',[App\Http\Controllers\PlayerController::class, 'memberCate'])->name('member.cate'); 
 
 /**
 *Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

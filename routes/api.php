@@ -17,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::POST('/add/twitter', 'App\Http\Controllers\PlayerController@addTwitter')->name('add.twitter');
+Route::POST('/add/clip', 'App\Http\Controllers\PlayerController@addClip')->name('add.clip');
+Route::POST('/add/youtube', 'App\Http\Controllers\PlayerController@addYoutube')->name('add.youtube');
