@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <app-layout>
+            <template #header> Register Data </template>
             <v-stepper v-model="e1">
                 <v-stepper-header>
                     <template v-for="n in steps">
@@ -13,7 +14,7 @@
                 <v-stepper-items>
                     <v-stepper-content :step="1">
                         <v-card class="text-center">
-                            <v-alert v-if="$page.props.user == null" border="left" type="warning" prominent class="my-3">
+                            <v-alert v-if="$page.props.user == null" border="left" type="warning" outlined prominent class="my-3">
                                 アカウントをお持ちの方はログインをしてから登録してください。<br />
                                 途中でログインすると入力中のデータは初期化されます。
                             </v-alert>
@@ -36,7 +37,7 @@
                         <template v-if="this.contentType == 'youtube'">
                             <v-card class="mb-12">
                                 <div class="my-5">
-                                    <v-alert type="warning" prominent border="left">
+                                    <v-alert type="warning" prominent border="left" outlined>
                                         YouTubeのURLを入力し、ADDボタンで追加してください。<br />
                                         タイトルはYouTubeの動画タイトルが適用されます。
                                     </v-alert>
@@ -58,11 +59,11 @@
                         <template v-if="this.contentType == 'clip'">
                             <v-card class="mb-12">
                                 <div class="my-5">
-                                    <v-alert type="warning" prominent border="left">
+                                    <v-alert type="warning" prominent border="left" outlined>
                                         YouTubeのURLを入力し、ADDボタンで追加してください。<br />
                                         タイトルはYouTubeの動画タイトルが適用されます。
                                     </v-alert>
-                                    <v-alert type="info" prominent border="left">
+                                    <v-alert type="info" prominent border="left" outlined>
                                         複数メンバーを含む切り抜きは、メンバーごとにメンバー分登録してください。<br />
                                         本データベースはメンバーごとに独立したものとして扱っています。
                                     </v-alert>
@@ -521,7 +522,7 @@
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout"
+import AppLayout from "@/Layouts/TopLayout"
 import draggable from "vuedraggable"
 import { Tweet } from "vue-tweet-embed"
 
@@ -838,8 +839,9 @@ export default {
             this.Tweeturl = this.urlInput
             this.alert = false
             let whereStatus = this.Tweeturl.indexOf("/status/") + 8
-            // let whereEnd = this.Tweeturl.indexOf("?s=")
-            this.createTweet = this.Tweeturl.slice(whereStatus, 16)
+            let whereEnd = this.Tweeturl.indexOf("?s=")
+            //this.createTweet = this.Tweeturl.slice(whereStatus, 16)
+            this.createTweet = this.Tweeturl.slice(whereStatus, whereEnd)
 
             this.tweetForm = []
 

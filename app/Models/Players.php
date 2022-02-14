@@ -13,4 +13,7 @@ class Players extends Model
     public function Member(){
         return $this->belongsTo('App\Models\Member');
     }
+    public function BookMark() {
+        return $this->hasMany('App\Models\BookMark');
+    }
 }

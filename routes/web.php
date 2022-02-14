@@ -15,9 +15,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('WelcomeDefault');
-})->name('TopPage'); 
+Route::get('/',[App\Http\Controllers\PlayerController::class, 'TopPage'])->name('TopPage'); 
 
 
 Route::get('/check', function () {
@@ -49,14 +47,10 @@ Route::get('/add', function () {
 })->name('data.add'); 
 
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/i/bookmark', function () {
-    return Inertia::render('Dashboard');
-})->name('user.book'); 
+Route::middleware(['auth:sanctum', 'verified'])->get('/i/bookmark',[App\Http\Controllers\PlayerController::class, 'bookMark'])->name('user.book'); 
 
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/i/added', function () {
-    return Inertia::render('Dashboard');
-})->name('user.added'); 
+Route::middleware(['auth:sanctum', 'verified'])->get('/i/added',[App\Http\Controllers\PlayerController::class, 'addedData'])->name('user.added'); 
 
 Route::get('/{member}',[App\Http\Controllers\PlayerController::class, 'memberTop'])->name('member.top');
 

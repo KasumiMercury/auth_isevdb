@@ -1,8 +1,10 @@
 <template>
-    <div id="app">
-        <v-app>
-            <app-layout class="pb-80">
-                <v-card v-if="width > this.break" style="max-width: 80vw" class="mx-auto">
+    <v-app>
+        <div :id="'bg_' + currentMember.name"></div>
+        <app-layout class="pb-5" :style="styles">
+            <v-card class="px-5 py-10">
+                <h2 class="text-center my-3" style="font-size: 1.5rem; font-family: 'Zen Maru Gothic', sans-serif">{{ player.title }}</h2>
+                <v-card v-if="width > this.break" style="max-width: 80vw" class="mx-auto p-3">
                     <v-responsive v-show="show" :aspect-ratio="16 / 9">
                         <iframe
                             width="100%"
@@ -15,7 +17,7 @@
                         ></iframe>
                     </v-responsive>
                 </v-card>
-                <v-card v-if="width <= this.break" style="max-width: 95vw" class="mx-auto">
+                <v-card v-if="width <= this.break" style="max-width: 95vw" class="mx-auto p-3">
                     <v-responsive v-show="show" :aspect-ratio="16 / 9">
                         <iframe
                             width="100%"
@@ -36,23 +38,23 @@
                     :hashtags="Tweet.hash"
                     :class="'text-decoration-none'"
                 >
-                    <v-btn v-show="show" class="my-10" color="#1DA1F2" style="color: #fff" block large>
+                    <v-btn v-show="show" class="my-10" color="#1DA1F2" style="color: #fff" block x-large>
                         <v-icon>fas fa-share-square</v-icon>　Tweet
                     </v-btn>
                 </ShareNetwork>
-                <v-row justify="center">
-                    <v-col cols="auto">
-                        <inertia-link large as="v-btn" :href="'/' + currentMember.name + '/latest'">
+                <v-row justify="center" class="text-center">
+                    <v-col cols="12">
+                        <inertia-link large as="v-btn" :color="currentMember.MainCol" :href="'/' + currentMember.name + '/latest'">
                             非公式{{ currentMember.display }}DBへ
                         </inertia-link>
                     </v-col>
-                    <v-col cols="auto">
-                        <inertia-link large as="v-btn" href="/"> 非公式いせぶいDBトップへ </inertia-link>
+                    <v-col cols="12" class="mt-5">
+                        <inertia-link large as="v-btn" color="cyan lighten-3" href="/"> 非公式いせぶいDBトップへ </inertia-link>
                     </v-col>
                 </v-row>
-            </app-layout>
-        </v-app>
-    </div>
+            </v-card>
+        </app-layout>
+    </v-app>
 </template>
 
 <script>
@@ -73,6 +75,9 @@ export default {
             currentMember: [],
             show: false,
         }
+    },
+    metaInfo: {
+        title: "Vue Meta Test App",
     },
     created() {
         this.memberArray = this.$page.props.setting.member.filter((value) => {
@@ -99,6 +104,15 @@ export default {
             this.width = window.innerWidth
         },
     },
+    computed: {
+        styles() {
+            return {
+                "--BtnCol": this.currentMember.BtnCol,
+                "--MainCol": this.currentMember.MainCol,
+                "--NavCol": this.currentMember.NavCol,
+            }
+        },
+    },
     mounted: function () {
         window.addEventListener("resize", this.handleResize)
     },
@@ -107,3 +121,41 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+@import "/css/bgset.css";
+.memberCol {
+    background: var(--MainCol) !important;
+    border-color: var(--BtnCol) !important;
+    color: var(--BtnCol) !important;
+}
+.footCol {
+    background: var(--NavCol) !important;
+}
+.v-list-item {
+    color: var(--BtnCol) !important;
+}
+.v-divider {
+    border-color: var(--BtnCol) !important;
+    opacity: 0.2;
+}
+.description {
+    font-size: 1rem;
+    font-family: "Zen Maru Gothic", sans-serif;
+    color: #111;
+    line-height: 1.4em;
+}
+.description > span {
+    position: relative;
+    display: inline-block;
+}
+.description > span::before {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+    top: -5px;
+    right: -5px;
+    background-color: #eee;
+    z-index: -1;
+}
+</style>

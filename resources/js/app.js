@@ -8,12 +8,14 @@ import vuetify from "./plugins/vuetify"
 import VueSocialSharing from "vue-social-sharing"
 import draggable from "vuedraggable"
 import VueYoutube from "vue-youtube"
+import VueMeta from "vue-meta"
 
 Vue.mixin({ methods: { route } })
 Vue.use(InertiaPlugin)
 Vue.use(PortalVue)
 Vue.use(VueSocialSharing)
 Vue.use(VueYoutube)
+Vue.use(VueMeta)
 
 const app = document.getElementById("app")
 

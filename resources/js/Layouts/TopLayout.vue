@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <!-- PC nav -->
-        <v-navigation-drawer v-if="width > this.break" class="memberCol hidden-sm-and-down" elevation="10" app clipped>
+        <v-navigation-drawer v-if="width > this.break" color="cyan lighten-3" class="memberCol hidden-sm-and-down" elevation="10" app clipped>
             <v-list>
                 <v-list-item>
                     <v-list-item-content>
@@ -75,8 +75,16 @@
         <!-- header -->
         <template>
             <!-- PC header -->
-            <v-app-bar elevation="3" v-if="width > this.break" style="padding: 5px 10vw" class="memberCol hidden-sm-and-down" app clipped-left>
-                <v-toolbar-title class="text-h4 SiteTitle" style="font-family: 'Dela Gothic One', cursive !important">
+            <v-app-bar
+                elevation="3"
+                color="yellow lighten-3"
+                v-if="width > this.break"
+                style="padding: 5px 10vw"
+                class="memberCol hidden-sm-and-down"
+                app
+                clipped-left
+            >
+                <v-toolbar-title class="text-h4 SiteTitle" style="font-family: 'Dela Gothic One', cursive !important; color: #33322eff">
                     非公式いせぶいDB
                 </v-toolbar-title>
 
@@ -115,6 +123,7 @@
             </v-app-bar>
             <!-- SP header -->
             <v-app-bar
+                color="yellow lighten-3"
                 elevation="3"
                 v-if="width <= this.break"
                 style="padding: 5px 2vw; z-index: 5"
@@ -159,11 +168,11 @@
         <!-- container -->
         <template>
             <!-- PC container -->
-            <v-main v-if="width > this.break" class="hidden-sm-and-down mt-5 mx-auto" style="width: 95%; z-index: 2" app absolute>
+            <v-main v-if="width > this.break" class="hidden-sm-and-down mx-auto" color="cyan lighten-3" style="width: 100%; z-index: 2" app absolute>
                 <slot></slot>
             </v-main>
             <!-- SP container -->
-            <v-main v-if="width <= this.break" class="hidden-md-and-up mt-5 mx-0" style="width: 100%; z-index: 2" app absolute>
+            <v-main v-if="width <= this.break" class="hidden-md-and-up mx-0" color="cyan lighten-3" style="width: 100%; z-index: 2" app absolute>
                 <slot></slot>
             </v-main>
         </template>
@@ -171,7 +180,7 @@
         <!-- footer -->
         <template>
             <!-- PC footer -->
-            <v-footer v-if="width > this.break" app padless class="footCol hidden-sm-and-down m-auto">
+            <v-footer v-if="width > this.break" app padless class="hidden-sm-and-down m-auto">
                 <v-col class="text-center" cols="12">
                     <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.3.4.0</p>
                     <p style="margin-bottom: 0.1rem; font-size: 0.5rem">
@@ -194,12 +203,12 @@
                 </v-card>
 
                 <v-bottom-navigation app class="hidden-md-and-up m-auto py-1 memberCol" grow>
-                    <v-btn fab depressed class="memberCol" @click="sheet = !sheet">
+                    <v-btn fab depressed class="memberCol" @click="sheet = !sheet" color="cyan lighten-3">
                         <span class="my-1">DB List</span>
                         <v-icon>fas fa-database</v-icon>
                     </v-btn>
                     <template v-if="$page.props.user">
-                        <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('user.book')">
+                        <inertia-link as="v-btn" fab depressed class="memberCol" color="cyan lighten-3" :href="route('user.book')">
                             <span class="my-1">BookMark</span>
                             <v-icon>fas fa-bookmark</v-icon>
                         </inertia-link>
@@ -207,7 +216,7 @@
                     <template v-else>
                         <v-tooltip top color="error">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
+                                <v-btn fab depressed class="memberCol" color="cyan lighten-3" dark v-bind="attrs" v-on="on">
                                     <span class="my-1">BookMark</span>
                                     <v-icon>fas fa-bookmark</v-icon>
                                 </v-btn>
@@ -216,7 +225,7 @@
                         </v-tooltip>
                     </template>
                     <template v-if="$page.props.user">
-                        <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('user.added')">
+                        <inertia-link as="v-btn" fab depressed class="memberCol" color="cyan lighten-3" :href="route('user.added')">
                             <span class="my-1">YourData</span>
                             <v-icon>fas fa-folder-open</v-icon>
                         </inertia-link>
@@ -224,7 +233,7 @@
                     <template v-else>
                         <v-tooltip top color="error">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
+                                <v-btn fab depressed class="memberCol" color="cyan lighten-3" dark v-bind="attrs" v-on="on">
                                     <span class="my-1">YourData</span>
                                     <v-icon>fas fa-folder-open</v-icon>
                                 </v-btn>
@@ -232,7 +241,7 @@
                             <span>ログインユーザーのみ</span>
                         </v-tooltip>
                     </template>
-                    <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('data.add')">
+                    <inertia-link as="v-btn" fab depressed class="memberCol" color="cyan lighten-3" :href="route('data.add')">
                         <span class="my-1">AddData</span>
                         <v-icon>fas fa-cloud-upload-alt</v-icon>
                     </inertia-link>
@@ -281,10 +290,7 @@ html {
 }
 .v-application {
     font-family: "Raleway", "Zen Maru Gothic", sans-serif !important;
-    color: #ccc !important;
-}
-#SiteTitle {
-    font-family: "Dela Gothic One", cursive !important;
+    background-color: #ceebe6 !important;
 }
 </style>
 <script>

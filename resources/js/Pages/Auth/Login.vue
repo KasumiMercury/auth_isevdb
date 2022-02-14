@@ -1,42 +1,53 @@
 <template>
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
+    <app-layout>
+        <template #header> Login </template>
+        <v-card class="p-10">
+            <jet-validation-errors class="mb-4" />
 
-        <jet-validation-errors class="mb-4" />
-
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <jet-label for="name" value="name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus />
+            <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+                {{ status }}
             </div>
 
-            <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
-            </div>
+            <form @submit.prevent="submit">
+                <div>
+                    <jet-label for="name" value="name" />
+                    <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus />
+                </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <jet-checkbox name="remember" v-model="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
+                <div class="mt-4">
+                    <jet-label for="password" value="Password" />
+                    <jet-input
+                        id="password"
+                        type="password"
+                        class="mt-1 block w-full"
+                        v-model="form.password"
+                        required
+                        autocomplete="current-password"
+                    />
+                </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> ログイン </jet-button>
-                <v-btn class="mx-3" :href="route('sns_login.redirect', 'google')">サンプル</v-btn>
-            </div>
-        </form>
-    </jet-authentication-card>
+                <div class="block mt-4">
+                    <label class="flex items-center">
+                        <v-checkbox name="remember" v-model="form.remember" />
+                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-end mt-4">
+                    <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> ログイン </jet-button>
+                </div>
+            </form>
+        </v-card>
+        <v-card class="my-3 px-10">
+            <v-btn class="mx-auto my-5 py-10" color="#ea4335" style="color: #eee" block :href="route('sns_login.redirect', 'google')"
+                ><v-icon>fab fa-google</v-icon>　Googleでログイン</v-btn
+            >
+        </v-card>
+    </app-layout>
 </template>
 
 <script>
+import AppLayout from "@/Layouts/TopLayout"
 import JetAuthenticationCard from "@/Jetstream/AuthenticationCard"
 import JetAuthenticationCardLogo from "@/Jetstream/AuthenticationCardLogo"
 import JetButton from "@/Jetstream/Button"
@@ -54,6 +65,7 @@ export default {
         JetCheckbox,
         JetLabel,
         JetValidationErrors,
+        AppLayout,
     },
 
     props: {

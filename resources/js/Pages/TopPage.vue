@@ -1,150 +1,11 @@
 <template>
     <v-app>
-        <div :id="'bg_' + currentMember.name"></div>
-        <app-layout :style="styles">
-            <template #header> {{ currentMember.display }} PlayerList </template>
-            <template v-if="cate == 0">
-                <h1 class="text-center" style="font-size: 4rem; font-family: 'Zen Maru Gothic', sans-serif; color: #eee">
-                    {{ currentMember.display }}
-                </h1>
-                <v-img
-                    elevation="20"
-                    class="mx-auto my-5 px-5"
-                    max-height="500"
-                    width="100%"
-                    contain
-                    :src="'/img/' + currentMember.name + '.jpg'"
-                ></v-img>
-                <v-row class="my-10" justify="start" align="start" no-gutters>
-                    <v-col cols="12" class="px-5 py-10">
-                        <p class="p-2 description">
-                            <span>いせぶい{{ currentMember.display }}非公式DBは、</span><span>「異世界転生してVになりました。」</span
-                            ><span>略して「いせぶい」に所属する</span><span>{{ currentMember.display }}の</span
-                            ><span>可愛い声や面白いエピソード、</span><span>ファンが作った切り抜きを</span
-                            ><span>共有するデータベース（DB)です。</span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> 本DBは</span><span>YouTube{{ currentMember.display }}チャンネル、</span
-                            ><span>またはYouTubeにアップロードされた切り抜きの</span><span>動画リンクを直接共有します。 </span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> このサイトで再生されると</span><span>ダイレクトに本人のチャンネルにて</span><span>再生回数が計上されます。 </span>
-                        </p>
-                        <p class="p-2 description" style="color: #e73275 !important; font-weight: bold">
-                            <span> 動画リンクの登録は</span><span>どなたでも可能です。</span><span>是非、「ここの声マジ最高！」とか</span
-                            ><span>「このエピソード好き」や</span><span>作成した切り抜きを</span><span>登録してください。 </span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> 本DBが</span><span>みなさんの推し活や</span><span>彼女の活動の支えに</span><span>なりえることを願います。 </span>
-                        </p>
-                        <p class="p-2 description"><span> Twitter共有ボタンもあるので</span><span>是非ご利用ください。</span></p>
-                        <p class="p-2 description">
-                            <span>製作者の時間的都合、</span><span>というより根気的問題で</span><span>開発は超スローペースですが</span
-                            ><span>今後機能拡充や</span><span>デザインの改善等</span><span>行います。</span>
-                        </p>
-                        <p class="p-2 description">
-                            <span>不具合や</span><span>こんな機能あると嬉しい等</span><span>ございましたら、</span><span>管理人に</span
-                            ><span>Twitterにて</span><span>メンションをいただけると幸いです。</span>
-                        </p>
-                    </v-col>
-                </v-row>
-                <v-row no-gutters justify="center" align="center">
-                    <v-col cols="auto" class="mx-1 py-5">
-                        <v-row no-gutters>
-                            <v-col cols="12" class="text-center">
-                                <p class="description">
-                                    <span>{{ currentMember.display }}Twitter</span>
-                                </p>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-card v-if="width >= 900" width="20vw" class="mx-auto my-5">
-                                    <timeline
-                                        :id="currentMember.TWaccount"
-                                        :options="{ height: '600', width: '20vw' }"
-                                        sourceType="profile"
-                                    ></timeline>
-                                </v-card>
-                                <v-card v-if="width < 900" class="mx-10 my-5">
-                                    <timeline
-                                        :id="currentMember.TWaccount"
-                                        :options="{ height: '600', width: '100%' }"
-                                        sourceType="profile"
-                                    ></timeline>
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col class="mb-5">
-                        <v-row no-gutters>
-                            <v-col cols="12" class="text-center description">
-                                <p class="description">
-                                    <span>{{ currentMember.display }}YouTubeチャンネル</span>
-                                </p>
-                                <p class="description"><span>新着動画</span></p>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-card class="p-2 mx-5">
-                                    <v-responsive :aspect-ratio="16 / 9">
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            :src="'https://www.youtube.com/embed/?list=' + currentMember.YTaccount"
-                                            frameborder="0"
-                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen
-                                        ></iframe>
-                                    </v-responsive>
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-            </template>
-
-            <v-card class="mb-80" elevation="0" outlined>
-                <!--tab-->
-                <v-tabs show-arrows fixed-tabs v-model="select">
-                    <inertia-link
-                        as="v-tab"
-                        :href="'/' + memberName + '/latest'"
-                        class="text-subtitle-2 fontCol"
-                        style="font-family: 'Raleway', sans-serif !important"
-                        >Latest</inertia-link
-                    >
-
-                    <template v-for="(category, index) in this.$page.props.setting.category">
-                        <inertia-link
-                            as="v-tab"
-                            :key="index"
-                            :href="'/' + memberName + '/' + category.id"
-                            class="text-subtitle-2 fontCol"
-                            style="font-family: 'Raleway', sans-serif !important"
-                            >{{ category.title }}</inertia-link
-                        >
-                    </template>
-                    <v-tab class="d-none">hidden</v-tab>
-                </v-tabs>
+        <app-layout>
+            <template #header> iseVDB - Top </template>
+            <v-card class="mx-5 mt-5 mb-80" elevation="0" outlined>
                 <!--table-cards-->
                 <v-container fluid>
-                    <v-row v-if="cate == 5">
-                        <v-col v-for="(item, index) in players" :key="item.id" cols="auto">
-                            <v-card :elevation="index + 1">
-                                <template v-if="likes.includes(item.id) == true">
-                                    <v-btn x-small icon color="yellow darken-1" @click="DisLike(item.id)">
-                                        <v-icon>fas fa-bookmark</v-icon>
-                                    </v-btn>
-                                </template>
-                                <template v-else>
-                                    <v-btn x-small icon @click="addLike(item.id)">
-                                        <v-icon>fas fa-bookmark</v-icon>
-                                    </v-btn>
-                                </template>
-                                <Tweet :id="item.twitter"></Tweet>
-                            </v-card>
-                        </v-col>
-                    </v-row>
                     <v-data-iterator
-                        v-else
                         :items="players"
                         :items-per-page.sync="itemsPerPage"
                         :page.sync="page"
@@ -194,9 +55,7 @@
                                     </v-btn-toggle>
                                 </v-col>
                             </v-row>
-                            <template v-if="cate == 0">
-                                <v-alert dense text type="success" class="mt-6 px-10"> 新着20件を表示しています。 </v-alert>
-                            </template>
+                            <v-alert dense text type="success" class="mt-6 px-10"> 新着20件を表示しています。 </v-alert>
                         </template>
                         <template v-slot:default="props">
                             <v-row dense>
@@ -245,7 +104,6 @@
                                                         style="
                                                             font-family: 'Raleway', 'Zen Maru Gothic', sans-serif !important;
                                                             color: #555 !important;
-                                                            font-size: 0.8rem !important;
                                                         "
                                                     >
                                                         {{ item.date }}
@@ -289,7 +147,6 @@
                                                         style="
                                                             font-family: 'Raleway', 'Zen Maru Gothic', sans-serif !important;
                                                             color: #555 !important;
-                                                            font-size: 0.8rem !important;
                                                         "
                                                     >
                                                         {{ item.date }}（DB追加日）
@@ -345,7 +202,6 @@
                         v-if="playerOpen"
                         width="50vw"
                         max-width="600px"
-                        class="pb-3"
                         style="position: fixed; right: 30px; bottom: 30px; margin: 0; z-index: 10"
                     >
                         <template slot="progress">
@@ -353,9 +209,6 @@
                         </template>
 
                         <v-row>
-                            <v-col cols="auto" class="p-0 mt-0 ml-1 mr-auto">
-                                <inertia-link text as="v-btn" :href="'/' + currentMember.name + '/player/' + playIndex">詳細ページへ </inertia-link>
-                            </v-col>
                             <v-col cols="auto" class="ml-auto mr-0">
                                 <v-btn v-if="playerOpen" color="red" text @click="closePlayer">close</v-btn>
                             </v-col>
@@ -373,7 +226,7 @@
                             ></iframe>
                         </v-responsive>
                         <v-row class="m-0 p-0">
-                            <v-col cols="8" class="mt-1 mx-auto">
+                            <v-col cols="8" class="my-3 mx-auto">
                                 <ShareNetwork
                                     v-if="playerOpen"
                                     network="twitter"
@@ -384,22 +237,6 @@
                                 >
                                     <v-btn v-show="playerOpen" color="#1DA1F2" style="color: #fff" block large
                                         ><v-icon>fas fa-share-square</v-icon>　Tweet</v-btn
-                                    >
-                                </ShareNetwork>
-                            </v-col>
-                        </v-row>
-                        <v-row class="m-0 p-0" v-if="playCate != 4">
-                            <v-col cols="8" class="mx-auto">
-                                <ShareNetwork
-                                    v-if="playerOpen"
-                                    network="twitter"
-                                    :url="TweetRow.url"
-                                    title=""
-                                    :hashtags="TweetRow.hash"
-                                    :class="'text-decoration-none'"
-                                >
-                                    <v-btn v-show="playerOpen" color="#1DA1F2" style="color: #fff" block
-                                        ><v-icon>fas fa-share-square</v-icon>　元動画をツイート</v-btn
                                     >
                                 </ShareNetwork>
                             </v-col>
@@ -413,7 +250,6 @@
                         v-if="playerOpen"
                         width="100vw"
                         max-width="600px"
-                        class="pb-3"
                         style="position: fixed; right: 0; bottom: 80px; margin: 0; z-index: 10"
                     >
                         <template slot="progress">
@@ -421,9 +257,6 @@
                         </template>
 
                         <v-row>
-                            <v-col cols="auto" class="p-0 mt-0 ml-1 mr-auto">
-                                <inertia-link text as="v-btn" :href="'/' + currentMember.name + '/player/' + playIndex">詳細ページへ </inertia-link>
-                            </v-col>
                             <v-col cols="auto" class="ml-auto mr-0">
                                 <v-btn v-if="playerOpen" color="red" text @click="closePlayer">close</v-btn>
                             </v-col>
@@ -441,7 +274,7 @@
                             ></iframe>
                         </v-responsive>
                         <v-row class="m-0 p-0">
-                            <v-col cols="8" class="mt-1 mx-auto">
+                            <v-col cols="8" class="my-3 mx-auto">
                                 <ShareNetwork
                                     v-if="playerOpen"
                                     network="twitter"
@@ -452,22 +285,6 @@
                                 >
                                     <v-btn v-show="playerOpen" color="#1DA1F2" style="color: #fff" block large
                                         ><v-icon>fas fa-share-square</v-icon>　Tweet</v-btn
-                                    >
-                                </ShareNetwork>
-                            </v-col>
-                        </v-row>
-                        <v-row class="m-0 p-0" v-if="playCate != 4">
-                            <v-col cols="8" class="mx-auto">
-                                <ShareNetwork
-                                    v-if="playerOpen"
-                                    network="twitter"
-                                    :url="TweetRow.url"
-                                    title=""
-                                    :hashtags="TweetRow.hash"
-                                    :class="'text-decoration-none'"
-                                >
-                                    <v-btn v-show="playerOpen" color="#1DA1F2" style="color: #fff" block
-                                        ><v-icon>fas fa-share-square</v-icon>　元動画をツイート</v-btn
                                     >
                                 </ShareNetwork>
                             </v-col>
@@ -494,12 +311,13 @@
         </app-layout>
     </v-app>
 </template>
+
 <script>
-import AppLayout from "@/Layouts/AppLayout"
-import { Tweet, Timeline } from "vue-tweet-embed"
+import AppLayout from "@/Layouts/TopLayout"
+import { Tweet } from "vue-tweet-embed"
 
 export default {
-    props: ["memberName", "cate", "players", "likesObj"],
+    props: ["players", "likesObj"],
     data() {
         return {
             likes: [],
@@ -507,7 +325,6 @@ export default {
             width: window.innerWidth,
             break: 900,
             Tweet: {},
-            TweetRow: {},
             itemsPerPageArray: [5, 10, 15, 20, 30],
             search: "",
             filter: {},
@@ -517,7 +334,6 @@ export default {
             pageLength: 1,
             sortBy: "id",
             keys: ["id", "title", "date"],
-            select: "",
             playerOpen: false,
             twitterOpen: false,
             playID: "",
@@ -525,28 +341,19 @@ export default {
             playEnd: "",
             playIndex: 0,
             showTwitter: "",
-            playCate: 0,
             memberArray: [],
             currentMember: [],
         }
     },
     created() {
-        this.select = this.cate
         this.pageLength = Math.ceil(Object.keys(this.players).length / this.itemsPerPage)
-        this.memberArray = this.$page.props.setting.member.filter((value) => {
-            if (value.name == this.memberName) {
-                return true
-            }
-        })
-        this.currentMember = this.memberArray[0]
-        if (this.$page.props.user) {
+        if (this.likesObj != null) {
             this.likes = this.likesObj.map((item) => item.player_id)
         }
     },
     components: {
         AppLayout,
         Tweet,
-        Timeline,
     },
     computed: {
         numberOfPages() {
@@ -554,13 +361,6 @@ export default {
         },
         filteredKeys() {
             return this.keys.filter((key) => key !== "Name")
-        },
-        styles() {
-            return {
-                "--BtnCol": this.currentMember.BtnCol,
-                "--MainCol": this.currentMember.MainCol,
-                "--NavCol": this.currentMember.NavCol,
-            }
         },
     },
     methods: {
@@ -661,22 +461,11 @@ export default {
     },
 }
 </script>
+
 <style lang="scss">
 @import "/css/bgset.css";
 .memberCol {
-    background: var(--MainCol) !important;
-    border-color: var(--BtnCol) !important;
-    color: var(--BtnCol) !important;
-}
-.footCol {
-    background: var(--NavCol) !important;
-}
-.v-list-item {
-    color: var(--BtnCol) !important;
-}
-.v-divider {
-    border-color: var(--BtnCol) !important;
-    opacity: 0.2;
+    background: #80deea !important;
 }
 .description {
     font-size: 1rem;

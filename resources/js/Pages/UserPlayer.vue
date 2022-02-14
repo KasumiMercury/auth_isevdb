@@ -1,150 +1,12 @@
 <template>
     <v-app>
-        <div :id="'bg_' + currentMember.name"></div>
-        <app-layout :style="styles">
-            <template #header> {{ currentMember.display }} PlayerList </template>
-            <template v-if="cate == 0">
-                <h1 class="text-center" style="font-size: 4rem; font-family: 'Zen Maru Gothic', sans-serif; color: #eee">
-                    {{ currentMember.display }}
-                </h1>
-                <v-img
-                    elevation="20"
-                    class="mx-auto my-5 px-5"
-                    max-height="500"
-                    width="100%"
-                    contain
-                    :src="'/img/' + currentMember.name + '.jpg'"
-                ></v-img>
-                <v-row class="my-10" justify="start" align="start" no-gutters>
-                    <v-col cols="12" class="px-5 py-10">
-                        <p class="p-2 description">
-                            <span>いせぶい{{ currentMember.display }}非公式DBは、</span><span>「異世界転生してVになりました。」</span
-                            ><span>略して「いせぶい」に所属する</span><span>{{ currentMember.display }}の</span
-                            ><span>可愛い声や面白いエピソード、</span><span>ファンが作った切り抜きを</span
-                            ><span>共有するデータベース（DB)です。</span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> 本DBは</span><span>YouTube{{ currentMember.display }}チャンネル、</span
-                            ><span>またはYouTubeにアップロードされた切り抜きの</span><span>動画リンクを直接共有します。 </span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> このサイトで再生されると</span><span>ダイレクトに本人のチャンネルにて</span><span>再生回数が計上されます。 </span>
-                        </p>
-                        <p class="p-2 description" style="color: #e73275 !important; font-weight: bold">
-                            <span> 動画リンクの登録は</span><span>どなたでも可能です。</span><span>是非、「ここの声マジ最高！」とか</span
-                            ><span>「このエピソード好き」や</span><span>作成した切り抜きを</span><span>登録してください。 </span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> 本DBが</span><span>みなさんの推し活や</span><span>彼女の活動の支えに</span><span>なりえることを願います。 </span>
-                        </p>
-                        <p class="p-2 description"><span> Twitter共有ボタンもあるので</span><span>是非ご利用ください。</span></p>
-                        <p class="p-2 description">
-                            <span>製作者の時間的都合、</span><span>というより根気的問題で</span><span>開発は超スローペースですが</span
-                            ><span>今後機能拡充や</span><span>デザインの改善等</span><span>行います。</span>
-                        </p>
-                        <p class="p-2 description">
-                            <span>不具合や</span><span>こんな機能あると嬉しい等</span><span>ございましたら、</span><span>管理人に</span
-                            ><span>Twitterにて</span><span>メンションをいただけると幸いです。</span>
-                        </p>
-                    </v-col>
-                </v-row>
-                <v-row no-gutters justify="center" align="center">
-                    <v-col cols="auto" class="mx-1 py-5">
-                        <v-row no-gutters>
-                            <v-col cols="12" class="text-center">
-                                <p class="description">
-                                    <span>{{ currentMember.display }}Twitter</span>
-                                </p>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-card v-if="width >= 900" width="20vw" class="mx-auto my-5">
-                                    <timeline
-                                        :id="currentMember.TWaccount"
-                                        :options="{ height: '600', width: '20vw' }"
-                                        sourceType="profile"
-                                    ></timeline>
-                                </v-card>
-                                <v-card v-if="width < 900" class="mx-10 my-5">
-                                    <timeline
-                                        :id="currentMember.TWaccount"
-                                        :options="{ height: '600', width: '100%' }"
-                                        sourceType="profile"
-                                    ></timeline>
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col class="mb-5">
-                        <v-row no-gutters>
-                            <v-col cols="12" class="text-center description">
-                                <p class="description">
-                                    <span>{{ currentMember.display }}YouTubeチャンネル</span>
-                                </p>
-                                <p class="description"><span>新着動画</span></p>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-card class="p-2 mx-5">
-                                    <v-responsive :aspect-ratio="16 / 9">
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            :src="'https://www.youtube.com/embed/?list=' + currentMember.YTaccount"
-                                            frameborder="0"
-                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen
-                                        ></iframe>
-                                    </v-responsive>
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-            </template>
+        <app-layout>
+            <template #header> UserData ― {{ subTitle }} </template>
 
             <v-card class="mb-80" elevation="0" outlined>
-                <!--tab-->
-                <v-tabs show-arrows fixed-tabs v-model="select">
-                    <inertia-link
-                        as="v-tab"
-                        :href="'/' + memberName + '/latest'"
-                        class="text-subtitle-2 fontCol"
-                        style="font-family: 'Raleway', sans-serif !important"
-                        >Latest</inertia-link
-                    >
-
-                    <template v-for="(category, index) in this.$page.props.setting.category">
-                        <inertia-link
-                            as="v-tab"
-                            :key="index"
-                            :href="'/' + memberName + '/' + category.id"
-                            class="text-subtitle-2 fontCol"
-                            style="font-family: 'Raleway', sans-serif !important"
-                            >{{ category.title }}</inertia-link
-                        >
-                    </template>
-                    <v-tab class="d-none">hidden</v-tab>
-                </v-tabs>
                 <!--table-cards-->
                 <v-container fluid>
-                    <v-row v-if="cate == 5">
-                        <v-col v-for="(item, index) in players" :key="item.id" cols="auto">
-                            <v-card :elevation="index + 1">
-                                <template v-if="likes.includes(item.id) == true">
-                                    <v-btn x-small icon color="yellow darken-1" @click="DisLike(item.id)">
-                                        <v-icon>fas fa-bookmark</v-icon>
-                                    </v-btn>
-                                </template>
-                                <template v-else>
-                                    <v-btn x-small icon @click="addLike(item.id)">
-                                        <v-icon>fas fa-bookmark</v-icon>
-                                    </v-btn>
-                                </template>
-                                <Tweet :id="item.twitter"></Tweet>
-                            </v-card>
-                        </v-col>
-                    </v-row>
                     <v-data-iterator
-                        v-else
                         :items="players"
                         :items-per-page.sync="itemsPerPage"
                         :page.sync="page"
@@ -155,7 +17,7 @@
                     >
                         <template v-slot:header>
                             <v-row no-gutters justify="center">
-                                <v-col class="px-1" cols="8">
+                                <v-col class="px-1 my-3" cols="8">
                                     <v-text-field v-model="search" dense clearable hide-details prepend-icon="mdi-magnify" single-line></v-text-field>
                                 </v-col>
                             </v-row>
@@ -194,68 +56,38 @@
                                     </v-btn-toggle>
                                 </v-col>
                             </v-row>
-                            <template v-if="cate == 0">
-                                <v-alert dense text type="success" class="mt-6 px-10"> 新着20件を表示しています。 </v-alert>
-                            </template>
                         </template>
                         <template v-slot:default="props">
                             <v-row dense>
                                 <v-col v-for="(item, index) in props.items" :key="item.id" cols="12">
                                     <v-card :elevation="index + 1">
-                                        <v-row class="mt-1 mb-0 px-3" justify="start" align="center">
-                                            <v-col cols="auto" class="m-0 p-0">
-                                                <template v-if="$page.props.user">
-                                                    <template v-if="likes.includes(item.id) == true">
-                                                        <v-btn class="m-0 p-0" x-small icon color="yellow darken-1" @click="DisLike(item.id)">
-                                                            <v-icon>fas fa-bookmark</v-icon>
-                                                        </v-btn>
-                                                    </template>
-                                                    <template v-else>
-                                                        <v-btn class="m-0 p-0" x-small icon @click="addLike(item.id)">
-                                                            <v-icon>fas fa-bookmark</v-icon>
-                                                        </v-btn>
-                                                    </template>
+                                        <v-row class="mt-1 mb-0" justify="start" align="center">
+                                            <v-col cols="auto" class="ml-5 mr-0">
+                                                <template v-if="likes.includes(item.id) == true">
+                                                    <v-btn x-small icon color="yellow darken-1" @click="DisLike(item.id)">
+                                                        <v-icon>fas fa-bookmark</v-icon>
+                                                    </v-btn>
                                                 </template>
                                                 <template v-else>
-                                                    <v-tooltip top color="error">
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-list-item link v-bind="attrs" v-on="on">
-                                                                <v-btn x-small icon>
-                                                                    <v-icon>fas fa-bookmark</v-icon>
-                                                                </v-btn>
-                                                            </v-list-item>
-                                                        </template>
-                                                        <span>ログインユーザーのみ</span>
-                                                    </v-tooltip>
+                                                    <v-btn x-small icon @click="addLike(item.id)">
+                                                        <v-icon>fas fa-bookmark</v-icon>
+                                                    </v-btn>
                                                 </template>
                                             </v-col>
                                             <v-col>
-                                                <h2
-                                                    class="text-subtitle-2 text-md-h6"
-                                                    style="font-family: 'Raleway', 'Zen Maru Gothic', sans-serif !important; color: #555 !important"
-                                                >
-                                                    {{ item.title }}
-                                                </h2>
+                                                <h2 class="text-h6">{{ item.title }}</h2>
                                             </v-col>
                                         </v-row>
                                         <template v-if="item.twitter == null">
                                             <v-row>
                                                 <v-col cols="auto" class="ml-10 mr-auto">
-                                                    <p
-                                                        style="
-                                                            font-family: 'Raleway', 'Zen Maru Gothic', sans-serif !important;
-                                                            color: #555 !important;
-                                                            font-size: 0.8rem !important;
-                                                        "
-                                                    >
-                                                        {{ item.date }}
-                                                    </p>
+                                                    <p>{{ item.date }}</p>
                                                 </v-col>
                                                 <template v-if="item.status == 0">
                                                     <v-col cols="auto" class="ml-auto mr-10 mb-5">
                                                         <v-btn
                                                             color="#DA1725"
-                                                            style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
+                                                            :style="'color: #EEE'"
                                                             @click="openPlayer(item.VideoID, item.start, item.end, item.id, item.cate_id)"
                                                         >
                                                             <v-icon>fab fa-youtube</v-icon>　Play
@@ -266,7 +98,7 @@
                                                     <v-col cols="auto" class="ml-auto mr-10 mb-5">
                                                         <v-btn
                                                             color="#2BA640"
-                                                            style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
+                                                            :style="'color: #EEE'"
                                                             @click="openPlayer(item.VideoID, item.start, item.end, item.id, item.cate_id)"
                                                         >
                                                             <v-icon>fab fa-youtube</v-icon>　Member Only
@@ -275,9 +107,7 @@
                                                 </template>
                                                 <template v-if="item.status == 2">
                                                     <v-col cols="auto" class="ml-auto mr-10 mb-5">
-                                                        <v-btn disabled style="font-family: 'Raleway', sans-serif !important; color: #000 !important">
-                                                            <v-icon>fab fa-youtube</v-icon>　Private
-                                                        </v-btn>
+                                                        <v-btn disabled :style="'color: #000'"> <v-icon>fab fa-youtube</v-icon>　Private </v-btn>
                                                     </v-col>
                                                 </template>
                                             </v-row>
@@ -285,32 +115,16 @@
                                         <template v-else>
                                             <v-row>
                                                 <v-col cols="auto" class="ml-10 mr-auto">
-                                                    <p
-                                                        style="
-                                                            font-family: 'Raleway', 'Zen Maru Gothic', sans-serif !important;
-                                                            color: #555 !important;
-                                                            font-size: 0.8rem !important;
-                                                        "
-                                                    >
-                                                        {{ item.date }}（DB追加日）
-                                                    </p>
+                                                    <p>{{ item.date }}（DB追加日）</p>
                                                 </v-col>
                                                 <v-col cols="auto" class="ml-auto mr-10 mb-5">
-                                                    <template v-if="item.cate_id == 5">
-                                                        <v-btn
-                                                            color="#1DA1F2"
-                                                            style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
-                                                            @click="openTwitter(item.twitter)"
-                                                        >
+                                                    <template v-if="item.cate == 5">
+                                                        <v-btn color="#1DA1F2" :style="'color: #EEE'" @click="openTwitter(item.twitter)">
                                                             <v-icon>fab fa-twitter-square</v-icon>　Image
                                                         </v-btn>
                                                     </template>
                                                     <template v-else>
-                                                        <v-btn
-                                                            color="#1DA1F2"
-                                                            style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
-                                                            @click="openTwitter(item.twitter)"
-                                                        >
+                                                        <v-btn color="#1DA1F2" :style="'color: #EEE'" @click="openTwitter(item.twitter)">
                                                             <v-icon>fab fa-twitter-square</v-icon>　Play
                                                         </v-btn>
                                                     </template>
@@ -494,12 +308,13 @@
         </app-layout>
     </v-app>
 </template>
+
 <script>
-import AppLayout from "@/Layouts/AppLayout"
-import { Tweet, Timeline } from "vue-tweet-embed"
+import AppLayout from "@/Layouts/TopLayout"
+import { Tweet } from "vue-tweet-embed"
 
 export default {
-    props: ["memberName", "cate", "players", "likesObj"],
+    props: ["players", "likesObj", "subTitle"],
     data() {
         return {
             likes: [],
@@ -507,7 +322,6 @@ export default {
             width: window.innerWidth,
             break: 900,
             Tweet: {},
-            TweetRow: {},
             itemsPerPageArray: [5, 10, 15, 20, 30],
             search: "",
             filter: {},
@@ -517,7 +331,6 @@ export default {
             pageLength: 1,
             sortBy: "id",
             keys: ["id", "title", "date"],
-            select: "",
             playerOpen: false,
             twitterOpen: false,
             playID: "",
@@ -525,28 +338,17 @@ export default {
             playEnd: "",
             playIndex: 0,
             showTwitter: "",
-            playCate: 0,
             memberArray: [],
             currentMember: [],
         }
     },
     created() {
-        this.select = this.cate
         this.pageLength = Math.ceil(Object.keys(this.players).length / this.itemsPerPage)
-        this.memberArray = this.$page.props.setting.member.filter((value) => {
-            if (value.name == this.memberName) {
-                return true
-            }
-        })
-        this.currentMember = this.memberArray[0]
-        if (this.$page.props.user) {
-            this.likes = this.likesObj.map((item) => item.player_id)
-        }
+        this.likes = this.likesObj.map((item) => item.player_id)
     },
     components: {
         AppLayout,
         Tweet,
-        Timeline,
     },
     computed: {
         numberOfPages() {
@@ -554,13 +356,6 @@ export default {
         },
         filteredKeys() {
             return this.keys.filter((key) => key !== "Name")
-        },
-        styles() {
-            return {
-                "--BtnCol": this.currentMember.BtnCol,
-                "--MainCol": this.currentMember.MainCol,
-                "--NavCol": this.currentMember.NavCol,
-            }
         },
     },
     methods: {
@@ -661,41 +456,3 @@ export default {
     },
 }
 </script>
-<style lang="scss">
-@import "/css/bgset.css";
-.memberCol {
-    background: var(--MainCol) !important;
-    border-color: var(--BtnCol) !important;
-    color: var(--BtnCol) !important;
-}
-.footCol {
-    background: var(--NavCol) !important;
-}
-.v-list-item {
-    color: var(--BtnCol) !important;
-}
-.v-divider {
-    border-color: var(--BtnCol) !important;
-    opacity: 0.2;
-}
-.description {
-    font-size: 1rem;
-    font-family: "Zen Maru Gothic", sans-serif;
-    color: #111;
-    line-height: 1.4em;
-}
-.description > span {
-    position: relative;
-    display: inline-block;
-}
-.description > span::before {
-    content: "";
-    position: absolute;
-    bottom: -5px;
-    left: -5px;
-    top: -5px;
-    right: -5px;
-    background-color: #eee;
-    z-index: -1;
-}
-</style>

@@ -21,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::POST('/add/twitter', 'App\Http\Controllers\PlayerController@addTwitter')->name('add.twitter');
 Route::POST('/add/clip', 'App\Http\Controllers\PlayerController@addClip')->name('add.clip');
 Route::POST('/add/youtube', 'App\Http\Controllers\PlayerController@addYoutube')->name('add.youtube');
+Route::POST('/add/{id}/like', 'App\Http\Controllers\PlayerController@addLike')->name('add.like');
+Route::POST('/delete/{id}/dislike', 'App\Http\Controllers\PlayerController@DisLike')->name('delete.like');
