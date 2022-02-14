@@ -182,7 +182,7 @@
             </v-footer>
             <!-- SP footer -->
             <template v-if="width <= this.break">
-                <v-card style="margin: 58px auto; z-index: 2" class="hidden-md-and-up">
+                <v-card style="z-index: 2" class="hidden-md-and-up">
                     <v-col class="text-center" cols="12">
                         <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.3.4.0</p>
                         <p style="margin-bottom: 0.1rem; font-size: 0.5rem">

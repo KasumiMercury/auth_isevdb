@@ -1,7 +1,7 @@
 <template>
     <app-layout>
         <template #header> Login </template>
-        <v-card class="p-10">
+        <v-card class="p-10 m-10">
             <jet-validation-errors class="mb-4" />
 
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -38,7 +38,7 @@
                 </div>
             </form>
         </v-card>
-        <v-card class="my-3 px-10">
+        <v-card class="my-3 mx-10 px-10">
             <v-btn class="mx-auto my-5 py-10" color="#ea4335" style="color: #eee" block :href="route('sns_login.redirect', 'google')"
                 ><v-icon>fab fa-google</v-icon>　Googleでログイン</v-btn
             >

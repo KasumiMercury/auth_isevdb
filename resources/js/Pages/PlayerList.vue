@@ -101,7 +101,7 @@
                 </v-row>
             </template>
 
-            <v-card class="mb-80" elevation="0" outlined>
+            <v-card class="m-5" style="margin-bottom: 500px" elevation="0" outlined>
                 <!--tab-->
                 <v-tabs show-arrows fixed-tabs v-model="select">
                     <inertia-link
@@ -248,7 +248,7 @@
                                                             font-size: 0.8rem !important;
                                                         "
                                                     >
-                                                        {{ item.date }}
+                                                        {{ item.date | moment }}
                                                     </p>
                                                 </v-col>
                                                 <template v-if="item.status == 0">
@@ -256,7 +256,17 @@
                                                         <v-btn
                                                             color="#DA1725"
                                                             style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
-                                                            @click="openPlayer(item.VideoID, item.start, item.end, item.id, item.cate_id)"
+                                                            @click="
+                                                                openPlayer(
+                                                                    index,
+                                                                    item.title,
+                                                                    item.VideoID,
+                                                                    item.start,
+                                                                    item.end,
+                                                                    item.id,
+                                                                    item.cate_id
+                                                                )
+                                                            "
                                                         >
                                                             <v-icon>fab fa-youtube</v-icon>　Play
                                                         </v-btn>
@@ -267,7 +277,17 @@
                                                         <v-btn
                                                             color="#2BA640"
                                                             style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
-                                                            @click="openPlayer(item.VideoID, item.start, item.end, item.id, item.cate_id)"
+                                                            @click="
+                                                                openPlayer(
+                                                                    index,
+                                                                    item.title,
+                                                                    item.VideoID,
+                                                                    item.start,
+                                                                    item.end,
+                                                                    item.id,
+                                                                    item.cate_id
+                                                                )
+                                                            "
                                                         >
                                                             <v-icon>fab fa-youtube</v-icon>　Member Only
                                                         </v-btn>
@@ -292,7 +312,7 @@
                                                             font-size: 0.8rem !important;
                                                         "
                                                     >
-                                                        {{ item.date }}（DB追加日）
+                                                        {{ item.date | moment }}（DB追加日）
                                                     </p>
                                                 </v-col>
                                                 <v-col cols="auto" class="ml-auto mr-10 mb-5">
@@ -353,25 +373,33 @@
                         </template>
 
                         <v-row>
-                            <v-col cols="auto" class="p-0 mt-0 ml-1 mr-auto">
-                                <inertia-link text as="v-btn" :href="'/' + currentMember.name + '/player/' + playIndex">詳細ページへ </inertia-link>
+                            <v-col cols="auto" class="ml-1 mr-auto">
+                                <inertia-link text as="v-btn" :href="'/' + currentMember.name + '/player/' + playerId">詳細ページへ </inertia-link>
                             </v-col>
                             <v-col cols="auto" class="ml-auto mr-0">
                                 <v-btn v-if="playerOpen" color="red" text @click="closePlayer">close</v-btn>
                             </v-col>
                         </v-row>
-                        <v-responsive :aspect-ratio="16 / 9" class="m-1">
-                            <iframe
+                        <v-divider class="py-1"></v-divider>
+                        <p class="text-center px-5">“{{ playTitle }}”</p>
+                        <v-responsive v-if="playerOpen" :aspect-ratio="16 / 9" class="m-1">
+                            <youtube
                                 v-if="playerOpen"
-                                width="100%"
-                                height="100%"
-                                :src="'https://www.youtube.com/embed/' + playID + '?start=' + playStart + '&end=' + playEnd + '&rel=0&loop=1'"
-                                title="YouTube video player"
-                                frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen
-                            ></iframe>
+                                :fitParent="true"
+                                class="mx-auto"
+                                :video-id="playID"
+                                :playerVars="playerVars"
+                                ref="youtube"
+                                @playing="playing"
+                            ></youtube>
                         </v-responsive>
+                        <v-row class="m-0 p-0" justify="center" v-if="playEnd == 0">
+                            <v-col cols="auto" class="mt-1 mx-auto">
+                                <v-btn v-show="playerOpen" color="#DA1725" style="color: #fff" @click="RandomNext()"
+                                    ><v-icon>fab fa-youtube</v-icon>　次の動画へ（ランダム）</v-btn
+                                >
+                            </v-col>
+                        </v-row>
                         <v-row class="m-0 p-0">
                             <v-col cols="8" class="mt-1 mx-auto">
                                 <ShareNetwork
@@ -422,24 +450,31 @@
 
                         <v-row>
                             <v-col cols="auto" class="p-0 mt-0 ml-1 mr-auto">
-                                <inertia-link text as="v-btn" :href="'/' + currentMember.name + '/player/' + playIndex">詳細ページへ </inertia-link>
+                                <inertia-link text as="v-btn" :href="'/' + currentMember.name + '/player/' + playerId">詳細ページへ </inertia-link>
                             </v-col>
                             <v-col cols="auto" class="ml-auto mr-0">
                                 <v-btn v-if="playerOpen" color="red" text @click="closePlayer">close</v-btn>
                             </v-col>
                         </v-row>
-                        <v-responsive :aspect-ratio="16 / 9" class="m-1">
-                            <iframe
+                        <v-divider class="py-1"></v-divider>
+                        <p class="text-center px-5">“{{ playTitle }}”</p>
+                        <v-responsive v-if="playerOpen" :aspect-ratio="16 / 9" class="m-1">
+                            <youtube
                                 v-if="playerOpen"
-                                width="100%"
-                                height="100%"
-                                :src="'https://www.youtube.com/embed/' + playID + '?start=' + playStart + '&end=' + playEnd + '&rel=0&loop=1'"
-                                title="YouTube video player"
-                                frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen
-                            ></iframe>
+                                :fitParent="true"
+                                class="mx-auto"
+                                :video-id="playID"
+                                :playerVars="playerVars"
+                                ref="youtube"
+                            ></youtube>
                         </v-responsive>
+                        <v-row class="m-0 p-0" justify="center">
+                            <v-col cols="auto" class="mt-1 mx-auto">
+                                <v-btn v-show="playerOpen" color="#DA1725" style="color: #fff" @click="RandomNext()"
+                                    ><v-icon>fab fa-youtube</v-icon>　次の動画へ（ランダム）</v-btn
+                                >
+                            </v-col>
+                        </v-row>
                         <v-row class="m-0 p-0">
                             <v-col cols="8" class="mt-1 mx-auto">
                                 <ShareNetwork
@@ -497,11 +532,23 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout"
 import { Tweet, Timeline } from "vue-tweet-embed"
+import moment from "moment"
 
 export default {
+    filters: {
+        moment: function (date) {
+            return moment(date).format("YYYY/MM/DD")
+        },
+    },
     props: ["memberName", "cate", "players", "likesObj"],
     data() {
         return {
+            playerVars: {
+                start: 0,
+                autoplay: 1,
+                controls: 1,
+                iv_load_policy: 3,
+            },
             likes: [],
             loading: false,
             width: window.innerWidth,
@@ -523,11 +570,14 @@ export default {
             playID: "",
             playStart: "",
             playEnd: "",
+            playerId: 0,
             playIndex: 0,
+            playTitle: "",
             showTwitter: "",
             playCate: 0,
             memberArray: [],
             currentMember: [],
+            timer: undefined,
         }
     },
     created() {
@@ -562,13 +612,17 @@ export default {
                 "--NavCol": this.currentMember.NavCol,
             }
         },
+        player() {
+            return this.$refs.youtube.player
+        },
     },
     methods: {
         updateItemsPerPage(number) {
             this.itemsPerPage = number
             this.pageLength = Math.floor(Object.keys(this.players).length / number)
         },
-        openPlayer(VideoID, start, end, id, playerCate) {
+        openPlayer(index, title, VideoID, start, end, id, playerCate) {
+            clearTimeout(this.timer)
             this.loading = true
             setTimeout(() => (this.loading = false), 2000)
 
@@ -577,23 +631,26 @@ export default {
             this.playID = VideoID
             this.playStart = start
             this.playEnd = end
-            this.playIndex = id
+            this.playerId = id
+            this.playIndex = index
+            this.playTitle = title
             this.playCate = playerCate
+            this.playerVars.start = start
 
             if (playerCate == 4) {
-                this.Tweet["url"] = "https://youtu.be/" + this.playID
-                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB 切り抜き No." + this.playIndex
+                this.Tweet["url"] = "https://www.youtube.com/watch?v=" + this.playID
+                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB 切り抜き No." + this.playerId
                 this.Tweet["hash"] = this.currentMember.display + "非公式DB," + this.currentMember.display
             } else {
-                this.Tweet["url"] = "https://isevdb.sakura.ne.jp/" + this.currentMember.name + "/player/" + this.playIndex
-                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.playIndex
+                this.Tweet["url"] = "https://isevdb.sakura.ne.jp/" + this.currentMember.name + "/player/" + this.playerId
+                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.playerId
                 this.Tweet["hash"] = this.currentMember.display + "非公式DB," + this.currentMember.display
 
                 this.TweetRow["url"] = "https://www.youtube.com/watch?v=" + this.playID
                 this.TweetRow["hash"] = this.currentMember.display
             }
 
-            this.playerOpen = true
+            this.$nextTick(() => (this.playerOpen = true))
         },
         openTwitter(twitterId) {
             this.loading = true
@@ -604,6 +661,7 @@ export default {
             this.twitterOpen = true
         },
         closePlayer() {
+            clearTimeout(this.timer)
             this.playerOpen = false
         },
         closeTwitter() {
@@ -652,12 +710,72 @@ export default {
                     console.log(error)
                 })
         },
+        playing() {
+            if (this.playEnd > 0) {
+                let self = this
+                let playLength = Number(this.playEnd) - Number(this.playStart)
+                let nowId = Number(this.playIndex)
+                let nextId = 0
+                let nextPlayer = function () {
+                    do {
+                        nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
+                    } while (nextId == nowId || self.players[nextId].twitter != null)
+                    self.openPlayer(
+                        nextId,
+                        self.players[nextId].title,
+                        self.players[nextId].VideoID,
+                        self.players[nextId].start,
+                        self.players[nextId].end,
+                        self.players[nextId].id,
+                        self.players[nextId].cate_id
+                    )
+                }
+                this.timer = setTimeout(nextPlayer, Number(playLength * 1000))
+            }
+        },
+        ended() {
+            let self = this
+            let nowId = Number(this.playIndex)
+            let nextId = 0
+            do {
+                nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
+                console.log(nextId)
+            } while (nextId == nowId || self.players[nextId].twitter != null)
+            self.openPlayer(
+                nextId,
+                self.players[nextId].title,
+                self.players[nextId].VideoID,
+                self.players[nextId].start,
+                self.players[nextId].end,
+                self.players[nextId].id,
+                self.players[nextId].cate_id
+            )
+        },
+        RandomNext() {
+            let self = this
+            let nowId = Number(this.playIndex)
+            let nextId = 0
+            do {
+                nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
+                console.log(nextId)
+            } while (nextId == nowId || self.players[nextId].twitter != null)
+            self.openPlayer(
+                nextId,
+                self.players[nextId].title,
+                self.players[nextId].VideoID,
+                self.players[nextId].start,
+                self.players[nextId].end,
+                self.players[nextId].id,
+                self.players[nextId].cate_id
+            )
+        },
     },
     mounted() {
         window.addEventListener("resize", this.handleResize)
     },
     beforeDestroy: function () {
         window.removeEventListener("resize", this.handleResize)
+        clearTimeout(this.timer)
     },
 }
 </script>

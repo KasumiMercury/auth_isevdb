@@ -1,7 +1,21 @@
 <template>
     <app-layout>
         <template #header> Register </template>
-        <v-card class="p-10">
+        <v-card class="p-5 m-5">
+            <p style="font-size: 1rem" class="m-1 text-center">本サイトが取得する情報について</p>
+            <p style="font-size: 0.5rem"><span>本サイトはハンドルネームとパスワードにて</span><span>ユーザー識別を行います。</span></p>
+            <p style="font-size: 0.5rem">
+                <span>個人情報は扱いませんのでパスワードは簡易なもので結構ですが、</span><span>識別のため8文字以上で設定してください。</span
+                ><span>なお、同一ハンドルネームでの登録はできません。</span><span>また、ハンドルネームは管理人が見ることができます。</span>
+            </p>
+            <p style="font-size: 0.5rem"><span>パスワードは登録時に暗号化されるため</span><span>管理人は実質見ることはできません。</span></p>
+            <p style="font-size: 0.5rem">
+                <span>Googleログインでは、Googleユーザー名のみを取得しています。</span><span>メールアドレスは取得していません。</span>
+            </p>
+            <p style="font-size: 0.5rem">▼実際の登録データ</p>
+            <v-img src="/img/DBsnap.png" contain></v-img>
+        </v-card>
+        <v-card class="p-10 m-10">
             <jet-validation-errors class="mb-4" />
 
             <form @submit.prevent="submit">
@@ -36,7 +50,7 @@
                 </div>
             </form>
         </v-card>
-        <v-card class="my-3 px-10">
+        <v-card class="my-3 px-10 mx-10">
             <v-btn class="mx-auto my-5 py-10" color="#ea4335" style="color: #eee" block :href="route('sns_login.redirect', 'google')"
                 ><v-icon>fab fa-google</v-icon>　Googleでログイン</v-btn
             >
@@ -84,3 +98,9 @@ export default {
     },
 }
 </script>
+<style>
+span {
+    position: relative;
+    display: inline-block;
+}
+</style>
