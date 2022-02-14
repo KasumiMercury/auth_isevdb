@@ -391,6 +391,7 @@
                                 :playerVars="playerVars"
                                 ref="youtube"
                                 @playing="playing"
+                                @ended="ended"
                             ></youtube>
                         </v-responsive>
                         <v-row class="m-0 p-0" justify="center" v-if="playEnd == 0">
@@ -466,6 +467,8 @@
                                 :video-id="playID"
                                 :playerVars="playerVars"
                                 ref="youtube"
+                                @playing="playing"
+                                @ended="ended"
                             ></youtube>
                         </v-responsive>
                         <v-row class="m-0 p-0" justify="center">
@@ -716,10 +719,12 @@ export default {
                 let playLength = Number(this.playEnd) - Number(this.playStart)
                 let nowId = Number(this.playIndex)
                 let nextId = 0
+                let whileTime = 0
                 let nextPlayer = function () {
                     do {
                         nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
-                    } while (nextId == nowId || self.players[nextId].twitter != null)
+                        whileTime++
+                    } while (nextId == nowId && self.players[nextId].twitter != null && whileTime < 10)
                     self.openPlayer(
                         nextId,
                         self.players[nextId].title,
@@ -737,10 +742,12 @@ export default {
             let self = this
             let nowId = Number(this.playIndex)
             let nextId = 0
+            let whileTime = 0
+            console.log("videoEnded")
             do {
                 nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
-                console.log(nextId)
-            } while (nextId == nowId || self.players[nextId].twitter != null)
+                whileTime++
+            } while (nextId == nowId && self.players[nextId].twitter != null && whileTime < 10)
             self.openPlayer(
                 nextId,
                 self.players[nextId].title,
@@ -755,10 +762,11 @@ export default {
             let self = this
             let nowId = Number(this.playIndex)
             let nextId = 0
+            let whileTime = 0
             do {
                 nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
-                console.log(nextId)
-            } while (nextId == nowId || self.players[nextId].twitter != null)
+                whileTime++
+            } while (nextId == nowId && self.players[nextId].twitter != null && whileTime < 10)
             self.openPlayer(
                 nextId,
                 self.players[nextId].title,

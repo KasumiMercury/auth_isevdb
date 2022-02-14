@@ -131,7 +131,7 @@
                 app
                 clipped-left
             >
-                <v-toolbar-title class="text-h5" id="SiteTitle"> 非公式いせぶいDB </v-toolbar-title>
+                <v-toolbar-title class="text-h6" id="SiteTitle"> 非公式いせぶいDB </v-toolbar-title>
 
                 <v-spacer></v-spacer>
                 <v-menu offset-y v-if="$page.props.user">

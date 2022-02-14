@@ -14,6 +14,9 @@
             </p>
             <p style="font-size: 0.5rem">▼実際の登録データ</p>
             <v-img src="/img/DBsnap.png" contain></v-img>
+            <p style="font-size: 0.5rem; color: #e73275">
+                <span>以前からご利用いただいていた方は</span><span>同じ名前で登録していただけると、</span><span>引き継ぐことができます。</span>
+            </p>
         </v-card>
         <v-card class="p-10 m-10">
             <jet-validation-errors class="mb-4" />
