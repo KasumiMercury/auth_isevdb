@@ -108,7 +108,7 @@ class PlayerController extends Controller
     {
         $id = Auth::id();
         $players = Players::select('players.*')->join('bookmarks','players.id','=','bookmarks.player_id')->where('user_id','=',$id)->get();
-        $likesObj = BookMark::whereUser_id($id)->get(['player_id']);
+        $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
 
         return Inertia::render('UserPlayer', [
             'subTitle' => 'BookMarks',
@@ -122,7 +122,7 @@ class PlayerController extends Controller
         $id = Auth::id();
         $name = $user["name"];
         $players = Players::where('createrHN','=',$name)->get();
-        $likesObj = BookMark::whereUser_id($id)->get(['player_id']);
+        $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
 
         return Inertia::render('UserPlayer', [
             'subTitle' => 'YourData',
