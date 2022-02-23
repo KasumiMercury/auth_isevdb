@@ -292,7 +292,7 @@ export default {
     data() {
         return {
             sheet: false,
-            break: 900,
+            break: 960,
             width: window.innerWidth,
         }
     },

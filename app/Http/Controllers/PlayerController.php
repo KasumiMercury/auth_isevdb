@@ -18,10 +18,11 @@ class PlayerController extends Controller
 {
     public function TopPage()
     {
-        $players = Players::where('status','!=','3')
-                                    ->orderBy('id','DESC')
+        $players = Players::join('member','players.member_id','=','member.id')->where('status','!=','3')
+                                    ->orderBy('players.id','DESC')
                                     ->limit(20)
                                     ->get();
+
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -106,8 +107,9 @@ class PlayerController extends Controller
     }
     public function bookMark()
     {
+
         $id = Auth::id();
-        $players = Players::select('players.*')->join('bookmarks','players.id','=','bookmarks.player_id')->where('user_id','=',$id)->get();
+        $players = Players::join('bookmarks','players.id','=','bookmarks.player_id')->where('user_id','=',$id)->join('member','players.member_id','=','member.id')->where('status','!=','3')->get();
         $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
 
         return Inertia::render('UserPlayer', [
@@ -121,7 +123,7 @@ class PlayerController extends Controller
         $user = Auth::user();
         $id = Auth::id();
         $name = $user["name"];
-        $players = Players::where('createrHN','=',$name)->get();
+        $players = Players::where('createrHN','=',$name)->join('member','players.member_id','=','member.id')->where('status','!=','3')->get();
         $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
 
         return Inertia::render('UserPlayer', [

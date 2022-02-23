@@ -65,7 +65,7 @@ export default {
     data() {
         return {
             width: window.innerWidth,
-            break: 900,
+            break: 960,
             Tweet: {},
             playID: "",
             playStart: "",
@@ -75,9 +75,6 @@ export default {
             currentMember: [],
             show: false,
         }
-    },
-    metaInfo: {
-        title: "Vue Meta Test App",
     },
     created() {
         this.memberArray = this.$page.props.setting.member.filter((value) => {

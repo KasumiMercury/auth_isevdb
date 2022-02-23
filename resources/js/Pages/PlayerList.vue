@@ -7,6 +7,13 @@
                 <h1 class="text-center" style="font-size: 4rem; font-family: 'Zen Maru Gothic', sans-serif; color: #eee">
                     {{ currentMember.display }}
                 </h1>
+                <v-row justify="center">
+                    <v-col cols="auto">
+                        <v-btn ref="button" large :color="currentMember.MainCol" class="my-5" @click="$vuetify.goTo('#main-table')">
+                            スキップ▼
+                        </v-btn>
+                    </v-col>
+                </v-row>
                 <v-img
                     elevation="20"
                     class="mx-auto my-5 px-5"
@@ -57,14 +64,14 @@
                                 </p>
                             </v-col>
                             <v-col cols="12">
-                                <v-card v-if="width >= 900" width="20vw" class="mx-auto my-5">
+                                <v-card v-if="width >= 960" width="20vw" class="mx-auto my-5">
                                     <timeline
                                         :id="currentMember.TWaccount"
                                         :options="{ height: '600', width: '20vw' }"
                                         sourceType="profile"
                                     ></timeline>
                                 </v-card>
-                                <v-card v-if="width < 900" class="mx-10 my-5">
+                                <v-card v-if="width < 960" class="mx-20 my-5">
                                     <timeline
                                         :id="currentMember.TWaccount"
                                         :options="{ height: '600', width: '100%' }"
@@ -101,7 +108,7 @@
                 </v-row>
             </template>
 
-            <v-card class="m-5" style="margin-bottom: 500px" elevation="0" outlined>
+            <v-card class="m-5" id="main-table" style="margin-bottom: 500px" elevation="0" outlined>
                 <!--tab-->
                 <v-tabs show-arrows fixed-tabs v-model="select">
                     <inertia-link
@@ -264,7 +271,8 @@
                                                                     item.start,
                                                                     item.end,
                                                                     item.id,
-                                                                    item.cate_id
+                                                                    item.cate_id,
+                                                                    item.CreaterHN
                                                                 )
                                                             "
                                                         >
@@ -285,7 +293,8 @@
                                                                     item.start,
                                                                     item.end,
                                                                     item.id,
-                                                                    item.cate_id
+                                                                    item.cate_id,
+                                                                    item.CreaterHN
                                                                 )
                                                             "
                                                         >
@@ -358,7 +367,7 @@
             </v-card>
 
             <template #playerWindow>
-                <template v-if="width >= 900">
+                <template v-if="width >= 960">
                     <v-card
                         :loading="loading"
                         elevation="20"
@@ -435,7 +444,7 @@
                         </v-row>
                     </v-card>
                 </template>
-                <template v-if="width < 900">
+                <template v-if="width < 960">
                     <v-card
                         :loading="loading"
                         elevation="20"
@@ -576,6 +585,7 @@ export default {
             playerId: 0,
             playIndex: 0,
             playTitle: "",
+            playCreater: "",
             showTwitter: "",
             playCate: 0,
             memberArray: [],
@@ -624,7 +634,7 @@ export default {
             this.itemsPerPage = number
             this.pageLength = Math.floor(Object.keys(this.players).length / number)
         },
-        openPlayer(index, title, VideoID, start, end, id, playerCate) {
+        openPlayer(index, title, VideoID, start, end, id, playerCate, playerCreater) {
             clearTimeout(this.timer)
             this.loading = true
             setTimeout(() => (this.loading = false), 2000)
@@ -639,13 +649,22 @@ export default {
             this.playTitle = title
             this.playCate = playerCate
             this.playerVars.start = start
+            this.playCreater = playerCreater
 
             if (playerCate == 4) {
                 this.Tweet["url"] = "https://www.youtube.com/watch?v=" + this.playID
-                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB 切り抜き No." + this.playerId
+                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB 切り抜き No." + this.playerId + " by " + this.playCreater
                 this.Tweet["hash"] = this.currentMember.display + "非公式DB," + this.currentMember.display
             } else {
-                this.Tweet["url"] = "https://isevdb.sakura.ne.jp/" + this.currentMember.name + "/player/" + this.playerId
+                this.Tweet["url"] =
+                    "https://isevdb.sakura.ne.jp/" +
+                    this.currentMember.name +
+                    "/player/" +
+                    this.playerId +
+                    "　https://www.youtube.com/watch?v=" +
+                    this.playID +
+                    "?t=" +
+                    this.playStart
                 this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.playerId
                 this.Tweet["hash"] = this.currentMember.display + "非公式DB," + this.currentMember.display
 
@@ -732,7 +751,8 @@ export default {
                         self.players[nextId].start,
                         self.players[nextId].end,
                         self.players[nextId].id,
-                        self.players[nextId].cate_id
+                        self.players[nextId].cate_id,
+                        self.players[nextId].CreaterHN
                     )
                 }
                 this.timer = setTimeout(nextPlayer, Number(playLength * 1000))
@@ -755,7 +775,8 @@ export default {
                 self.players[nextId].start,
                 self.players[nextId].end,
                 self.players[nextId].id,
-                self.players[nextId].cate_id
+                self.players[nextId].cate_id,
+                self.players[nextId].CreaterHN
             )
         },
         RandomNext() {
@@ -774,7 +795,8 @@ export default {
                 self.players[nextId].start,
                 self.players[nextId].end,
                 self.players[nextId].id,
-                self.players[nextId].cate_id
+                self.players[nextId].cate_id,
+                self.players[nextId].CreaterHN
             )
         },
     },

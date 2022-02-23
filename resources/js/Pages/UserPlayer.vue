@@ -59,7 +59,7 @@
                         </template>
                         <template v-slot:default="props">
                             <v-row dense>
-                                <v-col v-for="(item, index) in props.items" :key="item.id" cols="12">
+                                <v-col v-for="(item, index) in props.items" :key="'item' + index" cols="12">
                                     <v-card :elevation="index + 1">
                                         <v-row class="mt-1 mb-0" justify="start" align="center">
                                             <v-col cols="auto" class="ml-5 mr-0">
@@ -101,7 +101,9 @@
                                                                     item.start,
                                                                     item.end,
                                                                     item.id,
-                                                                    item.cate_id
+                                                                    item.cate_id,
+                                                                    item.display,
+                                                                    item.CreaterHN
                                                                 )
                                                             "
                                                         >
@@ -122,7 +124,9 @@
                                                                     item.start,
                                                                     item.end,
                                                                     item.id,
-                                                                    item.cate_id
+                                                                    item.cate_id,
+                                                                    item.display,
+                                                                    item.CreaterHN
                                                                 )
                                                             "
                                                         >
@@ -177,7 +181,7 @@
             </v-card>
 
             <template #playerWindow>
-                <template v-if="width >= 900">
+                <template v-if="width >= 960">
                     <v-card
                         :loading="loading"
                         elevation="20"
@@ -254,7 +258,7 @@
                         </v-row>
                     </v-card>
                 </template>
-                <template v-if="width < 900">
+                <template v-if="width < 960">
                     <v-card
                         :loading="loading"
                         elevation="20"
@@ -423,7 +427,7 @@ export default {
             this.itemsPerPage = number
             this.pageLength = Math.floor(Object.keys(this.players).length / number)
         },
-        openPlayer(index, title, VideoID, start, end, id, playerCate) {
+        openPlayer(index, title, VideoID, start, end, id, playerCate, playerMember, playerCreater) {
             clearTimeout(this.timer)
             this.loading = true
             setTimeout(() => (this.loading = false), 2000)
@@ -436,20 +440,28 @@ export default {
             this.playerId = id
             this.playIndex = index
             this.playTitle = title
+            this.playMember = playerMember
+            this.playCreater = playerCreater
             this.playCate = playerCate
             this.playerVars.start = start
 
             if (playerCate == 4) {
                 this.Tweet["url"] = "https://www.youtube.com/watch?v=" + this.playID
-                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB 切り抜き No." + this.playerId
-                this.Tweet["hash"] = ""
+                this.Tweet["title"] = "非公式" + this.playMember + "DB 切り抜き No." + this.playerId + " by " + this.playCreater
+                this.Tweet["hash"] = this.playMember + "非公式DB," + this.playMember
             } else {
-                this.Tweet["url"] = "https://isevdb.sakura.ne.jp/top/player/" + this.playerId
-                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.playerId
-                this.Tweet["hash"] = ""
+                this.Tweet["url"] =
+                    "https://isevdb.sakura.ne.jp/top/player/" +
+                    this.playerId +
+                    "　https://www.youtube.com/watch?v=" +
+                    this.playID +
+                    "?t=" +
+                    this.playStart
+                this.Tweet["title"] = "非公式" + this.playMember + "DB No." + this.playerId
+                this.Tweet["hash"] = this.playMember + "非公式DB," + this.playMember
 
                 this.TweetRow["url"] = "https://www.youtube.com/watch?v=" + this.playID
-                this.TweetRow["hash"] = ""
+                this.TweetRow["hash"] = this.playMember
             }
 
             this.$nextTick(() => (this.playerOpen = true))
@@ -531,7 +543,9 @@ export default {
                         self.players[nextId].start,
                         self.players[nextId].end,
                         self.players[nextId].id,
-                        self.players[nextId].cate_id
+                        self.players[nextId].cate_id,
+                        self.players[nextId].display,
+                        self.players[nextId].CreaterHN
                     )
                 }
                 this.timer = setTimeout(nextPlayer, Number(playLength * 1000))
@@ -554,7 +568,9 @@ export default {
                 self.players[nextId].start,
                 self.players[nextId].end,
                 self.players[nextId].id,
-                self.players[nextId].cate_id
+                self.players[nextId].cate_id,
+                self.players[nextId].display,
+                self.players[nextId].CreaterHN
             )
         },
         RandomNext() {
@@ -573,7 +589,9 @@ export default {
                 self.players[nextId].start,
                 self.players[nextId].end,
                 self.players[nextId].id,
-                self.players[nextId].cate_id
+                self.players[nextId].cate_id,
+                self.players[nextId].display,
+                self.players[nextId].CreaterHN
             )
         },
     },

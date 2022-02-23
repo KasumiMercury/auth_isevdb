@@ -29,7 +29,7 @@ Route::get('/check', function () {
 
 
 Route::get('/dashboard', function () {
-    return Inertia::render('PlayerList');
+    return redirect('/');
 })->name('dashboard'); 
 
 Route::prefix('login/{provider}')->where(['provider'=> 'google'])->group(function(){
