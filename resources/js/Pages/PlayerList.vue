@@ -113,7 +113,7 @@
                 <v-tabs show-arrows fixed-tabs v-model="select">
                     <inertia-link
                         as="v-tab"
-                        :href="'/' + memberName + '/latest'"
+                        :href="'/' + currentMember.name + '/latest'"
                         class="text-subtitle-2 fontCol"
                         style="font-family: 'Raleway', sans-serif !important"
                         >Latest</inertia-link
@@ -123,7 +123,7 @@
                         <inertia-link
                             as="v-tab"
                             :key="index"
-                            :href="'/' + memberName + '/' + category.id"
+                            :href="'/' + currentMember.name + '/' + category.id"
                             class="text-subtitle-2 fontCol"
                             style="font-family: 'Raleway', sans-serif !important"
                             >{{ category.title }}</inertia-link
@@ -552,7 +552,7 @@ export default {
             return moment(date).format("YYYY/MM/DD")
         },
     },
-    props: ["memberName", "cate", "players", "likesObj"],
+    props: ["currentMember", "cate", "players", "likesObj"],
     data() {
         return {
             playerVars: {
@@ -588,20 +588,12 @@ export default {
             playCreater: "",
             showTwitter: "",
             playCate: 0,
-            memberArray: [],
-            currentMember: [],
             timer: undefined,
         }
     },
     created() {
         this.select = this.cate
         this.pageLength = Math.ceil(Object.keys(this.players).length / this.itemsPerPage)
-        this.memberArray = this.$page.props.setting.member.filter((value) => {
-            if (value.name == this.memberName) {
-                return true
-            }
-        })
-        this.currentMember = this.memberArray[0]
         if (this.$page.props.user) {
             this.likes = this.likesObj.map((item) => item.player_id)
         }

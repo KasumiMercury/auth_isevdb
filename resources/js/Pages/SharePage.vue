@@ -61,7 +61,7 @@
 import AppLayout from "@/Layouts/AppLayout"
 
 export default {
-    props: ["memberName", "player", "id"],
+    props: ["currentMember", "player", "id"],
     data() {
         return {
             width: window.innerWidth,
@@ -72,18 +72,10 @@ export default {
             playEnd: "",
             playIndex: 0,
             memberArray: [],
-            currentMember: [],
             show: false,
         }
     },
     created() {
-        this.memberArray = this.$page.props.setting.member.filter((value) => {
-            if (value.name == this.memberName) {
-                return true
-            }
-        })
-        this.currentMember = this.memberArray[0]
-
         this.playID = this.player.VideoID
         this.playStart = this.player.start
         this.playEnd = this.player.end

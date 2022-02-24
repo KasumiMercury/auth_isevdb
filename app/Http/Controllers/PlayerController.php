@@ -18,8 +18,8 @@ class PlayerController extends Controller
 {
     public function TopPage()
     {
-        $players = Players::join('member','players.member_id','=','member.id')->where('status','!=','3')
-                                    ->orderBy('players.id','DESC')
+        $players = Players::with('member')->where('status','!=','3')
+                                    ->orderBy('id','DESC')
                                     ->limit(20)
                                     ->get();
 
@@ -42,8 +42,9 @@ class PlayerController extends Controller
                                     })
                                     ->where('status','!=','3')
                                     ->orderBy('id','DESC')
-                                    ->limit(20)
+                                    ->limit(10)
                                     ->get();
+        $currentMember = Member::where('name',$member)->first();
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -53,7 +54,7 @@ class PlayerController extends Controller
         
         return Inertia::render('PlayerList', [
             'likesObj' => $likesObj,
-            'memberName' => $member,
+            'currentMember' => $currentMember,
             'cate' => 0,
             'players' => $players
         ]);
@@ -68,6 +69,7 @@ class PlayerController extends Controller
                                     ->orderBy('id','DESC')
                                     ->limit(10)
                                     ->get();
+        $currentMember = Member::where('name',$member)->first();
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -77,7 +79,7 @@ class PlayerController extends Controller
         
         return Inertia::render('PlayerList', [
             'likesObj' => $likesObj,
-            'memberName' => $member,
+            'currentMember' => $currentMember,
             'cate' => 0,
             'players' => $players
         ]);
@@ -91,6 +93,7 @@ class PlayerController extends Controller
                         ->where('status','!=','3')
                         ->orderBy('id','DESC')
                         ->get();
+                        $currentMember = Member::where('name',$member)->first();
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -100,7 +103,7 @@ class PlayerController extends Controller
 
         return Inertia::render('PlayerList', [
             'likesObj' => $likesObj,
-            'memberName' => $member,
+            'currentMember' => $currentMember,
             'cate' => $cate,
             'players' => $players
         ]);
@@ -135,9 +138,10 @@ class PlayerController extends Controller
     public function player($member,$id)
     {
         $player = Players::find($id);
+        $currentMember = Member::where('name',$member)->first();
 
         return Inertia::render('SharePage', [
-            'memberName' => $member,
+            'currentMember' => $currentMember,
             'player' => $player,
             'id' => $id
         ]);
