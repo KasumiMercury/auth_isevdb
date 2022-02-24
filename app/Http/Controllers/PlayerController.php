@@ -38,7 +38,7 @@ class PlayerController extends Controller
     public function memberTop($member)
     {
         $players = Players::whereHas('member', function ($query) use ($member) {
-                                    $query->where('name', $member );
+                                    $query->whereName($member);
                                     })
                                     ->where('status','!=','3')
                                     ->orderBy('id','DESC')
@@ -63,13 +63,13 @@ class PlayerController extends Controller
     public function latest($member)
     {
         $players = Players::whereHas('member', function ($query) use ($member) {
-                                    $query->where('name', $member );
+                                    $query->whereName($member);
                                     })
                                     ->where('status','!=','3')
                                     ->orderBy('id','DESC')
                                     ->limit(10)
                                     ->get();
-        $currentMember = Member::where('name',$member)->first();
+        $currentMember = Member::where('name','=',$member)->first();
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -87,13 +87,13 @@ class PlayerController extends Controller
     public function memberCate(string $member,int $cate)
     {
         $players = Players::whereHas('member', function ($query) use ($member) {
-                            $query->where('name', $member );
+                            $query->whereName($member);
                         })
                         ->where('players.cate_id', $cate)
                         ->where('status','!=','3')
                         ->orderBy('id','DESC')
                         ->get();
-                        $currentMember = Member::where('name',$member)->first();
+                        $currentMember = Member::whereName($member)->first();
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -138,7 +138,7 @@ class PlayerController extends Controller
     public function player($member,$id)
     {
         $player = Players::find($id);
-        $currentMember = Member::where('name',$member)->first();
+        $currentMember = Member::whereName($member)->first();
 
         return Inertia::render('SharePage', [
             'currentMember' => $currentMember,
