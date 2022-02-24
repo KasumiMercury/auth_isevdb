@@ -607,9 +607,6 @@ export default {
         numberOfPages() {
             return Math.ceil(this.items.length / this.itemsPerPage)
         },
-        filteredKeys() {
-            return this.keys.filter((key) => key !== "Name")
-        },
         styles() {
             return {
                 "--BtnCol": this.currentMember.BtnCol,
