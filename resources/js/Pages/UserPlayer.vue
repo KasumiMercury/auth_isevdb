@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <app-layout>
+            <template #title> 非公式{{ currentMember.display }}DB </template>
             <template #header> UserData ― {{ subTitle }} </template>
 
             <v-card class="m-5" style="margin-bottom: 500px" elevation="0" outlined>

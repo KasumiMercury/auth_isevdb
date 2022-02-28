@@ -13,6 +13,7 @@ require("vuetifyjs-mix-extension")
  */
 
 mix.js("resources/js/app.js", "public/js")
+    .js("resources/js/ogp.js", "public/js")
     .vuetify("vuetify-loader")
     .vue()
     .postCss("resources/css/app.css", "public/css", [require("postcss-import"), require("tailwindcss"), require("autoprefixer")])

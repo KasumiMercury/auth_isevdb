@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <app-layout>
+            <template #title> 非公式{{ currentMember.display }}DB </template>
             <template #header> iseVDB - Top </template>
             <v-card class="mx-5 mt-5" style="margin-bottom: 500px" elevation="0" outlined>
                 <!--table-cards-->
@@ -488,7 +489,7 @@ export default {
                 this.Tweet["hash"] = this.playMember + "非公式DB," + this.playMember
             } else {
                 this.Tweet["url"] =
-                    "https://isevdb.sakura.ne.jp/top/player/" +
+                    "https://isevdb.sakura.ne.jp/top/share/" +
                     this.playerId +
                     "　https://www.youtube.com/watch?v=" +
                     this.playID +

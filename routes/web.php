@@ -39,9 +39,6 @@ Route::prefix('login/{provider}')->where(['provider'=> 'google'])->group(functio
 
 Route::get("/my-login", [App\Http\Controllers\Auth\LoginController::class, "index"])->name("myLogin");
 
-Route::get('/data-tables', [\App\Http\Controllers\AnyController::class, 'responseDataTables'])->name('data-tables');
-
-
 Route::get('/add', function () {
     return Inertia::render('DataAdd');
 })->name('data.add'); 
@@ -49,14 +46,15 @@ Route::get('/add', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/bookmark',[App\Http\Controllers\PlayerController::class, 'bookMark'])->name('user.book'); 
 
-
 Route::middleware(['auth:sanctum', 'verified'])->get('/added',[App\Http\Controllers\PlayerController::class, 'addedData'])->name('user.added'); 
 
 Route::get('/{member}',[App\Http\Controllers\PlayerController::class, 'memberTop'])->name('member.top');
 
 Route::get('/{member}/latest',[App\Http\Controllers\PlayerController::class, 'latest'])->name('member.latest');
 
-Route::get('/{member}/player/{id}',[App\Http\Controllers\PlayerController::class, 'player'])->name('share.player'); 
+Route::get("/{member}/share/{id}", [App\Http\Controllers\PlayerController::class, "sharePlayer"])->name("share.player");
+
+Route::get('/{member}/player/{id}',[App\Http\Controllers\PlayerController::class, 'player'])->name('member.player'); 
 
 Route::get('/{member}/{cate}',[App\Http\Controllers\PlayerController::class, 'memberCate'])->name('member.cate'); 
 

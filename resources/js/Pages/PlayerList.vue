@@ -2,12 +2,14 @@
     <v-app>
         <div :id="'bg_' + currentMember.name"></div>
         <app-layout :style="styles">
+            <template #title> 非公式{{ currentMember.display }}DB </template>
             <template #header> {{ currentMember.display }} PlayerList </template>
+
             <template v-if="cate == 0">
                 <h1 class="text-center" style="font-size: 4rem; font-family: 'Zen Maru Gothic', sans-serif; color: #eee">
                     {{ currentMember.display }}
                 </h1>
-                <v-row justify="center">
+                <v-row justify="center" no-gutters>
                     <v-col cols="auto">
                         <v-btn ref="button" large :color="currentMember.MainCol" class="my-5" @click="$vuetify.goTo('#main-table')">
                             スキップ▼
@@ -648,7 +650,7 @@ export default {
                 this.Tweet["url"] =
                     "https://isevdb.sakura.ne.jp/" +
                     this.currentMember.name +
-                    "/player/" +
+                    "/share/" +
                     this.playerId +
                     "　https://www.youtube.com/watch?v=" +
                     this.playID +

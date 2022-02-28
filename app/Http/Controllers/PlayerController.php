@@ -44,7 +44,7 @@ class PlayerController extends Controller
                                     ->orderBy('id','DESC')
                                     ->limit(10)
                                     ->get();
-        $currentMember = Member::where('name',$member)->first();
+        $currentMember = Member::whereName($member)->first();
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -59,6 +59,12 @@ class PlayerController extends Controller
             'players' => $players
         ]);
     }
+    public function sharePlayer($member,$id)
+    {
+        $player = Players::find($id);
+        $currentMember = Member::find($player['member_id'])->first();
+        return view('SharePlayer',compact('id','player','currentMember'));
+    }
 
     public function latest($member)
     {
@@ -69,7 +75,7 @@ class PlayerController extends Controller
                                     ->orderBy('id','DESC')
                                     ->limit(10)
                                     ->get();
-        $currentMember = Member::where('name','=',$member)->first();
+        $currentMember = Member::whereName($member)->first();
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -93,7 +99,7 @@ class PlayerController extends Controller
                         ->where('status','!=','3')
                         ->orderBy('id','DESC')
                         ->get();
-                        $currentMember = Member::whereName($member)->first();
+        $currentMember = Member::whereName($member)->first();
         $id = Auth::id();
         if($id != null){
             $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
@@ -106,6 +112,17 @@ class PlayerController extends Controller
             'currentMember' => $currentMember,
             'cate' => $cate,
             'players' => $players
+        ]);
+    }
+    public function player($member,$id)
+    {
+        $player = Players::find($id);
+        $currentMember = Member::find($player['member_id'])->first();
+
+        return Inertia::render('PlayerPage', [
+            'currentMember' => $currentMember,
+            'player' => $player,
+            'id' => $id
         ]);
     }
     public function bookMark()
@@ -133,17 +150,6 @@ class PlayerController extends Controller
             'subTitle' => 'YourData',
             'likesObj' => $likesObj,
             'players' => $players
-        ]);
-    }
-    public function player($member,$id)
-    {
-        $player = Players::find($id);
-        $currentMember = Member::whereName($member)->first();
-
-        return Inertia::render('SharePage', [
-            'currentMember' => $currentMember,
-            'player' => $player,
-            'id' => $id
         ]);
     }
     public function addTwitter(Request $request){

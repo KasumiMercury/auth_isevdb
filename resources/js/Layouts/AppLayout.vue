@@ -77,7 +77,7 @@
             <!-- PC header -->
             <v-app-bar elevation="3" v-if="width > this.break" style="padding: 5px 10vw" class="memberCol hidden-sm-and-down" app clipped-left>
                 <v-toolbar-title class="text-h4 SiteTitle" style="font-family: 'Dela Gothic One', cursive !important">
-                    非公式いせぶいDB
+                    <slot name="title"></slot>
                 </v-toolbar-title>
 
                 <v-spacer></v-spacer>
@@ -122,7 +122,7 @@
                 app
                 clipped-left
             >
-                <v-toolbar-title class="text-h6" id="SiteTitle"> 非公式いせぶいDB </v-toolbar-title>
+                <v-toolbar-title class="text-h6" id="SiteTitle"> <slot name="title"></slot> </v-toolbar-title>
 
                 <v-spacer></v-spacer>
                 <v-menu offset-y v-if="$page.props.user">
