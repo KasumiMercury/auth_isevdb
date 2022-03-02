@@ -114,28 +114,169 @@ class PlayerController extends Controller
             'players' => $players
         ]);
     }
-    public function player($member,$id)
+    public function player($member,$id,Request $request)
     {
         $player = Players::find($id);
         $currentMember = Member::find($player['member_id'])->first();
+        $list_type = $request->list;
+        $list_id = $request->index;
+
+        $id = Auth::id();
+        if($id != null){
+
+            if( $list_type == "BM" ){
+                $list_raw = Players::join('bookmarks','players.id','=','bookmarks.player_id')
+                                    ->orderBy('bookmarks.id','ASC')
+                                    ->select('players.*')
+                                    ->get()->toArray();
+
+                if($list_id == null){
+                    $list_id = 0;
+                }
+                if($list_id == 0){
+                    $list = $list_raw;
+                }else{
+                    $list_temp1 = array_slice( $list_raw, 0, $list_id );
+                    $list_temp2 = array_slice( $list_raw, $list_id );
+                    $list = array_merge($list_temp2,$list_temp1);
+                }
+
+                $related = Players::where('member_id','=',$player['member_id'])
+                                    ->where('id','!=', $id)
+                                    ->where('status','!=','3')
+                                    ->where('status','!=','2')
+                                    ->where('twitter','=',null)
+                                    ->inRandomOrder()
+                                    ->limit(10)
+                                    ->get();
+                $relatedNum = count($related);
+                if($relatedNum < 10){
+                    $temp = Players::where('id','!=', $id)
+                                    ->where('status','!=','3')
+                                    ->where('status','!=','2')
+                                    ->where('twitter','=',null)
+                                    ->inRandomOrder()
+                                    ->limit(10 -$relatedNum)
+                                    ->get();
+                    $related += $temp;
+                };
+            }elseif( $list_type == "add"){
+                $user = Auth::user();
+                $name = $user["name"];
+                $list_raw = Players::where('createrHN','=',$name)
+                                    ->join('member','players.member_id','=','member.id')
+                                    ->orderBy('players.id','DESC')
+                                    ->select('players.*')
+                                    ->get()->toArray();
+
+                if($list_id == null){
+                    $list_id = 0;
+                }
+                if($list_id == 0){
+                    $list = $list_raw;
+                }else{
+                    $list_temp1 = array_slice( $list_raw, 0, $list_id );
+                    $list_temp2 = array_slice( $list_raw, $list_id );
+                    $list = array_merge($list_temp2,$list_temp1);
+                }
+
+                $related = Players::where('member_id','=',$player['member_id'])
+                                    ->where('id','!=', $id)
+                                    ->where('status','!=','3')
+                                    ->where('status','!=','2')
+                                    ->where('twitter','=',null)
+                                    ->inRandomOrder()
+                                    ->limit(10)
+                                    ->get();
+                $relatedNum = count($related);
+                if($relatedNum < 10){
+                    $temp = Players::where('id','!=', $id)
+                                    ->where('status','!=','3')
+                                    ->where('status','!=','2')
+                                    ->where('twitter','=',null)
+                                    ->inRandomOrder()
+                                    ->limit(10 -$relatedNum)
+                                    ->get();
+                    $related += $temp;
+                };
+
+            }else{
+                $related = Players::where('member_id','=',$player['member_id'])
+                                    ->where('id','!=', $id)
+                                    ->where('status','!=','3')
+                                    ->where('status','!=','2')
+                                    ->where('twitter','=',null)
+                                    ->inRandomOrder()
+                                    ->limit(10)
+                                    ->get();
+                $relatedNum = count($related);
+                if($relatedNum < 10){
+                    $temp = Players::where('id','!=', $id)
+                                    ->where('status','!=','3')
+                                    ->where('status','!=','2')
+                                    ->where('twitter','=',null)
+                                    ->inRandomOrder()
+                                    ->limit(10 -$relatedNum)
+                                    ->get();
+                    $related += $temp;
+                };
+
+                $list = null;
+            };
+
+            $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
+
+        }else{
+            $related = Players::where('member_id','=',$player['member_id'])
+                                ->where('id','!=', $id)
+                                ->where('status','!=','3')
+                                ->inRandomOrder()
+                                ->limit(10)
+                                ->get();
+            $relatedNum = count($related);
+            if($relatedNum < 10){
+                $temp = Players::where('id','!=', $id)
+                                ->where('status','!=','3')
+                                ->inRandomOrder()
+                                ->limit(10 -$relatedNum)
+                                ->get();
+                $related += $temp;
+            };
+
+            $likesObj = null;
+            $list = null;
+
+        }
 
         return Inertia::render('PlayerPage', [
             'currentMember' => $currentMember,
             'player' => $player,
-            'id' => $id
+            'id' => $id,
+            'list_type' => $list_type,
+            'list_id' => $list_id,
+            'list' => $list,
+            'related' => $related,
+            'likesObj' => $likesObj
         ]);
     }
     public function bookMark()
     {
 
         $id = Auth::id();
-        $players = Players::join('bookmarks','players.id','=','bookmarks.player_id')->where('user_id','=',$id)->join('member','players.member_id','=','member.id')->where('status','!=','3')->get();
+        $players = Players::join('bookmarks','players.id','=','bookmarks.player_id')
+                            ->where('user_id','=',$id)
+                            ->where('status','!=','3')
+                            ->join('member','players.member_id','=','member.id')
+                            ->orderBy('bookmarks.id','ASC')
+                            ->select('players.*')
+                            ->get();
         $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
 
         return Inertia::render('UserPlayer', [
             'subTitle' => 'BookMarks',
             'likesObj' => $likesObj,
-            'players' => $players
+            'players' => $players,
+            'list_type' => 'BM'
         ]);
     }
     public function addedData()
@@ -143,13 +284,19 @@ class PlayerController extends Controller
         $user = Auth::user();
         $id = Auth::id();
         $name = $user["name"];
-        $players = Players::where('createrHN','=',$name)->join('member','players.member_id','=','member.id')->where('status','!=','3')->get();
+        $players = Players::where('createrHN','=',$name)
+                            ->join('member','players.member_id','=','member.id')
+                            ->where('status','!=','3')
+                            ->orderBy('players.id','DESC')
+                            ->select('players.*')
+                            ->get();
         $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
 
         return Inertia::render('UserPlayer', [
             'subTitle' => 'YourData',
             'likesObj' => $likesObj,
-            'players' => $players
+            'players' => $players,
+            'list_type' => 'add'
         ]);
     }
     public function addTwitter(Request $request){

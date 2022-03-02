@@ -7,57 +7,7 @@
             <v-card class="m-5" style="margin-bottom: 500px" elevation="0" outlined>
                 <!--table-cards-->
                 <v-container fluid>
-                    <v-data-iterator
-                        :items="players"
-                        :items-per-page.sync="itemsPerPage"
-                        :page.sync="page"
-                        :sort-desc="sortDesc"
-                        :search="search"
-                        :sort-by="sortBy.toLowerCase()"
-                        hide-default-footer
-                    >
-                        <template v-slot:header>
-                            <v-row no-gutters justify="center">
-                                <v-col class="px-1 my-3" cols="8">
-                                    <v-text-field v-model="search" dense clearable hide-details prepend-icon="mdi-magnify" single-line></v-text-field>
-                                </v-col>
-                            </v-row>
-                            <v-row class="px-2" justify="center" align="center">
-                                <v-col class="pl-5 ml-0 mr-auto" cols="12" sm="12" md="auto">
-                                    <span class="grey--text">Items per page</span>
-                                    <v-menu offset-y>
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <v-btn dark text color="grey darken-1" class="ml-2" v-bind="attrs" v-on="on">
-                                                {{ itemsPerPage }}
-                                                <v-icon>mdi-chevron-down</v-icon>
-                                            </v-btn>
-                                        </template>
-                                        <v-list>
-                                            <v-list-item
-                                                v-for="(number, index) in itemsPerPageArray"
-                                                :key="index"
-                                                @click="updateItemsPerPage(number)"
-                                            >
-                                                <v-list-item-title>{{ number }}</v-list-item-title>
-                                            </v-list-item>
-                                        </v-list>
-                                    </v-menu>
-                                </v-col>
-                                <v-col class="mr-0 ml-auto" sm="4" md="2">
-                                    <v-select dense v-model="sortBy" flat hide-details="auto" :items="keys" label="Sort by"></v-select>
-                                </v-col>
-                                <v-col cols="auto" class="mr-1">
-                                    <v-btn-toggle v-model="sortDesc" mandatory dense>
-                                        <v-btn outlined :value="false" small>
-                                            <v-icon>fas fa-caret-up</v-icon>
-                                        </v-btn>
-                                        <v-btn outlined :value="true" small>
-                                            <v-icon>fas fa-caret-down</v-icon>
-                                        </v-btn>
-                                    </v-btn-toggle>
-                                </v-col>
-                            </v-row>
-                        </template>
+                    <v-data-iterator :items="players" :items-per-page.sync="itemsPerPage" :page.sync="page" :sort-desc="sortDesc" hide-default-footer>
                         <template v-slot:default="props">
                             <v-row dense>
                                 <v-col v-for="(item, index) in props.items" :key="'item' + index" cols="12">
@@ -91,48 +41,26 @@
                                                 </v-col>
                                                 <template v-if="item.status == 0">
                                                     <v-col cols="auto" class="ml-auto mr-10 mb-5">
-                                                        <v-btn
+                                                        <inertia-link
+                                                            as="v-btn"
                                                             color="#DA1725"
-                                                            :style="'color: #EEE'"
-                                                            @click="
-                                                                openPlayer(
-                                                                    index,
-                                                                    item.title,
-                                                                    item.VideoID,
-                                                                    item.start,
-                                                                    item.end,
-                                                                    item.id,
-                                                                    item.cate_id,
-                                                                    item.display,
-                                                                    item.CreaterHN
-                                                                )
-                                                            "
+                                                            style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
+                                                            :href="'/list/player/' + item.id + '?list=' + list_type + '&index=' + (Number(index) + 1)"
                                                         >
                                                             <v-icon>fab fa-youtube</v-icon>　Play
-                                                        </v-btn>
+                                                        </inertia-link>
                                                     </v-col>
                                                 </template>
                                                 <template v-if="item.status == 1">
                                                     <v-col cols="auto" class="ml-auto mr-10 mb-5">
-                                                        <v-btn
+                                                        <inertia-link
+                                                            as="v-btn"
                                                             color="#2BA640"
-                                                            :style="'color: #EEE'"
-                                                            @click="
-                                                                openPlayer(
-                                                                    index,
-                                                                    item.title,
-                                                                    item.VideoID,
-                                                                    item.start,
-                                                                    item.end,
-                                                                    item.id,
-                                                                    item.cate_id,
-                                                                    item.display,
-                                                                    item.CreaterHN
-                                                                )
-                                                            "
+                                                            style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
+                                                            :href="'/list/player/' + item.id + '?list=' + list_type + '&index=' + (Number(index) + 1)"
                                                         >
                                                             <v-icon>fab fa-youtube</v-icon>　Member Only
-                                                        </v-btn>
+                                                        </inertia-link>
                                                     </v-col>
                                                 </template>
                                                 <template v-if="item.status == 2">
@@ -367,7 +295,7 @@ export default {
             return moment(date).format("YYYY/MM/DD")
         },
     },
-    props: ["players", "likesObj", "subTitle"],
+    props: ["players", "likesObj", "subTitle", "list_type"],
     data() {
         return {
             playerVars: {
@@ -451,13 +379,8 @@ export default {
                 this.Tweet["title"] = "非公式" + this.playMember + "DB 切り抜き No." + this.playerId + " by " + this.playCreater
                 this.Tweet["hash"] = this.playMember + "非公式DB," + this.playMember
             } else {
-                this.Tweet["url"] =
-                    "https://isevdb.sakura.ne.jp/top/player/" +
-                    this.playerId +
-                    "　https://www.youtube.com/watch?v=" +
-                    this.playID +
-                    "?t=" +
-                    this.playStart
+                this.Tweet["url"] = "https://isevdb.sakura.ne.jp/top/share/" + this.playerId
+                this.playStart
                 this.Tweet["title"] = "非公式" + this.playMember + "DB No." + this.playerId
                 this.Tweet["hash"] = this.playMember + "非公式DB," + this.playMember
 

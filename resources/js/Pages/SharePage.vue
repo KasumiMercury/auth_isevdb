@@ -5,9 +5,9 @@
             <template #title> 非公式{{ currentMember.display }}DB </template>
             <template #header> {{ currentMember.display }} SharePage </template>
             <div id="element">
-                <v-card class="px-5 py-10">
-                    <h2 class="text-center my-3" style="font-size: 1.5rem; font-family: 'Zen Maru Gothic', sans-serif">{{ player.title }}</h2>
-                    <v-card v-if="width > this.break" style="max-width: 80vw" class="mx-auto p-3">
+                <v-card class="px-5 py-5">
+                    <h2 class="text-center my-2" style="font-size: 1.5rem; font-family: 'Zen Maru Gothic', sans-serif">{{ player.title }}</h2>
+                    <v-card v-if="width > this.break" class="mx-auto p-3" width="65vw" min-width="750">
                         <v-responsive v-show="show" :aspect-ratio="16 / 9">
                             <iframe
                                 width="100%"
@@ -20,7 +20,7 @@
                             ></iframe>
                         </v-responsive>
                     </v-card>
-                    <v-card v-if="width <= this.break" style="max-width: 95vw" class="mx-auto p-3">
+                    <v-card v-if="width <= this.break" width="100%" class="mx-auto p-3">
                         <v-responsive v-show="show" :aspect-ratio="16 / 9">
                             <iframe
                                 width="100%"
@@ -33,26 +33,34 @@
                             ></iframe>
                         </v-responsive>
                     </v-card>
-                    <ShareNetwork
-                        v-if="show"
-                        network="twitter"
-                        :url="Tweet.url"
-                        :title="Tweet.title"
-                        :hashtags="Tweet.hash"
-                        :class="'text-decoration-none'"
-                    >
-                        <v-btn v-show="show" class="my-10" color="#1DA1F2" style="color: #fff" block x-large>
-                            <v-icon>fas fa-share-square</v-icon>　Tweet
-                        </v-btn>
-                    </ShareNetwork>
+                    <div class="px-15 my-5">
+                        <ShareNetwork
+                            v-if="show"
+                            network="twitter"
+                            :url="Tweet.url"
+                            :title="Tweet.title"
+                            :hashtags="Tweet.hash"
+                            :class="'text-decoration-none'"
+                        >
+                            <v-btn v-show="show" color="#1DA1F2" style="color: #fff" block x-large>
+                                <v-icon>fas fa-share-square</v-icon>　Tweet
+                            </v-btn>
+                        </ShareNetwork>
+                    </div>
                     <v-row justify="center" class="text-center">
-                        <v-col cols="12">
+                        <v-col cols="12" class="mt-1">
                             <v-btn large :color="currentMember.MainCol" :href="'/' + currentMember.name + '/latest'">
-                                非公式{{ currentMember.display }}DBへ
+                                <v-icon>fas fa-database</v-icon>
+                                　非公式{{ currentMember.display }}DBへ
                             </v-btn>
                         </v-col>
-                        <v-col cols="12" class="mt-5">
-                            <v-btn large color="cyan lighten-3" href="/"> 非公式いせぶいDBトップへ </v-btn>
+                    </v-row>
+                    <v-row justify="center" class="text-center">
+                        <v-col cols="12">
+                            <v-btn large color="cyan lighten-3" href="/">
+                                <v-icon>fas fa-home</v-icon>
+                                　非公式いせぶいDBトップへ
+                            </v-btn>
                         </v-col>
                     </v-row>
                 </v-card>

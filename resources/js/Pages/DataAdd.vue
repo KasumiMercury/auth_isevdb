@@ -95,7 +95,7 @@
                                         <p class="ml-3 mr-auto">https://youtu.be/{{ clip.VideoID }}</p>
                                         <v-divider class="my-1"></v-divider>
                                         <v-row align="center" justify="center">
-                                            <v-col cols="6" class="mr-auto my-3 ml-1">
+                                            <v-col cols="6" class="mr-auto my-3 ml-5">
                                                 <v-select
                                                     prepend-icon="fas fa-user-tag"
                                                     v-model="clipMember[index]"
@@ -193,7 +193,7 @@
                     <v-stepper-content :step="3">
                         <template v-if="this.contentType == 'youtube'">
                             <v-card class="mb-12 text-center">
-                                <youtube class="mx-auto" :video-id="youtubeInfo.VideoID" ref="youtube"></youtube>
+                                <youtube class="mx-auto my-3" :video-id="youtubeInfo.VideoID" ref="youtube"></youtube>
                                 <v-divider></v-divider>
                                 <v-row no-gutters justify="center" align="center" class="my-1">
                                     <v-col cols="auto">
@@ -223,6 +223,35 @@
                                         <v-btn large @click="SSPlus" icon color="red">
                                             <v-icon>fas fa-angle-double-right</v-icon>
                                         </v-btn>
+                                    </v-col>
+                                </v-row>
+                                <v-divider></v-divider>
+                                <v-row justify="center" class="my-1">
+                                    <v-col cols="auto" class="mx-auto">
+                                        <template v-if="isPaste == false">
+                                            <v-btn class="my-2" @click="getTime" outlined><v-icon>fas fa-search-plus</v-icon> 現在時刻を取得</v-btn>
+                                        </template>
+                                        <template v-else>
+                                            <v-row justify="center" align="end">
+                                                <v-col cols="auto">
+                                                    <v-textarea readonly filled :value="example" label="Example" rows="15"></v-textarea>
+                                                </v-col>
+                                                <v-col cols="auto">
+                                                    <v-textarea
+                                                        v-model="PastedTime"
+                                                        clearable
+                                                        clear-icon="mdi-close-circle"
+                                                        label="Paste Time"
+                                                        rows="15"
+                                                        solo
+                                                        hint="２桁１桁問わず、半角の「:」で区切り"
+                                                    ></v-textarea>
+                                                </v-col>
+                                                <v-col cols="auto">
+                                                    <v-btn class="m-3" outlined @click="PasteToTime">変換</v-btn>
+                                                </v-col>
+                                            </v-row>
+                                        </template>
                                     </v-col>
                                 </v-row>
                                 <v-divider></v-divider>
@@ -270,39 +299,23 @@
                                     </v-col>
                                 </v-row>
                                 <v-divider></v-divider>
-                                <v-row justify="center" class="my-1">
-                                    <v-col cols="auto" class="mx-auto">
-                                        <template v-if="isPaste == false">
-                                            <v-btn class="my-2" @click="getTime"><v-icon>fas fa-search-plus</v-icon> 現在時刻を取得</v-btn>
-                                        </template>
-                                        <template v-else>
-                                            <v-row justify="center" align="end">
-                                                <v-col cols="auto">
-                                                    <v-textarea readonly filled :value="example" label="Example" rows="15"></v-textarea>
-                                                </v-col>
-                                                <v-col cols="auto">
-                                                    <v-textarea
-                                                        v-model="PastedTime"
-                                                        clearable
-                                                        clear-icon="mdi-close-circle"
-                                                        label="Paste Time"
-                                                        rows="15"
-                                                        solo
-                                                        hint="２桁１桁問わず、半角の「:」で区切り"
-                                                    ></v-textarea>
-                                                </v-col>
-                                                <v-col cols="auto">
-                                                    <v-btn class="m-3" @click="PasteToTime">変換</v-btn>
-                                                </v-col>
-                                            </v-row>
-                                        </template>
+                                <v-row class="mt-1" justify="center">
+                                    <v-col cols="auto" class="my-2 mr-5">
+                                        <v-btn outlined @click="AddStep(3)">一括登録</v-btn>
                                     </v-col>
                                 </v-row>
+                                <v-row class="my-1" justify="center">
+                                    <v-col cols="auto" class="my-2 mr-5">
+                                        <v-btn outlined @click="StampStep(3)">タイムスタンプを出力</v-btn>
+                                    </v-col>
+                                </v-row>
+                                <v-divider></v-divider>
 
+                                <!-- v-for -->
                                 <v-row>
                                     <v-col cols="12" v-for="(youtube, index) in youtubeArray" :key="'youtube' + index">
                                         <v-card class="my-3" :elevation="index + 1">
-                                            <v-row no-gutters class="my-0">
+                                            <v-row no-gutters class="my-0" align="center">
                                                 <v-col class="ml-5 mr-5">
                                                     <v-text-field
                                                         label="time"
@@ -396,8 +409,8 @@
                                                     </v-col>
                                                 </template>
                                             </v-row>
-                                            <v-row justify="end" align="end" class="my-0">
-                                                <v-col cols="auto" class="mr-20">
+                                            <v-row justify="end" class="my-1">
+                                                <v-col cols="auto" class="mr-10">
                                                     <v-switch
                                                         v-model="youtubeSwitch[index]"
                                                         @change="editSwitch(index, $event)"
@@ -405,24 +418,16 @@
                                                         label="DBに追加"
                                                     ></v-switch>
                                                 </v-col>
-                                                <v-col cols="auto" class="mr-10 mb-0">
+                                            </v-row>
+                                            <v-row justify="end" class="my-1">
+                                                <v-col cols="auto" class="mr-10">
                                                     <v-btn v-on:click="youtubeDelete(index)" color="red" text>削除</v-btn>
                                                 </v-col>
                                             </v-row>
                                         </v-card>
                                     </v-col>
                                 </v-row>
-
-                                <v-row justify="center">
-                                    <v-col cols="auto" class="my-2 mr-5">
-                                        <v-btn @click="AddStep(3)">一括登録</v-btn>
-                                    </v-col>
-                                </v-row>
-                                <v-row justify="center">
-                                    <v-col cols="auto" class="my-2 mr-5">
-                                        <v-btn @click="StampStep(3)">タイムスタンプを出力</v-btn>
-                                    </v-col>
-                                </v-row>
+                                <!-- v-for ended -->
                             </v-card>
                         </template>
 
@@ -500,9 +505,9 @@
                             <v-card class="mb-12 text-center">
                                 <v-btn @click="CopyStamp" class="my-3"><v-icon>fas fa-clipboard</v-icon> タイムスタンプをコピー</v-btn>
                                 <div class="text-center" id="target">
-                                    <ul style="list-style-type: none" class="text-center" v-for="(time, index) in youtubeArray" :key="'time' + index">
-                                        <li v-if="youtubeArray[index].isStart == true">
-                                            {{ youtubeArray[index].time }}　{{ youtubeArray[index].title }} <span style="display: none">\n</span>
+                                    <ul style="list-style-type: none" class="text-center" v-for="(time, index) in youtubeASC" :key="'time' + index">
+                                        <li v-if="youtubeASC[index].isStart == true">
+                                            {{ youtubeASC[index].time }}　{{ youtubeASC[index].title }} <span style="display: none">\n</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -598,9 +603,20 @@ export default {
                 this.e1 = n - 1
                 this.contentType = ""
                 this.steps = 3
+                this.urlInput = ""
+                this.clipArray = []
+                this.clipMember = []
+                this.alert = false
+                this.complete = false
+            } else if (n === 3) {
+                this.e1 = n - 1
+                this.youtubeArray = []
+                this.alert = false
+                this.complete = false
             } else {
                 this.e1 = n - 1
-                this.youtubeInfo = []
+                this.alert = false
+                this.complete = false
             }
         },
         nextStep(n) {
@@ -679,7 +695,7 @@ export default {
                 this.youtubeForm.switch = true
 
                 this.youtubeArray.push(this.youtubeForm)
-                this.youtubeArray.sort((a, b) => a.rowTime - b.rowTime)
+                this.youtubeArray.sort((a, b) => b.rowTime - a.rowTime)
 
                 this.youtubeIsStart = this.youtubeArray.map((item) => item["isStart"])
                 this.youtubeCate = this.youtubeArray.map((item) => item["cate_id"])
@@ -703,7 +719,7 @@ export default {
                 this.youtubeArray[index].rowTime = timeSecond
             }
 
-            this.youtubeArray.sort((a, b) => a.rowTime - b.rowTime)
+            this.youtubeArray.sort((a, b) => b.rowTime - a.rowTime)
 
             this.youtubeIsStart = this.youtubeArray.map((item) => item["isStart"])
             this.youtubeCate = this.youtubeArray.map((item) => item["cate_id"])
@@ -769,7 +785,7 @@ export default {
                     this.youtubeArray.push(this.youtubeForm)
                 }
 
-                this.youtubeArray.sort((a, b) => a.rowTime - b.rowTime)
+                this.youtubeArray.sort((a, b) => b.rowTime - a.rowTime)
 
                 this.youtubeIsStart = this.youtubeArray.map((item) => item["isStart"])
                 this.youtubeCate = this.youtubeArray.map((item) => item["cate_id"])
@@ -958,18 +974,18 @@ export default {
             if (this.$page.props.user == null) {
                 this.sendArray = []
                 let SendLength = 0
-                for (let i = 0; i < Object.keys(this.youtubeArray).length; i++) {
-                    if (this.youtubeArray[i].isStart == true) {
-                        if (this.youtubeArray[i].switch == true) {
+                for (let i = 0; i < Object.keys(this.youtubeASC).length; i++) {
+                    if (this.youtubeASC[i].isStart == true) {
+                        if (this.youtubeASC[i].switch == true) {
                             this.sendArray.push({
-                                title: this.youtubeArray[i].title,
+                                title: this.youtubeASC[i].title,
                                 date: this.youtubeInfo.date,
                                 VideoID: this.youtubeInfo.VideoID,
-                                start: this.youtubeArray[i].rowTime,
+                                start: this.youtubeASC[i].rowTime,
                                 end: 0,
                                 status: 0,
-                                cate_id: this.youtubeArray[i].cate_id,
-                                member_id: this.youtubeArray[i].member_id,
+                                cate_id: this.youtubeASC[i].cate_id,
+                                member_id: this.youtubeASC[i].member_id,
                                 created_at: new Date(),
                                 updated_at: new Date(),
                                 createrHN: this.createrHN,
@@ -977,24 +993,24 @@ export default {
                             SendLength = SendLength++
                         }
                     } else {
-                        this.sendArray[SendLength].end = this.youtubeArray[i].rowTime
+                        this.sendArray[SendLength].end = this.youtubeASC[i].rowTime
                     }
                 }
             } else {
                 this.sendArray = []
                 let SendLength = 0
-                for (let i = 0; i < Object.keys(this.youtubeArray).length; i++) {
-                    if (this.youtubeArray[i].isStart == true) {
-                        if (this.youtubeArray[i].switch == true) {
+                for (let i = 0; i < Object.keys(this.youtubeASC).length; i++) {
+                    if (this.youtubeASC[i].isStart == true) {
+                        if (this.youtubeASC[i].switch == true) {
                             this.sendArray.push({
-                                title: this.youtubeArray[i].title,
+                                title: this.youtubeASC[i].title,
                                 date: this.youtubeInfo.date,
                                 VideoID: this.youtubeInfo.VideoID,
-                                start: this.youtubeArray[i].rowTime,
+                                start: this.youtubeASC[i].rowTime,
                                 end: 0,
                                 status: 0,
-                                cate_id: this.youtubeArray[i].cate_id,
-                                member_id: this.youtubeArray[i].member_id,
+                                cate_id: this.youtubeASC[i].cate_id,
+                                member_id: this.youtubeASC[i].member_id,
                                 created_at: new Date(),
                                 updated_at: new Date(),
                                 createrHN: this.$page.props.user.name,
@@ -1002,7 +1018,7 @@ export default {
                             SendLength = SendLength++
                         }
                     } else {
-                        this.sendArray[SendLength].end = this.youtubeArray[i].rowTime
+                        this.sendArray[SendLength].end = this.youtubeASC[i].rowTime
                     }
                 }
             }
@@ -1122,6 +1138,9 @@ export default {
     computed: {
         player() {
             return this.$refs.youtube.player
+        },
+        youtubeASC() {
+            return this.youtubeArray.slice().reverse()
         },
     },
 }

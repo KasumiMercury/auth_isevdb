@@ -42,40 +42,38 @@
         <!-- container -->
         <template>
             <!-- PC container -->
-            <v-main v-if="width > this.break" class="hidden-sm-and-down mt-5 mx-auto" style="width: 95%; z-index: 2" app absolute>
+            <v-main v-if="width > this.break" class="hidden-sm-and-down mt-5 mx-auto" style="width: 70%; z-index: 2" app absolute>
                 <slot></slot>
-            </v-main>
-            <!-- SP container -->
-            <v-main v-if="width <= this.break" class="hidden-md-and-up mt-5 mx-0" style="width: 100%; z-index: 2" app absolute>
-                <slot></slot>
-            </v-main>
-        </template>
-
-        <!-- footer -->
-        <template>
-            <!-- PC footer -->
-            <v-footer v-if="width > this.break" app padless class="footCol hidden-sm-and-down m-auto">
-                <v-col class="text-center" cols="12">
-                    <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.3.4.0</p>
-                    <p style="margin-bottom: 0.1rem; font-size: 0.5rem">
-                        当サイト内コンテンツの著作権、肖像権は、すべて、個人VTuberグループ「いせぶい」及びその所属メンバーに帰属します。
-                    </p>
-                    <p style="margin-bottom: 0.5rem; font-size: 0.6rem">管理人：@Mmazoku_media</p>
-                </v-col>
-            </v-footer>
-            <!-- SP footer -->
-            <template v-if="width <= this.break">
-                <v-card style="z-index: 2" class="hidden-md-and-up">
-                    <v-col class="text-center" cols="12">
-                        <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.3.4.0</p>
+                <!-- PC footer -->
+                <template>
+                    <v-card class="hidden-sm-and-down mx-auto my-10 text-center" style="padding-top: 0.5rem; z-index: 2" width="auto">
+                        <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.4.6.0</p>
                         <p style="margin-bottom: 0.1rem; font-size: 0.5rem">
                             当サイト内コンテンツの著作権、肖像権は、<br />
                             すべて、個人VTuberグループ「いせぶい」及びその所属メンバーに帰属します。
                         </p>
                         <p style="margin-bottom: 0.5rem; font-size: 0.6rem">管理人：@Mmazoku_media</p>
-                    </v-col>
-                </v-card>
-            </template>
+                    </v-card>
+                </template>
+            </v-main>
+            <!-- SP container -->
+            <v-main v-if="width <= this.break" class="hidden-md-and-up mt-5 mx-auto" style="width: 95%; z-index: 2" app absolute>
+                <slot></slot>
+            </v-main>
+        </template>
+
+        <!-- SP footer -->
+        <template v-if="width <= this.break">
+            <v-card style="z-index: 2" class="hidden-md-and-up">
+                <v-col class="text-center" cols="12">
+                    <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.4.6.0</p>
+                    <p style="margin-bottom: 0.1rem; font-size: 0.5rem">
+                        当サイト内コンテンツの著作権、肖像権は、<br />
+                        すべて、個人VTuberグループ「いせぶい」及びその所属メンバーに帰属します。
+                    </p>
+                    <p style="margin-bottom: 0.5rem; font-size: 0.6rem">管理人：@Mmazoku_media</p>
+                </v-col>
+            </v-card>
         </template>
     </v-app>
 </template>

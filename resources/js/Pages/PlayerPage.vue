@@ -5,46 +5,117 @@
             <template #title> 非公式{{ currentMember.display }}DB </template>
             <template #header> {{ currentMember.display }} PlayerList </template>
             <v-card class="px-5 py-10">
-                <h2 class="text-center my-3" style="font-size: 1.5rem; font-family: 'Zen Maru Gothic', sans-serif">{{ player.title }}</h2>
-                <v-card v-if="width > this.break" style="max-width: 80vw" class="mx-auto p-3">
-                    <v-responsive v-show="show" :aspect-ratio="16 / 9">
-                        <iframe
+                <v-card v-if="width > this.break" style="max-width: 70vw" class="mx-auto p-3">
+                    <v-responsive :aspect-ratio="16 / 9">
+                        <youtube
+                            class="mx-auto"
                             width="100%"
                             height="100%"
-                            :src="'https://www.youtube.com/embed/' + playID + '?start=' + playStart + '&end=' + playEnd + '&rel=0&loop=1'"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                        ></iframe>
+                            :video-id="player.VideoID"
+                            :playerVars="playerVars"
+                            ref="youtube"
+                            @playing="playing"
+                            @paused="paused"
+                            @ended="ended"
+                        ></youtube>
+                        <v-overlay class="text-center" :absolute="absolute" :value="overlay">
+                            <p class="text-h5">次の動画まで{{ this.countDisplay }}秒</p>
+                            <v-row no-gutters justify="center" align="center">
+                                <v-col cols="auto" class="mx-2">
+                                    <v-btn @click="redoPlayer" color="red" rounded><v-icon>fas fa-redo</v-icon>　REPEAT</v-btn>
+                                </v-col>
+                                <v-col cols="auto" class="mx-2">
+                                    <v-btn @click="continuePlayer" color="red" rounded>CONTINUE　<v-icon>fas fa-play</v-icon></v-btn>
+                                </v-col>
+                                <v-col cols="auto" class="mx-2">
+                                    <v-btn @click="nextPlayer" color="red" rounded>NEXT　<v-icon>fas fa-angle-double-right</v-icon></v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-overlay>
                     </v-responsive>
                 </v-card>
                 <v-card v-if="width <= this.break" style="max-width: 95vw" class="mx-auto p-3">
-                    <v-responsive v-show="show" :aspect-ratio="16 / 9">
-                        <iframe
+                    <v-responsive :aspect-ratio="16 / 9">
+                        <youtube
+                            class="mx-auto"
                             width="100%"
                             height="100%"
-                            :src="'https://www.youtube.com/embed/' + playID + '?start=' + playStart + '&end=' + playEnd + '&rel=0&loop=1'"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                        ></iframe>
+                            :video-id="player.VideoID"
+                            :playerVars="playerVars"
+                            ref="youtube"
+                            @playing="playing"
+                            @paused="paused"
+                            @ended="ended"
+                        ></youtube>
                     </v-responsive>
                 </v-card>
-                <ShareNetwork
-                    v-if="show"
-                    network="twitter"
-                    :url="Tweet.url"
-                    :title="Tweet.title"
-                    :hashtags="Tweet.hash"
-                    :class="'text-decoration-none'"
-                >
-                    <v-btn v-show="show" class="my-10" color="#1DA1F2" style="color: #fff" block x-large>
-                        <v-icon>fas fa-share-square</v-icon>　Tweet
-                    </v-btn>
+                <v-row class="mt-1 mb-0" justify="center" align="center">
+                    <v-col cols="auto">
+                        <template v-if="$page.props.user">
+                            <template v-if="likes.includes(item.id) == true">
+                                <v-btn class="m-0 p-0" x-small icon color="yellow darken-1" @click="DisLike(item.id)">
+                                    <v-icon>fas fa-bookmark</v-icon>
+                                </v-btn>
+                            </template>
+                            <template v-else>
+                                <v-btn class="m-0 p-0" x-small icon @click="addLike(item.id)">
+                                    <v-icon>fas fa-bookmark</v-icon>
+                                </v-btn>
+                            </template>
+                        </template>
+                        <template v-else>
+                            <v-tooltip top color="error">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-list-item link v-bind="attrs" v-on="on">
+                                        <v-btn x-small icon>
+                                            <v-icon>fas fa-bookmark</v-icon>
+                                        </v-btn>
+                                    </v-list-item>
+                                </template>
+                                <span>ログインユーザーのみ</span>
+                            </v-tooltip>
+                        </template>
+                    </v-col>
+                    <v-col cols="auto">
+                        <h2 class="text-center my-3" style="font-size: 1.5rem; font-family: 'Zen Maru Gothic', sans-serif">"{{ player.title }}"</h2>
+                    </v-col>
+                </v-row>
+                <v-divider></v-divider>
+                <v-row no-gutters justify="center" align="center" class="my-3">
+                    <v-col cols="auto" class="mx-3">
+                        <v-btn @click="redoPlayer" icon color="red">
+                            <v-icon>fas fa-redo</v-icon>
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="auto" class="mx-3">
+                        <v-btn @click="pauseVideo" v-if="playStatus" icon color="red">
+                            <v-icon>fas fa-pause fa-fw</v-icon>
+                        </v-btn>
+                        <v-btn @click="playVideo" v-else icon color="red">
+                            <v-icon>fas fa-play fa-fw</v-icon>
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="auto" class="mx-3">
+                        <v-btn @click="nextPlayer" icon color="red">
+                            <v-icon>fas fa-angle-double-right</v-icon>
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <v-alert v-if="this.player.end == 0" border="left" type="warning" outlined prominent class="my-3">
+                    <p>このデータは終了時刻が設定されていません。</p>
+                    <p>
+                        次の動画に進むには
+                        <v-btn @click="nextPlayer" icon color="warning" outlined>
+                            <v-icon>fas fa-angle-double-right</v-icon>
+                        </v-btn>
+                        をクリック/タップしてください。
+                    </p>
+                </v-alert>
+                <v-divider class="mb-3"></v-divider>
+                <ShareNetwork network="twitter" :url="Tweet.url" :title="Tweet.title" :hashtags="Tweet.hash" :class="'text-decoration-none'">
+                    <v-btn color="#1DA1F2" style="color: #fff" block x-large> <v-icon>fas fa-share-square</v-icon>　Tweet </v-btn>
                 </ShareNetwork>
-                <v-row justify="center" class="text-center">
+                <v-row justify="center" class="my-5 text-center">
                     <v-col cols="12">
                         <inertia-link large as="v-btn" :color="currentMember.MainCol" :href="'/' + currentMember.name + '/latest'">
                             非公式{{ currentMember.display }}DBへ
@@ -54,6 +125,157 @@
                         <inertia-link large as="v-btn" color="cyan lighten-3" href="/"> 非公式いせぶいDBトップへ </inertia-link>
                     </v-col>
                 </v-row>
+
+                <template v-if="list_type == 'BM' || list_type == 'add'">
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-btn block x-large text @click="showList = !showList">
+                            再生リスト <v-icon>{{ showList ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
+                        </v-btn>
+                    </v-card-actions>
+
+                    <v-expand-transition>
+                        <div v-show="showList">
+                            <v-row dense>
+                                <v-col v-for="(item, index) in list" :key="'list_item' + index" cols="12">
+                                    <v-card v-show="item.twitter == null && item.status != 3 && item.status != 2" :elevation="index + 1">
+                                        <v-row class="mt-1 mb-0" justify="start" align="center">
+                                            <v-col cols="auto" class="ml-5 mr-0">
+                                                <template v-if="likes.includes(item.id) == true">
+                                                    <v-btn x-small icon color="yellow darken-1" @click="DisLike(item.id)">
+                                                        <v-icon>fas fa-bookmark</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                                <template v-else>
+                                                    <v-btn x-small icon @click="addLike(item.id)">
+                                                        <v-icon>fas fa-bookmark</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                            </v-col>
+                                            <v-col>
+                                                <h2
+                                                    class="text-subtitle-2 text-md-h6"
+                                                    style="font-family: 'Raleway', 'Zen Maru Gothic', sans-serif !important; color: #555 !important"
+                                                >
+                                                    {{ item.title }}
+                                                </h2>
+                                            </v-col>
+                                        </v-row>
+                                        <template>
+                                            <v-row>
+                                                <v-col cols="auto" class="ml-10 mr-auto">
+                                                    <p>{{ item.date | moment }}</p>
+                                                </v-col>
+                                                <template v-if="item.status == 0">
+                                                    <v-col cols="auto" class="ml-auto mr-10 mb-5">
+                                                        <v-btn
+                                                            color="#DA1725"
+                                                            style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
+                                                            @click="selectList(index)"
+                                                        >
+                                                            <v-icon>fab fa-youtube</v-icon>　Play
+                                                        </v-btn>
+                                                    </v-col>
+                                                </template>
+                                                <template v-if="item.status == 1">
+                                                    <v-col cols="auto" class="ml-auto mr-10 mb-5">
+                                                        <v-btn
+                                                            color="#2BA640"
+                                                            style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
+                                                            @click="selectList(index)"
+                                                        >
+                                                            <v-icon>fab fa-youtube</v-icon>　Member Only
+                                                        </v-btn>
+                                                    </v-col>
+                                                </template>
+                                            </v-row>
+                                        </template>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+                        </div>
+                    </v-expand-transition>
+                </template>
+
+                <template>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-btn block x-large text @click="showRelated = !showRelated">
+                            関連動画 <v-icon>{{ showRelated ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
+                        </v-btn>
+                    </v-card-actions>
+
+                    <v-expand-transition>
+                        <div v-show="showRelated">
+                            <v-data-iterator :items="related" hide-default-footer>
+                                <template v-slot:default="props">
+                                    <v-row dense>
+                                        <v-col v-for="(item, index) in props.items" :key="'related_item' + index" cols="12">
+                                            <v-card :elevation="index + 1">
+                                                <v-row class="mt-1 mb-0" justify="start" align="center">
+                                                    <v-col cols="auto" class="ml-5 mr-0">
+                                                        <template v-if="likes.includes(item.id) == true">
+                                                            <v-btn x-small icon color="yellow darken-1" @click="DisLike(item.id)">
+                                                                <v-icon>fas fa-bookmark</v-icon>
+                                                            </v-btn>
+                                                        </template>
+                                                        <template v-else>
+                                                            <v-btn x-small icon @click="addLike(item.id)">
+                                                                <v-icon>fas fa-bookmark</v-icon>
+                                                            </v-btn>
+                                                        </template>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <h2
+                                                            class="text-subtitle-2 text-md-h6"
+                                                            style="
+                                                                font-family: 'Raleway', 'Zen Maru Gothic', sans-serif !important;
+                                                                color: #555 !important;
+                                                            "
+                                                        >
+                                                            {{ item.title }}
+                                                        </h2>
+                                                    </v-col>
+                                                </v-row>
+                                                <template>
+                                                    <v-row>
+                                                        <v-col cols="auto" class="ml-10 mr-auto">
+                                                            <p>{{ item.date | moment }}</p>
+                                                        </v-col>
+                                                        <template v-if="item.status == 0">
+                                                            <v-col cols="auto" class="ml-auto mr-10 mb-5">
+                                                                <inertia-link
+                                                                    as="v-btn"
+                                                                    color="#DA1725"
+                                                                    style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
+                                                                    :href="'/' + currentMember.name + '/player/' + item.id"
+                                                                >
+                                                                    <v-icon>fab fa-youtube</v-icon>　Play
+                                                                </inertia-link>
+                                                            </v-col>
+                                                        </template>
+                                                        <template v-if="item.status == 1">
+                                                            <v-col cols="auto" class="ml-auto mr-10 mb-5">
+                                                                <inertia-link
+                                                                    as="v-btn"
+                                                                    color="#2BA640"
+                                                                    style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
+                                                                    :href="'/' + currentMember.name + '/player/' + item.id"
+                                                                >
+                                                                    <v-icon>fab fa-youtube</v-icon>　Member Only
+                                                                </inertia-link>
+                                                            </v-col>
+                                                        </template>
+                                                    </v-row>
+                                                </template>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                </template>
+                            </v-data-iterator>
+                        </div>
+                    </v-expand-transition>
+                </template>
             </v-card>
         </app-layout>
     </v-app>
@@ -61,31 +283,57 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout"
+import moment from "moment"
 
 export default {
-    props: ["currentMember", "player", "id"],
+    filters: {
+        moment: function (date) {
+            return moment(date).format("YYYY/MM/DD")
+        },
+    },
+    props: ["currentMember", "player", "id", "list_type", "list_id", "list", "related", "likesObj"],
     data() {
         return {
+            playerVars: {
+                autoplay: 1,
+                controls: 1,
+                start: this.player.start,
+                iv_load_policy: 3,
+            },
+            likes: [],
             width: window.innerWidth,
             break: 960,
             Tweet: {},
-            playID: "",
-            playStart: "",
-            playEnd: "",
-            playIndex: 0,
-            memberArray: [],
-            show: false,
+            page: 1,
+            itemsPerPage: 5,
+            pageLength: 1,
+            showList: false,
+            showRelated: true,
+            playStatus: false,
+            timer: undefined,
+            count: undefined,
+            NowTime: undefined,
+            countDisplay: 10,
+            nextIndex: 0,
+            listLength: 0,
+            absolute: true,
+            overlay: false,
+            seek: undefined,
         }
     },
     created() {
-        this.playID = this.player.VideoID
-        this.playStart = this.player.start
-        this.playEnd = this.player.end
-        this.playIndex = this.id
-        this.Tweet["url"] = "https://isevdb.sakura.ne.jp/" + this.currentMember.name + "/share/" + this.playIndex
-        this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.playIndex
+        this.Tweet["url"] = "https://isevdb.sakura.ne.jp/" + this.currentMember.name + "/share/" + this.id
+        this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.id
         this.Tweet["hash"] = this.currentMember.display + "非公式DB," + this.currentMember.display
-        this.show = true
+
+        if (this.list != null) {
+            this.pageLength = Math.ceil(Object.keys(this.list).length / this.itemsPerPage)
+            this.listLength = Object.keys(this.list).length
+        }
+
+        if (this.likesObj != null) {
+            this.likes = this.likesObj.map((item) => item.player_id)
+        }
     },
     components: {
         AppLayout,
@@ -93,6 +341,153 @@ export default {
     methods: {
         handleResize: function () {
             this.width = window.innerWidth
+        },
+        addLike(id) {
+            let self = this
+            axios({
+                method: "post",
+                url: "/api/add/" + id + "/like",
+                dataType: "json",
+                data: {
+                    player_id: id,
+                    user_id: this.$page.props.user.id,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                },
+            })
+                .then((response) => {
+                    console.log(response)
+                    self.likes.push(id)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        },
+        DisLike(id) {
+            let self = this
+            axios({
+                method: "post",
+                url: "/api/delete/" + id + "/dislike",
+                dataType: "json",
+                data: {
+                    player_id: id,
+                    user_id: this.$page.props.user.id,
+                },
+            })
+                .then((response) => {
+                    console.log(response)
+                    self.likes.splice(self.likes.indexOf(id), 1)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        },
+        playVideo() {
+            this.YTplayer.playVideo()
+            this.playStatus = true
+        },
+        pauseVideo() {
+            this.YTplayer.pauseVideo()
+            this.playStatus = false
+        },
+        playing() {
+            clearTimeout(this.count)
+            clearTimeout(this.timer)
+            this.playStatus = true
+            this.getTime()
+        },
+        paused() {
+            this.playStatus = false
+            clearTimeout(this.timer)
+        },
+        ended() {
+            this.playStatus = false
+            clearTimeout(this.timer)
+            this.countDown()
+        },
+        redoPlayer() {
+            clearTimeout(this.count)
+            this.count = undefined
+            clearTimeout(this.timer)
+            this.timer = undefined
+            this.overlay = false
+            this.countDisplay = 10
+            this.YTplayer.seekTo(this.player.start, true)
+            this.NowTime = this.player.start
+        },
+        continuePlayer() {
+            this.overlay = false
+            clearTimeout(this.count)
+        },
+        getTime() {
+            if (this.player.end != 0) {
+                this.timer = setTimeout(this.getTime, 1000)
+                if (Number(this.NowTime) > Number(this.player.end)) {
+                    clearTimeout(this.timer)
+                    this.overlay = true
+                    this.countDown()
+                }
+                this.YTplayer.getCurrentTime().then((time) => {
+                    this.NowTime = time
+                })
+            }
+        },
+        countDown() {
+            this.count = setTimeout(this.countDown, 1000)
+            this.countDisplay--
+            if (this.countDisplay == 0) {
+                clearTimeout(this.count)
+                this.nextPlayer()
+            }
+        },
+        nextPlayer() {
+            if (this.list_type == null) {
+                this.$inertia.get("/" + this.currentMember.name + "/player/" + this.related[0].id)
+            } else {
+                this.findNext()
+                if (Number(this.nextIndex) + Number(this.list_id) + 1 > this.listLength) {
+                    let selectIndex = Number(this.nextIndex) + Number(this.list_id) + 1 - this.listLength
+                    this.$inertia.get(
+                        "/" +
+                            this.currentMember.name +
+                            "/player/" +
+                            this.list[this.nextIndex].id +
+                            "?list=" +
+                            this.list_type +
+                            "&index=" +
+                            selectIndex
+                    )
+                } else {
+                    let selectIndex = Number(this.nextIndex) + Number(this.list_id) + 1
+                    this.$inertia.get(
+                        "/" +
+                            this.currentMember.name +
+                            "/player/" +
+                            this.list[this.nextIndex].id +
+                            "?list=" +
+                            this.list_type +
+                            "&index=" +
+                            selectIndex
+                    )
+                }
+            }
+        },
+        findNext() {
+            while (this.list[this.nextIndex].twitter != null || this.list[this.nextIndex].status == 2 || this.list[this.nextIndex].status == 3) {
+                this.nextIndex++
+                if (Number(this.nextIndex) > Number(this.listLength)) {
+                    this.nextIndex = Number(this.nextIndex) - Number(this.listLength)
+                }
+            }
+        },
+        selectList(index) {
+            if (Number(index) + Number(this.list_id) + 1 > this.listLength) {
+                let selectIndex = Number(index) + Number(this.list_id) + 1 - this.listLength
+                this.$inertia.get("/list/player/" + this.list[index].id + "?list=" + this.list_type + "&index=" + selectIndex)
+            } else {
+                let selectIndex = Number(index) + Number(this.list_id) + 1
+                this.$inertia.get("/list/player/" + this.list[index].id + "?list=" + this.list_type + "&index=" + selectIndex)
+            }
         },
     },
     computed: {
@@ -103,12 +498,17 @@ export default {
                 "--NavCol": this.currentMember.NavCol,
             }
         },
+        YTplayer() {
+            return this.$refs.youtube.player
+        },
     },
     mounted: function () {
         window.addEventListener("resize", this.handleResize)
     },
     beforeDestroy: function () {
         window.removeEventListener("resize", this.handleResize)
+        clearTimeout(this.timer)
+        clearTimeout(this.count)
     },
 }
 </script>

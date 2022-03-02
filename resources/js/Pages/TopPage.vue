@@ -112,48 +112,26 @@
                                                 </v-col>
                                                 <template v-if="item.status == 0">
                                                     <v-col cols="auto" class="ml-auto mr-10 mb-5">
-                                                        <v-btn
+                                                        <inertia-link
+                                                            as="v-btn"
                                                             color="#DA1725"
                                                             style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
-                                                            @click="
-                                                                openPlayer(
-                                                                    index,
-                                                                    item.title,
-                                                                    item.VideoID,
-                                                                    item.start,
-                                                                    item.end,
-                                                                    item.id,
-                                                                    item.cate_id,
-                                                                    item.display,
-                                                                    item.CreaterHN
-                                                                )
-                                                            "
+                                                            :href="'/top/player/' + item.id"
                                                         >
                                                             <v-icon>fab fa-youtube</v-icon>　Play
-                                                        </v-btn>
+                                                        </inertia-link>
                                                     </v-col>
                                                 </template>
                                                 <template v-if="item.status == 1">
                                                     <v-col cols="auto" class="ml-auto mr-10 mb-5">
-                                                        <v-btn
+                                                        <inertia-link
+                                                            as="v-btn"
                                                             color="#2BA640"
                                                             style="font-family: 'Raleway', sans-serif !important; color: #eee !important"
-                                                            @click="
-                                                                openPlayer(
-                                                                    index,
-                                                                    item.title,
-                                                                    item.VideoID,
-                                                                    item.start,
-                                                                    item.end,
-                                                                    item.id,
-                                                                    item.cate_id,
-                                                                    item.display,
-                                                                    item.CreaterHN
-                                                                )
-                                                            "
+                                                            :href="'/top/player/' + item.id"
                                                         >
                                                             <v-icon>fab fa-youtube</v-icon>　Member Only
-                                                        </v-btn>
+                                                        </inertia-link>
                                                     </v-col>
                                                 </template>
                                                 <template v-if="item.status == 2">
@@ -220,170 +198,20 @@
             </v-card>
 
             <template #playerWindow>
-                <template v-if="width >= 960">
-                    <v-card
-                        :loading="loading"
-                        elevation="20"
-                        v-if="playerOpen"
-                        width="50vw"
-                        max-width="600px"
-                        class="pb-3"
-                        style="position: fixed; right: 30px; bottom: 30px; margin: 0; z-index: 10"
-                    >
-                        <template slot="progress">
-                            <v-progress-linear color="pink accent-3" height="5" indeterminate></v-progress-linear>
-                        </template>
-
-                        <v-row>
-                            <v-col cols="auto" class="ml-auto mr-0">
-                                <v-btn v-if="playerOpen" color="red" text @click="closePlayer">close</v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-divider class="py-1"></v-divider>
-                        <p class="text-center px-5">“{{ playTitle }}”</p>
-                        <v-responsive v-if="playerOpen" :aspect-ratio="16 / 9" class="m-1">
-                            <youtube
-                                v-if="playerOpen"
-                                :fitParent="true"
-                                class="mx-auto"
-                                :video-id="playID"
-                                :playerVars="playerVars"
-                                ref="youtube"
-                                @playing="playing"
-                                @ended="ended"
-                            ></youtube>
-                        </v-responsive>
-                        <v-row class="m-0 p-0" justify="center" v-if="playEnd == 0">
-                            <v-col cols="auto" class="mt-1 mx-auto">
-                                <v-btn v-show="playerOpen" color="#DA1725" style="color: #fff" @click="RandomNext()"
-                                    ><v-icon>fab fa-youtube</v-icon>　次の動画へ（ランダム）</v-btn
-                                >
-                            </v-col>
-                        </v-row>
-                        <v-row class="m-0 p-0">
-                            <v-col cols="8" class="mt-1 mx-auto">
-                                <ShareNetwork
-                                    v-if="playerOpen"
-                                    network="twitter"
-                                    :url="Tweet.url"
-                                    :title="Tweet.title"
-                                    :hashtags="Tweet.hash"
-                                    :class="'text-decoration-none'"
-                                >
-                                    <v-btn v-show="playerOpen" color="#1DA1F2" style="color: #fff" block large
-                                        ><v-icon>fas fa-share-square</v-icon>　Tweet</v-btn
-                                    >
-                                </ShareNetwork>
-                            </v-col>
-                        </v-row>
-                        <v-row class="m-0 p-0" v-if="playCate != 4">
-                            <v-col cols="8" class="mx-auto">
-                                <ShareNetwork
-                                    v-if="playerOpen"
-                                    network="twitter"
-                                    :url="TweetRow.url"
-                                    title=""
-                                    :hashtags="TweetRow.hash"
-                                    :class="'text-decoration-none'"
-                                >
-                                    <v-btn v-show="playerOpen" color="#1DA1F2" style="color: #fff" block
-                                        ><v-icon>fas fa-share-square</v-icon>　元動画をツイート</v-btn
-                                    >
-                                </ShareNetwork>
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                </template>
-                <template v-if="width < 960">
-                    <v-card
-                        :loading="loading"
-                        elevation="20"
-                        v-if="playerOpen"
-                        width="100vw"
-                        max-width="600px"
-                        class="pb-3"
-                        style="position: fixed; right: 0; bottom: 80px; margin: 0; z-index: 10"
-                    >
-                        <template slot="progress">
-                            <v-progress-linear color="pink accent-3" height="5" indeterminate></v-progress-linear>
-                        </template>
-
-                        <v-row>
-                            <v-col cols="auto" class="ml-auto mr-0">
-                                <v-btn v-if="playerOpen" color="red" text @click="closePlayer">close</v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-divider class="py-1"></v-divider>
-                        <p class="text-center px-5">“{{ playTitle }}”</p>
-                        <v-responsive v-if="playerOpen" :aspect-ratio="16 / 9" class="m-1">
-                            <youtube
-                                v-if="playerOpen"
-                                :fitParent="true"
-                                class="mx-auto"
-                                :video-id="playID"
-                                :playerVars="playerVars"
-                                ref="youtube"
-                                @playing="playing"
-                                @ended="ended"
-                            ></youtube>
-                        </v-responsive>
-                        <v-row class="m-0 p-0" justify="center">
-                            <v-col cols="auto" class="mt-1 mx-auto">
-                                <v-btn v-show="playerOpen" color="#DA1725" style="color: #fff" @click="RandomNext()"
-                                    ><v-icon>fab fa-youtube</v-icon>　次の動画へ（ランダム）</v-btn
-                                >
-                            </v-col>
-                        </v-row>
-                        <v-row class="m-0 p-0">
-                            <v-col cols="8" class="mt-1 mx-auto">
-                                <ShareNetwork
-                                    v-if="playerOpen"
-                                    network="twitter"
-                                    :url="Tweet.url"
-                                    :title="Tweet.title"
-                                    :hashtags="Tweet.hash"
-                                    :class="'text-decoration-none'"
-                                >
-                                    <v-btn v-show="playerOpen" color="#1DA1F2" style="color: #fff" block large
-                                        ><v-icon>fas fa-share-square</v-icon>　Tweet</v-btn
-                                    >
-                                </ShareNetwork>
-                            </v-col>
-                        </v-row>
-                        <v-row class="m-0 p-0" v-if="playCate != 4">
-                            <v-col cols="8" class="mx-auto">
-                                <ShareNetwork
-                                    v-if="playerOpen"
-                                    network="twitter"
-                                    :url="TweetRow.url"
-                                    title=""
-                                    :hashtags="TweetRow.hash"
-                                    :class="'text-decoration-none'"
-                                >
-                                    <v-btn v-show="playerOpen" color="#1DA1F2" style="color: #fff" block
-                                        ><v-icon>fas fa-share-square</v-icon>　元動画をツイート</v-btn
-                                    >
-                                </ShareNetwork>
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                </template>
-                <template>
-                    <v-card
-                        :loading="loading"
-                        elevation="20"
-                        v-if="twitterOpen"
-                        style="position: fixed; right: 30px; bottom: 30px; margin: 0; z-index: 10"
-                    >
-                        <template slot="progress">
-                            <v-progress-linear color="blue accent-2" height="5" indeterminate></v-progress-linear>
-                        </template>
-                        <template v-if="twitterOpen">
-                            <Tweet :id="showTwitter" :style="'max-height: 80vh; max-width: 80vw'"></Tweet>
-                            <v-btn text color="red" @click="closeTwitter">close</v-btn>
-                        </template>
-                    </v-card>
-                </template>
+                <v-card
+                    :loading="loading"
+                    elevation="20"
+                    v-if="twitterOpen"
+                    style="position: fixed; right: 30px; bottom: 30px; margin: 0; z-index: 10"
+                >
+                    <template slot="progress">
+                        <v-progress-linear color="blue accent-2" height="5" indeterminate></v-progress-linear>
+                    </template>
+                    <template v-if="twitterOpen">
+                        <Tweet :id="showTwitter" :style="'max-height: 80vh; max-width: 80vw'"></Tweet>
+                        <v-btn text color="red" @click="closeTwitter">close</v-btn>
+                    </template>
+                </v-card>
             </template>
         </app-layout>
     </v-app>
@@ -403,18 +231,10 @@ export default {
     props: ["players", "likesObj"],
     data() {
         return {
-            playerVars: {
-                start: 0,
-                autoplay: 1,
-                controls: 1,
-                iv_load_policy: 3,
-            },
             likes: [],
             loading: false,
             width: window.innerWidth,
             break: 900,
-            Tweet: {},
-            TweetRow: {},
             itemsPerPageArray: [5, 10, 15, 20, 30],
             search: "",
             filter: {},
@@ -424,19 +244,9 @@ export default {
             pageLength: 1,
             sortBy: "id",
             keys: ["id", "title", "date"],
-            playerOpen: false,
+            select: "",
             twitterOpen: false,
-            playID: "",
-            playStart: "",
-            playEnd: "",
-            playIndex: 0,
-            playTitle: "",
-            playMember: "",
-            playCreater: "",
             showTwitter: "",
-            memberArray: [],
-            currentMember: [],
-            timer: undefined,
         }
     },
     created() {
@@ -456,53 +266,11 @@ export default {
         filteredKeys() {
             return this.keys.filter((key) => key !== "Name")
         },
-        player() {
-            return this.$refs.youtube.player
-        },
     },
     methods: {
         updateItemsPerPage(number) {
             this.itemsPerPage = number
             this.pageLength = Math.floor(Object.keys(this.players).length / number)
-        },
-        openPlayer(index, title, VideoID, start, end, id, playerCate, playerMember, playerCreater) {
-            clearTimeout(this.timer)
-            this.loading = true
-            setTimeout(() => (this.loading = false), 2000)
-
-            this.playerOpen = false
-            this.twitterOpen = false
-            this.playID = VideoID
-            this.playStart = start
-            this.playEnd = end
-            this.playerId = id
-            this.playIndex = index
-            this.playTitle = title
-            this.playMember = playerMember
-            this.playCreater = playerCreater
-            this.playCate = playerCate
-            this.playerVars.start = start
-
-            if (playerCate == 4) {
-                this.Tweet["url"] = "https://www.youtube.com/watch?v=" + this.playID
-                this.Tweet["title"] = "非公式" + this.playMember + "DB 切り抜き No." + this.playerId + " by " + this.playCreater
-                this.Tweet["hash"] = this.playMember + "非公式DB," + this.playMember
-            } else {
-                this.Tweet["url"] =
-                    "https://isevdb.sakura.ne.jp/top/share/" +
-                    this.playerId +
-                    "　https://www.youtube.com/watch?v=" +
-                    this.playID +
-                    "?t=" +
-                    this.playStart
-                this.Tweet["title"] = "非公式" + this.playMember + "DB No." + this.playerId
-                this.Tweet["hash"] = this.playMember + "非公式DB," + this.playMember
-
-                this.TweetRow["url"] = "https://www.youtube.com/watch?v=" + this.playID
-                this.TweetRow["hash"] = this.playMember
-            }
-
-            this.$nextTick(() => (this.playerOpen = true))
         },
         openTwitter(twitterId) {
             this.loading = true
@@ -511,10 +279,6 @@ export default {
             this.playerOpen = false
             this.showTwitter = twitterId
             this.twitterOpen = true
-        },
-        closePlayer() {
-            clearTimeout(this.timer)
-            this.playerOpen = false
         },
         closeTwitter() {
             this.twitterOpen = false
@@ -562,83 +326,12 @@ export default {
                     console.log(error)
                 })
         },
-        playing() {
-            if (this.playEnd > 0) {
-                let self = this
-                let playLength = Number(this.playEnd) - Number(this.playStart)
-                let nowId = Number(this.playIndex)
-                let nextId = 0
-                let whileTime = 0
-                let nextPlayer = function () {
-                    do {
-                        nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
-                        whileTime++
-                    } while (nextId == nowId && self.players[nextId].twitter != null && whileTime < 10)
-                    self.openPlayer(
-                        nextId,
-                        self.players[nextId].title,
-                        self.players[nextId].VideoID,
-                        self.players[nextId].start,
-                        self.players[nextId].end,
-                        self.players[nextId].id,
-                        self.players[nextId].cate_id,
-                        self.players[nextId].display,
-                        self.players[nextId].CreaterHN
-                    )
-                }
-                this.timer = setTimeout(nextPlayer, Number(playLength * 1000))
-            }
-        },
-        ended() {
-            let self = this
-            let nowId = Number(this.playIndex)
-            let nextId = 0
-            let whileTime = 0
-            console.log("videoEnded")
-            do {
-                nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
-                whileTime++
-            } while (nextId == nowId && self.players[nextId].twitter != null && whileTime < 10)
-            self.openPlayer(
-                nextId,
-                self.players[nextId].title,
-                self.players[nextId].VideoID,
-                self.players[nextId].start,
-                self.players[nextId].end,
-                self.players[nextId].id,
-                self.players[nextId].cate_id,
-                self.players[nextId].display,
-                self.players[nextId].CreaterHN
-            )
-        },
-        RandomNext() {
-            let self = this
-            let nowId = Number(this.playIndex)
-            let nextId = 0
-            let whileTime = 0
-            do {
-                nextId = Math.floor(Math.random() * Number(Object.keys(self.players).length))
-                whileTime++
-            } while (nextId == nowId && self.players[nextId].twitter != null && whileTime < 10)
-            self.openPlayer(
-                nextId,
-                self.players[nextId].title,
-                self.players[nextId].VideoID,
-                self.players[nextId].start,
-                self.players[nextId].end,
-                self.players[nextId].id,
-                self.players[nextId].cate_id,
-                self.players[nextId].display,
-                self.players[nextId].CreaterHN
-            )
-        },
     },
     mounted() {
         window.addEventListener("resize", this.handleResize)
     },
     beforeDestroy: function () {
         window.removeEventListener("resize", this.handleResize)
-        clearTimeout(this.timer)
     },
 }
 </script>

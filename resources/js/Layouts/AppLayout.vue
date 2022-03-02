@@ -161,6 +161,17 @@
             <!-- PC container -->
             <v-main v-if="width > this.break" class="hidden-sm-and-down mt-5 mx-auto" style="width: 95%; z-index: 2" app absolute>
                 <slot></slot>
+                <!-- PC footer -->
+                <template>
+                    <v-card class="hidden-sm-and-down mx-auto my-10 text-center" style="padding-top: 0.5rem; z-index: 2" width="auto">
+                        <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.4.6.0</p>
+                        <p style="margin-bottom: 0.1rem; font-size: 0.5rem">
+                            当サイト内コンテンツの著作権、肖像権は、<br />
+                            すべて、個人VTuberグループ「いせぶい」及びその所属メンバーに帰属します。
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.6rem">管理人：@Mmazoku_media</p>
+                    </v-card>
+                </template>
             </v-main>
             <!-- SP container -->
             <v-main v-if="width <= this.break" class="hidden-md-and-up mt-5 mx-0" style="width: 100%; z-index: 2" app absolute>
@@ -168,76 +179,63 @@
             </v-main>
         </template>
 
-        <!-- footer -->
-        <template>
-            <!-- PC footer -->
-            <v-footer v-if="width > this.break" app padless class="footCol hidden-sm-and-down m-auto">
+        <!-- SP footer -->
+        <template v-if="width <= this.break">
+            <v-card style="z-index: 2" class="hidden-md-and-up">
                 <v-col class="text-center" cols="12">
-                    <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.3.4.0</p>
+                    <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.4.6.0</p>
                     <p style="margin-bottom: 0.1rem; font-size: 0.5rem">
-                        当サイト内コンテンツの著作権、肖像権は、すべて、個人VTuberグループ「いせぶい」及びその所属メンバーに帰属します。
+                        当サイト内コンテンツの著作権、肖像権は、<br />
+                        すべて、個人VTuberグループ「いせぶい」及びその所属メンバーに帰属します。
                     </p>
                     <p style="margin-bottom: 0.5rem; font-size: 0.6rem">管理人：@Mmazoku_media</p>
                 </v-col>
-            </v-footer>
-            <!-- SP footer -->
-            <template v-if="width <= this.break">
-                <v-card style="z-index: 2" class="hidden-md-and-up">
-                    <v-col class="text-center" cols="12">
-                        <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.3.4.0</p>
-                        <p style="margin-bottom: 0.1rem; font-size: 0.5rem">
-                            当サイト内コンテンツの著作権、肖像権は、<br />
-                            すべて、個人VTuberグループ「いせぶい」及びその所属メンバーに帰属します。
-                        </p>
-                        <p style="margin-bottom: 0.5rem; font-size: 0.6rem">管理人：@Mmazoku_media</p>
-                    </v-col>
-                </v-card>
+            </v-card>
 
-                <v-bottom-navigation app class="hidden-md-and-up m-auto py-1 memberCol" grow>
-                    <v-btn fab depressed class="memberCol" @click="sheet = !sheet">
-                        <span class="my-1">DB List</span>
-                        <v-icon>fas fa-database</v-icon>
-                    </v-btn>
-                    <template v-if="$page.props.user">
-                        <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('user.book')">
-                            <span class="my-1">BookMark</span>
-                            <v-icon>fas fa-bookmark</v-icon>
-                        </inertia-link>
-                    </template>
-                    <template v-else>
-                        <v-tooltip top color="error">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
-                                    <span class="my-1">BookMark</span>
-                                    <v-icon>fas fa-bookmark</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>ログインユーザーのみ</span>
-                        </v-tooltip>
-                    </template>
-                    <template v-if="$page.props.user">
-                        <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('user.added')">
-                            <span class="my-1">YourData</span>
-                            <v-icon>fas fa-folder-open</v-icon>
-                        </inertia-link>
-                    </template>
-                    <template v-else>
-                        <v-tooltip top color="error">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
-                                    <span class="my-1">YourData</span>
-                                    <v-icon>fas fa-folder-open</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>ログインユーザーのみ</span>
-                        </v-tooltip>
-                    </template>
-                    <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('data.add')">
-                        <span class="my-1">AddData</span>
-                        <v-icon>fas fa-cloud-upload-alt</v-icon>
+            <v-bottom-navigation app class="hidden-md-and-up m-auto py-1 memberCol" grow>
+                <v-btn fab depressed class="memberCol" @click="sheet = !sheet">
+                    <span class="my-1">DB List</span>
+                    <v-icon>fas fa-database</v-icon>
+                </v-btn>
+                <template v-if="$page.props.user">
+                    <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('user.book')">
+                        <span class="my-1">BookMark</span>
+                        <v-icon>fas fa-bookmark</v-icon>
                     </inertia-link>
-                </v-bottom-navigation>
-            </template>
+                </template>
+                <template v-else>
+                    <v-tooltip top color="error">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
+                                <span class="my-1">BookMark</span>
+                                <v-icon>fas fa-bookmark</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>ログインユーザーのみ</span>
+                    </v-tooltip>
+                </template>
+                <template v-if="$page.props.user">
+                    <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('user.added')">
+                        <span class="my-1">YourData</span>
+                        <v-icon>fas fa-folder-open</v-icon>
+                    </inertia-link>
+                </template>
+                <template v-else>
+                    <v-tooltip top color="error">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
+                                <span class="my-1">YourData</span>
+                                <v-icon>fas fa-folder-open</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>ログインユーザーのみ</span>
+                    </v-tooltip>
+                </template>
+                <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('data.add')">
+                    <span class="my-1">AddData</span>
+                    <v-icon>fas fa-cloud-upload-alt</v-icon>
+                </inertia-link>
+            </v-bottom-navigation>
         </template>
 
         <!-- DB list -->

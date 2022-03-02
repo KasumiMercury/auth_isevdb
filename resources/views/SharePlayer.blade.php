@@ -15,10 +15,20 @@
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://isevdb.sakura.ne.jp/{{ $currentMember->name }}/share/{{ $id }}" />
         <meta property="og:image" content="https://i.ytimg.com/vi/{{ $player-> VideoID }}/hqdefault.jpg" />
+        <meta property="og:title" content="非公式{{ $currentMember -> display }}DB">
         <meta property="og:site_name" content="非公式{{ $currentMember -> display }}DB">
-        <meta property="og:description" content="個人Vtuberグループいせぶい非公式データベースいせぶい所属{{ $currentMember -> display }}DBに登録されたデータのシェアページ">
+        <meta property="og:description" content="非公式{{ $currentMember -> display }}DB No.{{ $player -> id }}「{{ $player -> title }}」シェアページ">
         <meta property="og:locale" content="ja_JP">
-        <meta name="twitter:card" content="summary_large_image">
+
+
+        <meta name="twitter:card" content="player">
+        <meta name="twitter:title" content="非公式{{ $currentMember -> display }}DB">
+        <meta name="twitter:description" content="非公式{{ $currentMember -> display }}DB No.{{ $player -> id }}「{{ $player -> title }}」シェアページ">
+        <meta name="twitter:image" content="https://i.ytimg.com/vi/{{ $player-> VideoID }}/hqdefault.jpg">
+        <meta name="twitter:player" content="https://www.youtube.com/embed/{{ $player->VideoID }}?rel=0&start={{ $player->start }}&end={{ $player->end }}&amp;controls=0&amp;showinfo=0">
+        <meta name="twitter:player:width" content="640">
+        <meta name="twitter:player:height" content="360">
+
 
         <!-- Fonts -->
         <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
@@ -35,7 +45,6 @@
     </head>
     <body class="font-sans antialiased">
         <div id="app">
-            <p>testCompornent{{ $id }}</p>
             <share-page :id="{{ $id }}" :current-member="{{ $currentMember }}" :player="{{ $player }}"></share-page>
         </div>
         <script src="{{ mix('js/ogp.js') }}" defer></script>
