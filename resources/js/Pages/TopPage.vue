@@ -338,6 +338,11 @@ export default {
 
 <style lang="scss">
 @import "/css/bgset.css";
+.memberCol {
+    background: #80deea !important;
+    border-color: #80deea !important;
+    color: #111 !important;
+}
 .description {
     font-size: 1rem;
     font-family: "Zen Maru Gothic", sans-serif;

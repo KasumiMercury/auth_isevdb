@@ -177,22 +177,25 @@
             <v-main v-if="width <= this.break" class="hidden-md-and-up mt-5 mx-0" style="width: 100%; z-index: 2" app absolute>
                 <slot></slot>
             </v-main>
-        </template>
-
-        <!-- SP footer -->
-        <template v-if="width <= this.break">
-            <v-card style="z-index: 2" class="hidden-md-and-up">
-                <v-col class="text-center" cols="12">
+            <template>
+                <v-card
+                    class="hidden-md-and-up mx-auto mt-10 text-center px-5"
+                    style="padding-top: 0.5rem; z-index: 2; margin-bottom: 58px"
+                    width="auto"
+                >
                     <p style="margin-bottom: 0.2rem; font-size: 0.8rem">非公式いせぶいDB v.4.6.0</p>
                     <p style="margin-bottom: 0.1rem; font-size: 0.5rem">
                         当サイト内コンテンツの著作権、肖像権は、<br />
                         すべて、個人VTuberグループ「いせぶい」及びその所属メンバーに帰属します。
                     </p>
                     <p style="margin-bottom: 0.5rem; font-size: 0.6rem">管理人：@Mmazoku_media</p>
-                </v-col>
-            </v-card>
+                </v-card>
+            </template>
+        </template>
 
-            <v-bottom-navigation app class="hidden-md-and-up m-auto py-1 memberCol" grow>
+        <!-- SP footer -->
+        <template v-if="width <= this.break">
+            <v-bottom-navigation app class="memberCol hidden-md-and-up m-auto py-1" grow>
                 <v-btn fab depressed class="memberCol" @click="sheet = !sheet">
                     <span class="my-1">DB List</span>
                     <v-icon>fas fa-database</v-icon>

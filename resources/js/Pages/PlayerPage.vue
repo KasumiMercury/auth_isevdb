@@ -48,16 +48,18 @@
                             @ended="ended"
                         ></youtube>
                         <v-overlay class="text-center" :absolute="absolute" :value="overlay">
-                            <p class="text-h5">次の動画まで{{ this.countDisplay }}秒</p>
+                            <p class="text-h6">次の動画まで{{ this.countDisplay }}秒</p>
                             <v-row no-gutters justify="center" align="center">
                                 <v-col cols="auto" class="mx-2">
-                                    <v-btn @click="redoPlayer" color="red" rounded><v-icon>fas fa-redo</v-icon>　REPEAT</v-btn>
+                                    <v-btn @click="redoPlayer" x-small color="red" rounded><v-icon x-small>fas fa-redo</v-icon>　REPEAT</v-btn>
                                 </v-col>
                                 <v-col cols="auto" class="mx-2">
-                                    <v-btn @click="continuePlayer" color="red" rounded>CONTINUE　<v-icon>fas fa-play</v-icon></v-btn>
+                                    <v-btn @click="continuePlayer" x-small color="red" rounded>CONTINUE　<v-icon x-small>fas fa-play</v-icon></v-btn>
                                 </v-col>
                                 <v-col cols="auto" class="mx-2">
-                                    <v-btn @click="nextPlayer" color="red" rounded>NEXT　<v-icon>fas fa-angle-double-right</v-icon></v-btn>
+                                    <v-btn @click="nextPlayer" x-small color="red" rounded
+                                        >NEXT　<v-icon x-small>fas fa-angle-double-right</v-icon></v-btn
+                                    >
                                 </v-col>
                             </v-row>
                         </v-overlay>
