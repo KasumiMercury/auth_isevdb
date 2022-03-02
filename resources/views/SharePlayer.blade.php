@@ -45,7 +45,7 @@
     </head>
     <body class="font-sans antialiased">
         <div id="app">
-            <share-page :id="{{ $id }}" :current-member="{{ $currentMember }}" :player="{{ $player }}"></share-page>
+            <share-page :id="{{ $id }}" :current-member="{{ $currentMember }}" :player="{{ $player }}" :related="{{ $related }}"></share-page>
         </div>
         <script src="{{ mix('js/ogp.js') }}" defer></script>
     </body>

@@ -255,22 +255,22 @@
                                     </v-col>
                                 </v-row>
                                 <v-divider></v-divider>
-                                <v-row no-gutters justify="center" align="start" class="mt-10">
+                                <v-row no-gutters justify="center" align="center" class="mt-10">
                                     <v-col cols="auto">
                                         <v-btn large @click="InputMinus" icon color="red">
                                             <v-icon>fas fa-caret-left</v-icon>
                                         </v-btn>
                                     </v-col>
-                                    <v-col cols="8">
-                                        <v-slider
-                                            v-model="slider"
-                                            class="align-center"
-                                            :max="10000"
-                                            :min="0"
-                                            thumb-label="always"
-                                            v-model.number="PMInput"
-                                            step="5"
-                                        ></v-slider>
+                                    <v-col cols="2">
+                                        <v-select
+                                            v-model="PMInput"
+                                            :items="PMitems"
+                                            item-text="label"
+                                            item-value="time"
+                                            label="Select"
+                                            return-object
+                                            single-line
+                                        ></v-select>
                                     </v-col>
                                     <v-col cols="auto">
                                         <v-btn large @click="InputPlus" icon color="red">
@@ -538,6 +538,20 @@ export default {
             isAdd: false,
             SeekInput: "5:04",
             PMInput: 15,
+            PMitems: [
+                { time: 15, label: "15秒" },
+                { time: 20, label: "20秒" },
+                { time: 30, label: "30秒" },
+                { time: 45, label: "45秒" },
+                { time: 60, label: "60秒" },
+                { time: 120, label: "2分" },
+                { time: 300, label: "5分" },
+                { time: 600, label: "10分" },
+                { time: 1200, label: "20分" },
+                { time: 1800, label: "30分" },
+                { time: 2700, label: "45分" },
+                { time: 3600, label: "60分" },
+            ],
             playing: false,
             rules: {
                 required: (value) => !!value || "Required.",
@@ -1067,12 +1081,12 @@ export default {
         },
         InputMinus() {
             this.player.getCurrentTime().then((time) => {
-                this.player.seekTo(time - this.PMInput, true)
+                this.player.seekTo(time - Number(this.PMInput), true)
             })
         },
         InputPlus() {
             this.player.getCurrentTime().then((time) => {
-                this.player.seekTo(time + this.PMInput, true)
+                this.player.seekTo(time + Number(this.PMInput), true)
             })
         },
         InputSeek() {

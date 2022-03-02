@@ -63,7 +63,26 @@ class PlayerController extends Controller
     {
         $player = Players::find($id);
         $currentMember = Member::find($player['member_id'])->first();
-        return view('SharePlayer',compact('id','player','currentMember'));
+        $related = Players::where('member_id','=',$player['member_id'])
+                            ->where('id','!=', $id)
+                            ->where('status','!=','3')
+                            ->where('status','!=','2')
+                            ->where('twitter','=',null)
+                            ->inRandomOrder()
+                            ->limit(10)
+                            ->get();
+        $relatedNum = count($related);
+        if($relatedNum < 10){
+            $temp = Players::where('id','!=', $id)
+                            ->where('status','!=','3')
+                            ->where('status','!=','2')
+                            ->where('twitter','=',null)
+                            ->inRandomOrder()
+                            ->limit(10 -$relatedNum)
+                            ->get();
+            $related += $temp;
+        };
+        return view('SharePlayer',compact('id','player','currentMember','related'));
     }
 
     public function latest($member)

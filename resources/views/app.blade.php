@@ -7,6 +7,16 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg" color="#ff9cbb">
+        <meta name="apple-mobile-web-app-title" content="非公式いせぶいDB">
+        <meta name="application-name" content="非公式いせぶいDB">
+        <meta name="msapplication-TileColor" content="#00aba9">
+        <meta name="theme-color" content="#ff9cbb">
+
         <title>非公式いせぶいDB</title>
         <meta name="description" content="個人Vtuberグループいせぶい非公式データベース">
         

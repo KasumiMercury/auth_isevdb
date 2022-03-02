@@ -47,6 +47,20 @@
                             @paused="paused"
                             @ended="ended"
                         ></youtube>
+                        <v-overlay class="text-center" :absolute="absolute" :value="overlay">
+                            <p class="text-h5">次の動画まで{{ this.countDisplay }}秒</p>
+                            <v-row no-gutters justify="center" align="center">
+                                <v-col cols="auto" class="mx-2">
+                                    <v-btn @click="redoPlayer" color="red" rounded><v-icon>fas fa-redo</v-icon>　REPEAT</v-btn>
+                                </v-col>
+                                <v-col cols="auto" class="mx-2">
+                                    <v-btn @click="continuePlayer" color="red" rounded>CONTINUE　<v-icon>fas fa-play</v-icon></v-btn>
+                                </v-col>
+                                <v-col cols="auto" class="mx-2">
+                                    <v-btn @click="nextPlayer" color="red" rounded>NEXT　<v-icon>fas fa-angle-double-right</v-icon></v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-overlay>
                     </v-responsive>
                 </v-card>
                 <v-row class="mt-1 mb-0" justify="center" align="center">
@@ -112,9 +126,43 @@
                     </p>
                 </v-alert>
                 <v-divider class="mb-3"></v-divider>
-                <ShareNetwork network="twitter" :url="Tweet.url" :title="Tweet.title" :hashtags="Tweet.hash" :class="'text-decoration-none'">
-                    <v-btn color="#1DA1F2" style="color: #fff" block x-large> <v-icon>fas fa-share-square</v-icon>　Tweet </v-btn>
-                </ShareNetwork>
+
+                <template>
+                    <div class="text-center">
+                        <v-dialog v-model="TWdialog" persistent max-width="500">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn color="#1DA1F2" style="color: #fff" block x-large v-bind="attrs" v-on="on">
+                                    <v-icon>fas fa-share-square</v-icon>　Tweet
+                                </v-btn>
+                            </template>
+
+                            <v-card>
+                                <v-card-title style="color: #1da1f2"> Tweet Setting </v-card-title>
+
+                                <v-switch class="ml-20" inset v-model="TWtitle" @change="setTWtitle" label="データタイトル"></v-switch>
+                                <v-switch class="ml-20" inset v-model="TWurl" @change="setTWurl" label="非公式DBのURL"></v-switch>
+                                <v-switch class="ml-20" inset v-model="TWyt" @change="setTWurl" label="元動画のURL"></v-switch>
+
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                    <v-btn color="#1DA1F2" text @click="TWdialog = false"> Back </v-btn>
+                                    <v-spacer></v-spacer>
+                                    <ShareNetwork
+                                        network="twitter"
+                                        :url="Tweet.url"
+                                        :title="Tweet.title"
+                                        :hashtags="Tweet.hash"
+                                        :class="'text-decoration-none'"
+                                        @click="TWdialog = false"
+                                    >
+                                        <v-btn color="#1DA1F2" style="color: #fff"> Tweet </v-btn>
+                                    </ShareNetwork>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </div>
+                </template>
+
                 <v-row justify="center" class="my-5 text-center">
                     <v-col cols="12">
                         <inertia-link large as="v-btn" :color="currentMember.MainCol" :href="'/' + currentMember.name + '/latest'">
@@ -294,6 +342,10 @@ export default {
     props: ["currentMember", "player", "id", "list_type", "list_id", "list", "related", "likesObj"],
     data() {
         return {
+            TWtitle: true,
+            TWurl: true,
+            TWyt: false,
+            TWdialog: false,
             playerVars: {
                 autoplay: 1,
                 controls: 1,
@@ -322,8 +374,8 @@ export default {
         }
     },
     created() {
-        this.Tweet["url"] = "https://isevdb.sakura.ne.jp/" + this.currentMember.name + "/share/" + this.id
-        this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.id
+        this.Tweet["url"] = "https://isevdb.sakura.ne.jp/" + this.currentMember.name + "/share/" + this.player.id
+        this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.player.id + "　”" + this.player.title + "”"
         this.Tweet["hash"] = this.currentMember.display + "非公式DB," + this.currentMember.display
 
         if (this.list != null) {
@@ -487,6 +539,34 @@ export default {
             } else {
                 let selectIndex = Number(index) + Number(this.list_id) + 1
                 this.$inertia.get("/list/player/" + this.list[index].id + "?list=" + this.list_type + "&index=" + selectIndex)
+            }
+        },
+        setTWtitle() {
+            if (this.TWtitle == false) {
+                this.Tweet["title"] = ""
+            } else {
+                this.Tweet["title"] = "非公式" + this.currentMember.display + "DB No." + this.player.id + "　”" + this.player.title + "”"
+            }
+        },
+        setTWurl() {
+            if (this.TWurl == false) {
+                if (this.TWyt == false) {
+                    this.Tweet["url"] = ""
+                } else {
+                    this.Tweet["url"] = "https://youtu.be/" + this.player.VideoID
+                }
+            } else {
+                if (this.TWyt == false) {
+                    this.Tweet["url"] = "https://isevdb.sakura.ne.jp/" + this.currentMember.name + "/share/" + this.player.id
+                } else {
+                    this.Tweet["url"] =
+                        "https://isevdb.sakura.ne.jp/" +
+                        this.currentMember.name +
+                        "/share/" +
+                        this.player.id +
+                        "　https://youtu.be/" +
+                        this.player.VideoID
+                }
             }
         },
     },
