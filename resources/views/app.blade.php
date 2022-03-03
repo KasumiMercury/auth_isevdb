@@ -21,8 +21,7 @@
         <meta name="theme-color" content="#ff9cbb">
         
         <!-- Fonts -->
-        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-        <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">

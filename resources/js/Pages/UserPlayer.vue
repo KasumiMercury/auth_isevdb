@@ -4,7 +4,7 @@
             <template #title> 非公式{{ currentMember.display }}DB </template>
             <template #header> UserData ― {{ subTitle }} </template>
 
-            <v-card class="m-5" style="margin-bottom: 500px" elevation="0" outlined>
+            <v-card class="m-5" elevation="0" outlined>
                 <!--table-cards-->
                 <v-container fluid>
                     <v-data-iterator :items="players" :items-per-page.sync="itemsPerPage" :page.sync="page" :sort-desc="sortDesc" hide-default-footer>

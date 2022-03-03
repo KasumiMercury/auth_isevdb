@@ -180,7 +180,7 @@
                     <v-divider></v-divider>
                     <v-card-actions>
                         <v-btn block x-large text @click="showList = !showList">
-                            再生リスト <v-icon>{{ showList ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
+                            再生リスト <v-icon>{{ showList ? "fas fa-angle-up" : "fas fa-angle-down" }}</v-icon>
                         </v-btn>
                     </v-card-actions>
 
@@ -251,7 +251,7 @@
                     <v-divider></v-divider>
                     <v-card-actions>
                         <v-btn block x-large text @click="showRelated = !showRelated">
-                            関連動画 <v-icon>{{ showRelated ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
+                            関連動画 <v-icon>{{ showRelated ? "fas fa-angle-up" : "fas fa-angle-down" }}</v-icon>
                         </v-btn>
                     </v-card-actions>
 

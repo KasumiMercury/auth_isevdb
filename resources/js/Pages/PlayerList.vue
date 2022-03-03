@@ -9,13 +9,6 @@
                 <h1 class="text-center" style="font-size: 4rem; font-family: 'Zen Maru Gothic', sans-serif; color: #eee">
                     {{ currentMember.display }}
                 </h1>
-                <v-row justify="center" no-gutters>
-                    <v-col cols="auto">
-                        <v-btn ref="button" large :color="currentMember.MainCol" class="my-5" @click="$vuetify.goTo('#main-table')">
-                            スキップ▼
-                        </v-btn>
-                    </v-col>
-                </v-row>
                 <v-img
                     elevation="20"
                     class="mx-auto my-5 px-5"
@@ -24,39 +17,53 @@
                     contain
                     :src="'/img/' + currentMember.name + '.jpg'"
                 ></v-img>
-                <v-row class="my-10" justify="start" align="start" no-gutters>
-                    <v-col cols="12" class="px-5 py-10">
-                        <p class="p-2 description">
-                            <span>いせぶい{{ currentMember.display }}非公式DBは、</span><span>「異世界転生してVになりました。」</span
-                            ><span>略して「いせぶい」に所属する</span><span>{{ currentMember.display }}の</span
-                            ><span>可愛い声や面白いエピソード、</span><span>ファンが作った切り抜きを</span
-                            ><span>共有するデータベース（DB)です。</span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> 本DBは</span><span>YouTube{{ currentMember.display }}チャンネル、</span
-                            ><span>またはYouTubeにアップロードされた切り抜きの</span><span>動画リンクを直接共有します。 </span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> このサイトで再生されると</span><span>ダイレクトに本人のチャンネルにて</span><span>再生回数が計上されます。 </span>
-                        </p>
-                        <p class="p-2 description" style="color: #e73275 !important; font-weight: bold">
-                            <span> 動画リンクの登録は</span><span>どなたでも可能です。</span><span>是非、「ここの声マジ最高！」とか</span
-                            ><span>「このエピソード好き」や</span><span>作成した切り抜きを</span><span>登録してください。 </span>
-                        </p>
-                        <p class="p-2 description">
-                            <span> 本DBが</span><span>みなさんの推し活や</span><span>彼女の活動の支えに</span><span>なりえることを願います。 </span>
-                        </p>
-                        <p class="p-2 description"><span> Twitter共有ボタンもあるので</span><span>是非ご利用ください。</span></p>
-                        <p class="p-2 description">
-                            <span>製作者の時間的都合、</span><span>というより根気的問題で</span><span>開発は超スローペースですが</span
-                            ><span>今後機能拡充や</span><span>デザインの改善等</span><span>行います。</span>
-                        </p>
-                        <p class="p-2 description">
-                            <span>不具合や</span><span>こんな機能あると嬉しい等</span><span>ございましたら、</span><span>管理人に</span
-                            ><span>Twitterにて</span><span>メンションをいただけると幸いです。</span>
-                        </p>
-                    </v-col>
-                </v-row>
+
+                <v-card-actions>
+                    <v-btn block x-large text @click="showDescription = !showDescription">
+                        非公式{{ currentMember.display }}DBとは <v-icon>{{ showDescription ? "fas fa-angle-up" : "fas fa-angle-down" }}</v-icon>
+                    </v-btn>
+                </v-card-actions>
+
+                <v-expand-transition>
+                    <div v-show="showDescription">
+                        <v-row class="my-10" justify="start" align="start" no-gutters>
+                            <v-col cols="12" class="px-5 py-10">
+                                <p class="p-2 description">
+                                    <span>いせぶい{{ currentMember.display }}非公式DBは、</span><span>「異世界転生してVになりました。」</span
+                                    ><span>略して「いせぶい」に所属する</span><span>{{ currentMember.display }}の</span
+                                    ><span>可愛い声や面白いエピソード、</span><span>ファンが作った切り抜きを</span
+                                    ><span>共有するデータベース（DB)です。</span>
+                                </p>
+                                <p class="p-2 description">
+                                    <span> 本DBは</span><span>YouTube{{ currentMember.display }}チャンネル、</span
+                                    ><span>またはYouTubeにアップロードされた切り抜きの</span><span>動画リンクを直接共有します。 </span>
+                                </p>
+                                <p class="p-2 description">
+                                    <span> このサイトで再生されると</span><span>ダイレクトに本人のチャンネルにて</span
+                                    ><span>再生回数が計上されます。 </span>
+                                </p>
+                                <p class="p-2 description" style="color: #e73275 !important; font-weight: bold">
+                                    <span> 動画リンクの登録は</span><span>どなたでも可能です。</span><span>是非、「ここの声マジ最高！」とか</span
+                                    ><span>「このエピソード好き」や</span><span>作成した切り抜きを</span><span>登録してください。 </span>
+                                </p>
+                                <p class="p-2 description">
+                                    <span> 本DBが</span><span>みなさんの推し活や</span><span>彼女の活動の支えに</span
+                                    ><span>なりえることを願います。 </span>
+                                </p>
+                                <p class="p-2 description"><span> Twitter共有ボタンもあるので</span><span>是非ご利用ください。</span></p>
+                                <p class="p-2 description">
+                                    <span>製作者の時間的都合、</span><span>というより根気的問題で</span><span>開発は超スローペースですが</span
+                                    ><span>今後機能拡充や</span><span>デザインの改善等</span><span>行います。</span>
+                                </p>
+                                <p class="p-2 description">
+                                    <span>不具合や</span><span>こんな機能あると嬉しい等</span><span>ございましたら、</span><span>管理人に</span
+                                    ><span>Twitterにて</span><span>メンションをいただけると幸いです。</span>
+                                </p>
+                            </v-col>
+                        </v-row>
+                    </div>
+                </v-expand-transition>
+
                 <v-row no-gutters justify="center" align="center">
                     <v-col cols="auto" class="mx-1 py-5">
                         <v-row no-gutters>
@@ -110,7 +117,7 @@
                 </v-row>
             </template>
 
-            <v-card class="m-5" id="main-table" style="margin-bottom: 500px" elevation="0" outlined>
+            <v-card class="m-5" id="main-table" elevation="0" outlined>
                 <!--tab-->
                 <v-tabs show-arrows fixed-tabs v-model="select">
                     <inertia-link
@@ -381,6 +388,7 @@ export default {
     props: ["currentMember", "cate", "players", "likesObj"],
     data() {
         return {
+            showDescription: false,
             likes: [],
             loading: false,
             width: window.innerWidth,

@@ -3,7 +3,7 @@
         <app-layout>
             <template #title> 非公式{{ currentMember.display }}DB </template>
             <template #header> iseVDB - Top </template>
-            <v-card class="mx-5 mt-5" style="margin-bottom: 500px" elevation="0" outlined>
+            <v-card class="mx-5 mt-5" elevation="0" outlined>
                 <!--table-cards-->
                 <v-container fluid>
                     <v-data-iterator
