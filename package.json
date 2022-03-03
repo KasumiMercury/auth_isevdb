@@ -21,7 +21,7 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-vue": "^8.4.0",
         "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
+        "laravel-mix-bundle-analyzer": "^1.0.5",
         "portal-vue": "^2.1.7",
         "postcss": "^8.1.14",
         "postcss-import": "^12.0.1",
@@ -33,7 +33,8 @@
         "vue-loader": "^15.9.6",
         "vue-template-compiler": "^2.6.10",
         "vuetify-loader": "^1.7.3",
-        "vuetifyjs-mix-extension": "^0.0.20"
+        "vuetifyjs-mix-extension": "^0.0.20",
+        "webpack-bundle-analyzer": "^4.5.0"
     },
     "dependencies": {
         "moment": "^2.29.1",

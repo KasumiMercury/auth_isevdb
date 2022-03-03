@@ -68,13 +68,13 @@
                 <v-row class="mt-1 mb-0" justify="center" align="center">
                     <v-col cols="auto">
                         <template v-if="$page.props.user">
-                            <template v-if="likes.includes(item.id) == true">
+                            <template v-if="likes.includes(player.id) == true">
                                 <v-btn class="m-0 p-0" x-small icon color="yellow darken-1" @click="DisLike(item.id)">
                                     <v-icon>fas fa-bookmark</v-icon>
                                 </v-btn>
                             </template>
                             <template v-else>
-                                <v-btn class="m-0 p-0" x-small icon @click="addLike(item.id)">
+                                <v-btn class="m-0 p-0" x-small icon @click="addLike(player.id)">
                                     <v-icon>fas fa-bookmark</v-icon>
                                 </v-btn>
                             </template>

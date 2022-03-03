@@ -123,15 +123,17 @@
             </v-app-bar>
             <!-- SP header -->
             <v-app-bar
-                color="yellow lighten-3"
                 elevation="3"
+                color="yellow lighten-3"
                 v-if="width <= this.break"
                 style="padding: 5px 2vw; z-index: 5"
                 class="hidden-md-and-up memberCol"
                 app
                 clipped-left
             >
-                <v-toolbar-title class="text-h6" id="SiteTitle"> 非公式いせぶいDB </v-toolbar-title>
+                <v-toolbar-title class="text-h6 SiteTitle" style="font-family: 'Dela Gothic One', cursive !important; color: #33322eff">
+                    非公式いせぶいDB
+                </v-toolbar-title>
 
                 <v-spacer></v-spacer>
                 <v-menu offset-y v-if="$page.props.user">
@@ -204,13 +206,13 @@
 
         <!-- SP footer -->
         <template v-if="width <= this.break">
-            <v-bottom-navigation app class="memberCol hidden-md-and-up m-auto py-1" color="cyan lighten-3" grow>
-                <v-btn fab depressed class="memberCol" @click="sheet = !sheet">
+            <v-bottom-navigation app class="memberCol hidden-md-and-up m-auto py-1" grow>
+                <v-btn color="cyan lighten-3" fab depressed class="memberCol" @click="sheet = !sheet">
                     <span class="my-1">DB List</span>
                     <v-icon>fas fa-database</v-icon>
                 </v-btn>
                 <template v-if="$page.props.user">
-                    <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('user.book')">
+                    <inertia-link as="v-btn" color="cyan lighten-3" fab depressed class="memberCol" :href="route('user.book')">
                         <span class="my-1">BookMark</span>
                         <v-icon>fas fa-bookmark</v-icon>
                     </inertia-link>
@@ -218,7 +220,7 @@
                 <template v-else>
                     <v-tooltip top color="error">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
+                            <v-btn color="cyan lighten-3" fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
                                 <span class="my-1">BookMark</span>
                                 <v-icon>fas fa-bookmark</v-icon>
                             </v-btn>
@@ -227,7 +229,7 @@
                     </v-tooltip>
                 </template>
                 <template v-if="$page.props.user">
-                    <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('user.added')">
+                    <inertia-link as="v-btn" color="cyan lighten-3" fab depressed class="memberCol" :href="route('user.added')">
                         <span class="my-1">YourData</span>
                         <v-icon>fas fa-folder-open</v-icon>
                     </inertia-link>
@@ -235,7 +237,7 @@
                 <template v-else>
                     <v-tooltip top color="error">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
+                            <v-btn color="cyan lighten-3" fab depressed class="memberCol" dark v-bind="attrs" v-on="on">
                                 <span class="my-1">YourData</span>
                                 <v-icon>fas fa-folder-open</v-icon>
                             </v-btn>
@@ -243,7 +245,7 @@
                         <span>ログインユーザーのみ</span>
                     </v-tooltip>
                 </template>
-                <inertia-link as="v-btn" fab depressed class="memberCol" :href="route('data.add')">
+                <inertia-link as="v-btn" color="cyan lighten-3" fab depressed class="memberCol" :href="route('data.add')">
                     <span class="my-1">AddData</span>
                     <v-icon>fas fa-cloud-upload-alt</v-icon>
                 </inertia-link>
@@ -291,6 +293,21 @@ html {
 .v-application {
     font-family: "Raleway", "Zen Maru Gothic", sans-serif !important;
     background-color: #ceebe6 !important;
+}
+.memberCol {
+    background: #80deea;
+    border-color: #80deea;
+    color: #111;
+}
+.footCol {
+    background: #111 !important;
+}
+.v-list-item {
+    color: #111 !important;
+}
+.v-divider {
+    border-color: #111 !important;
+    opacity: 0.2;
 }
 </style>
 <script>

@@ -62,26 +62,28 @@ class PlayerController extends Controller
     public function sharePlayer($member,$id)
     {
         $player = Players::find($id);
-        $currentMember = Member::find($player['member_id'])->first();
-        $related = Players::where('member_id','=',$player['member_id'])
+        $currentMember = Member::whereId($player->member_id)->first();
+        $relatedTemp = Players::where('member_id','=',$player['member_id'])
                             ->where('id','!=', $id)
                             ->where('status','!=','3')
                             ->where('status','!=','2')
                             ->where('twitter','=',null)
                             ->inRandomOrder()
                             ->limit(10)
-                            ->get();
-        $relatedNum = count($related);
+                            ->get()->toArray();
+        $relatedNum = count($relatedTemp);
         if($relatedNum < 10){
             $temp = Players::where('id','!=', $id)
-                            ->where('status','!=','3')
-                            ->where('status','!=','2')
-                            ->where('twitter','=',null)
-                            ->inRandomOrder()
-                            ->limit(10 -$relatedNum)
-                            ->get();
-            $related += $temp;
-        };
+            ->where('status','!=','3')
+            ->where('status','!=','2')
+            ->where('twitter','=',null)
+            ->inRandomOrder()
+            ->limit(10 -$relatedNum)
+            ->get()->toArray();
+            $relatedTemp = array_merge($relatedTemp,$temp);
+        }
+        
+        $related=json_encode($relatedTemp);
         return view('SharePlayer',compact('id','player','currentMember','related'));
     }
 
@@ -136,15 +138,18 @@ class PlayerController extends Controller
     public function player($member,$id,Request $request)
     {
         $player = Players::find($id);
-        $currentMember = Member::find($player['member_id'])->first();
+        $currentMember = Member::whereId($player->member_id)->first();
         $list_type = $request->list;
         $list_id = $request->index;
 
-        $id = Auth::id();
-        if($id != null){
+        $user_id = Auth::id();
+        if($user_id != null){
 
+            $likesObj = DB::table('bookmarks')->whereUser_id($user_id)->get(['player_id']);
+            
             if( $list_type == "BM" ){
                 $list_raw = Players::join('bookmarks','players.id','=','bookmarks.player_id')
+                                    ->where('bookmarks.user_id','=', $user_id)
                                     ->orderBy('bookmarks.id','ASC')
                                     ->select('players.*')
                                     ->get()->toArray();
@@ -160,24 +165,24 @@ class PlayerController extends Controller
                     $list = array_merge($list_temp2,$list_temp1);
                 }
 
-                $related = Players::where('member_id','=',$player['member_id'])
+                $related = Players::where('member_id','=',$player->member_id)
                                     ->where('id','!=', $id)
                                     ->where('status','!=','3')
                                     ->where('status','!=','2')
                                     ->where('twitter','=',null)
                                     ->inRandomOrder()
                                     ->limit(10)
-                                    ->get();
+                                    ->get()->toArray();
                 $relatedNum = count($related);
                 if($relatedNum < 10){
                     $temp = Players::where('id','!=', $id)
-                                    ->where('status','!=','3')
-                                    ->where('status','!=','2')
-                                    ->where('twitter','=',null)
+                    ->where('status','!=','3')
+                    ->where('status','!=','2')
+                    ->where('twitter','=',null)
                                     ->inRandomOrder()
                                     ->limit(10 -$relatedNum)
-                                    ->get();
-                    $related += $temp;
+                                    ->get()->toArray();
+                    $related = array_merge($related,$temp);
                 };
             }elseif( $list_type == "add"){
                 $user = Auth::user();
@@ -199,67 +204,70 @@ class PlayerController extends Controller
                     $list = array_merge($list_temp2,$list_temp1);
                 }
 
-                $related = Players::where('member_id','=',$player['member_id'])
+                $related = Players::where('member_id','=',$player->member_id)
                                     ->where('id','!=', $id)
                                     ->where('status','!=','3')
                                     ->where('status','!=','2')
                                     ->where('twitter','=',null)
                                     ->inRandomOrder()
                                     ->limit(10)
-                                    ->get();
+                                    ->get()->toArray();
                 $relatedNum = count($related);
                 if($relatedNum < 10){
                     $temp = Players::where('id','!=', $id)
-                                    ->where('status','!=','3')
-                                    ->where('status','!=','2')
-                                    ->where('twitter','=',null)
+                    ->where('status','!=','3')
+                    ->where('status','!=','2')
+                    ->where('twitter','=',null)
                                     ->inRandomOrder()
                                     ->limit(10 -$relatedNum)
-                                    ->get();
-                    $related += $temp;
+                                    ->get()->toArray();
+                    $related = array_merge($related,$temp);
                 };
 
             }else{
-                $related = Players::where('member_id','=',$player['member_id'])
+                $related = Players::where('member_id','=',$player->member_id)
                                     ->where('id','!=', $id)
                                     ->where('status','!=','3')
                                     ->where('status','!=','2')
                                     ->where('twitter','=',null)
                                     ->inRandomOrder()
                                     ->limit(10)
-                                    ->get();
+                                    ->get()->toArray();
                 $relatedNum = count($related);
                 if($relatedNum < 10){
                     $temp = Players::where('id','!=', $id)
-                                    ->where('status','!=','3')
-                                    ->where('status','!=','2')
-                                    ->where('twitter','=',null)
+                    ->where('status','!=','3')
+                    ->where('status','!=','2')
+                    ->where('twitter','=',null)
                                     ->inRandomOrder()
                                     ->limit(10 -$relatedNum)
-                                    ->get();
-                    $related += $temp;
+                                    ->get()->toArray();
+                    $related = array_merge($related,$temp);
                 };
 
                 $list = null;
             };
 
-            $likesObj = DB::table('bookmarks')->whereUser_id($id)->get(['player_id']);
 
         }else{
-            $related = Players::where('member_id','=',$player['member_id'])
+            $related = Players::where('member_id','=',$player->member_id)
                                 ->where('id','!=', $id)
                                 ->where('status','!=','3')
+                                ->where('status','!=','2')
+                                ->where('twitter','=',null)
                                 ->inRandomOrder()
                                 ->limit(10)
-                                ->get();
+                                ->get()->toArray();
             $relatedNum = count($related);
             if($relatedNum < 10){
                 $temp = Players::where('id','!=', $id)
-                                ->where('status','!=','3')
+                ->where('status','!=','3')
+                ->where('status','!=','2')
+                ->where('twitter','=',null)
                                 ->inRandomOrder()
                                 ->limit(10 -$relatedNum)
-                                ->get();
-                $related += $temp;
+                                ->get()->toArray();
+                $related = array_merge($related,$temp);
             };
 
             $likesObj = null;
