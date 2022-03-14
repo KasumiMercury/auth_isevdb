@@ -313,6 +313,7 @@
 
                                 <!-- v-for -->
                                 <v-row>
+                                    <p>{{ youtubeIsStart.length }}</p>
                                     <v-col cols="12" v-for="(youtube, index) in youtubeArray" :key="'youtube' + index">
                                         <v-card class="my-3" :elevation="index + 1">
                                             <v-row no-gutters class="my-0" align="center">
@@ -328,7 +329,14 @@
                                                         <v-icon>fas fa-forward</v-icon>
                                                     </v-btn>
                                                 </v-col>
-                                                <v-col v-if="index != 0 && youtubeIsStart[index - 1] == true" cols="auto" class="mr-5 ml-auto">
+                                                <v-col
+                                                    v-if="index == youtubeIsStart.length - 1 || youtubeIsStart[index + 1] == false"
+                                                    cols="auto"
+                                                    class="mr-5 ml-auto"
+                                                >
+                                                    <v-switch :input-value="true" disabled inset label="編集不可"></v-switch>
+                                                </v-col>
+                                                <v-col v-else cols="auto" class="mr-5 ml-auto">
                                                     <v-switch
                                                         v-model="youtubeIsStart[index]"
                                                         inset
@@ -336,29 +344,16 @@
                                                         label="スタートタイム"
                                                     ></v-switch>
                                                 </v-col>
-                                                <v-col v-else cols="auto" class="mr-5 ml-auto">
-                                                    <v-switch
-                                                        v-model="youtubeIsStart[index]"
-                                                        input-value="true"
-                                                        disabled
-                                                        inset
-                                                        label="編集不可"
-                                                    ></v-switch>
-                                                </v-col>
                                             </v-row>
                                             <v-row class="my-0">
                                                 <v-col class="mx-10">
                                                     <v-text-field
-                                                        v-if="youtubeIsStart[index] == true"
-                                                        label="title"
-                                                        v-model="youtube.title"
+                                                        v-if="youtubeIsStart[index] == true || youtubeIsStart[index + 1] == false"
+                                                        label="Title"
+                                                        v-model="youtubeTitle[index]"
+                                                        @change="editTitle(index, $event)"
                                                     ></v-text-field>
-                                                    <v-text-field
-                                                        v-else
-                                                        label="title"
-                                                        v-model="youtubeArray[index - 1].title"
-                                                        disabled
-                                                    ></v-text-field>
+                                                    <v-text-field v-else label="title" disabled></v-text-field>
                                                 </v-col>
                                             </v-row>
                                             <v-row justify="center" class="my-0">
@@ -367,6 +362,7 @@
                                                         <v-select
                                                             prepend-icon="fas fa-folder"
                                                             readonly
+                                                            v-model="youtubeCate[index + 1]"
                                                             :items="$page.props.setting.category"
                                                             item-text="title"
                                                             item-value="id"
@@ -377,6 +373,7 @@
                                                         <v-select
                                                             prepend-icon="fas fa-user-tag"
                                                             readonly
+                                                            v-model="youtubeMember[index + 1]"
                                                             :items="$page.props.setting.member"
                                                             item-text="name"
                                                             item-value="id"
@@ -572,6 +569,7 @@ export default {
             youtubeArray: new Array(),
             youtubeForm: new Object(),
             youtubeIsStart: new Array(),
+            youtubeTitle: new Array(),
             youtubeCate: new Array(),
             youtubeMember: new Array(),
             youtubeSwitch: new Array(),
@@ -702,7 +700,7 @@ export default {
 
                 this.youtubeForm.rowTime = Math.floor(time)
                 this.youtubeForm.time = HMStime
-                this.youtubeForm.title = ""
+                this.youtubeForm.title = "タイトルを入力"
                 this.youtubeForm.isStart = true
                 this.youtubeForm.member_id = 1
                 this.youtubeForm.cate_id = 1
@@ -710,9 +708,11 @@ export default {
 
                 this.youtubeArray.push(this.youtubeForm)
                 this.youtubeArray.sort((a, b) => b.rowTime - a.rowTime)
+                console.log(this.youtubeArray)
 
                 this.youtubeIsStart = this.youtubeArray.map((item) => item["isStart"])
                 this.youtubeCate = this.youtubeArray.map((item) => item["cate_id"])
+                this.youtubeTitle = this.youtubeArray.map((item) => item["title"])
                 this.youtubeMember = this.youtubeArray.map((item) => item["member_id"])
                 this.youtubeSwitch = this.youtubeArray.map((item) => item["switch"])
             })
@@ -737,11 +737,15 @@ export default {
 
             this.youtubeIsStart = this.youtubeArray.map((item) => item["isStart"])
             this.youtubeCate = this.youtubeArray.map((item) => item["cate_id"])
+            this.youtubeTitle = this.youtubeArray.map((item) => item["title"])
             this.youtubeMember = this.youtubeArray.map((item) => item["member_id"])
             this.youtubeSwitch = this.youtubeArray.map((item) => item["switch"])
         },
         editIsStart(index, event) {
             this.youtubeArray[index]["isStart"] = event
+        },
+        editTitle(index, event) {
+            this.youtubeArray[index]["title"] = event
         },
         editCate(index, event) {
             this.youtubeArray[index]["cate_id"] = event
@@ -755,6 +759,7 @@ export default {
         youtubeDelete(index) {
             this.youtubeArray.splice(index, 1)
             this.youtubeIsStart.splice(index, 1)
+            this.youtubeTitle.splice(index, 1)
             this.youtubeCate.splice(index, 1)
             this.youtubeMember.splice(index, 1)
             this.youtubeSwitch.splice(index, 1)
@@ -774,7 +779,7 @@ export default {
 
                     this.youtubeForm.rowTime = timeSecond
                     this.youtubeForm.time = InputTime[i]
-                    this.youtubeForm.title = ""
+                    this.youtubeForm.title = "タイトルを入力"
                     this.youtubeForm.isStart = true
                     this.youtubeForm.member_id = 1
                     this.youtubeForm.cate_id = 1

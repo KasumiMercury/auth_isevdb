@@ -591,6 +591,7 @@ export default {
         window.removeEventListener("resize", this.handleResize)
         clearTimeout(this.timer)
         clearTimeout(this.count)
+        console.log("test")
     },
 }
 </script>

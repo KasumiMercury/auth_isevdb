@@ -42,6 +42,7 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
         
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
